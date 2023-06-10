@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './product.css';
 import { Link } from "react-router-dom";
-import Chart from "../../conponents/chart/Chart";
+import Chart from "../../admin_conponents/chart/Chart";
 import { productData } from "../../dummyData";
 import { Publish } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";

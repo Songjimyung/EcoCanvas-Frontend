@@ -1,27 +1,51 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../css/AuthForm.css'
+import { useNavigate } from 'react-router-dom'; import '../css/AuthForm.css'
 axios.defaults.withCredentials = true;
 
 const AuthForm = ({ type }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
+  const [re_password, setRe_password] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // 회원가입 요청을 보낼 데이터 객체
+    //요청을 보낼 데이터 객체
     const data = {
+      username,
       email,
       password,
-      passwordCheck,
+      re_password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/signup/', data);
-      console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
+      const url = type === 'signup' ? 'http://localhost:8000/users/signup/' : 'http://localhost:8000/users/login/';
+      const response = await axios.post(url, data);
+      const { refresh, access } = response.data; // Extract refresh and access tokens from the response
 
+      localStorage.setItem('refresh', refresh);
+      localStorage.setItem('access', access);
+      const base64Url = access.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join('')
+      );
+      const payload = localStorage.getItem('payload');
+      const payloadObject = JSON.parse(payload);
+      console.log(payloadObject.is_admin);
+      if (payloadObject.is_admin) {
+        navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
+      } else {
+        // is_admin이 false인 경우 다른 페이지로 이동하거나 처리
+      }
     } catch (error) {
-      console.error(error.response.data); // 회원가입 실패 시 서버로부터 받은 에러 데이터 출력
+      console.error(error.response.data); //실패 시 서버로부터 받은 에러 데이터 출력
     }
   };
   const SocialKakao = () => {
@@ -47,6 +71,12 @@ const AuthForm = ({ type }) => {
       </div>
       <div className='inputList'>
         <input
+          type="text"
+          placeholder="이름"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
           type="email"
           placeholder="이메일"
           value={email}
@@ -60,11 +90,11 @@ const AuthForm = ({ type }) => {
         />
         {type === 'signup' && (
           <input
-            name="passwordCheck"
+            name="re_password"
             type="password"
             placeholder="비밀번호 확인"
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
+            value={re_password}
+            onChange={(e) => setRe_password(e.target.value)}
           />
         )}
         <button onClick={handleFormSubmit}>

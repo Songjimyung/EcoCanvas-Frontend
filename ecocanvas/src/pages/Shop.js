@@ -6,7 +6,6 @@ import axios from 'axios';
 const Shop = () => {
   const [productList, setProductList] = useState([]);
   const [categoryId, setCategoryId] = useState('');
-  const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
 
   const handleCategorySelect = (event) => {
@@ -17,8 +16,13 @@ const Shop = () => {
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/shop/products/list/${categoryId}`);
-        setProductList(response.data);
+        if (categoryId) { // categoryId 값이 존재할 때에만 API 요청 보내도록 수정
+          const response = await axios.get(`http://localhost:8000/shop/products/list/${categoryId}`);
+          setProductList(response.data);
+          console.log(response.data)
+        } else {
+          setProductList([]); // categoryId가 비어있을 경우 productList를 빈 배열로 초기화
+        }
       } catch (error) {
         console.error('Error fetching product list:', error);
       }
@@ -37,11 +41,6 @@ const Shop = () => {
     };
     fetchCategoryList();
   }, []);
-
-  useEffect(() => {
-    const filteredProducts = productList.filter((product) => product.category === categoryId);
-    setSelectedCategoryProducts(filteredProducts);
-  }, [productList, categoryId]);
 
 
   return (

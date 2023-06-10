@@ -6,6 +6,8 @@ import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { Campaign } from "./pages/Campaign";
 import { Shop } from "./pages/Shop";
+import { ShopDetail } from "./pages/ShopDetail";
+import { AdminHome } from "./admin_pages/admin_home/admin_Home";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/campaign" element={<Campaign />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
+        <Route path="/product" element={<ShopDetail />}></Route>
+        <Route path="/admin_home" element={<AdminHome />}></Route>
       </Routes>
     </div >
   );
