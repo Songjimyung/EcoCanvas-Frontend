@@ -1,51 +1,66 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; import '../css/AuthForm.css'
 axios.defaults.withCredentials = true;
 
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [re_password, setRe_password] = useState('');
   const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [re_password, setPasswordCheck] = useState('');
 
-  const handleFormSubmit = async (e) => {
+  const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
     //요청을 보낼 데이터 객체
-    const data = {
+    const signupData = {
       username,
       email,
+      username,
       password,
       re_password,
     };
     try {
-      const url = type === 'signup' ? 'http://localhost:8000/users/signup/' : 'http://localhost:8000/users/login/';
-      const response = await axios.post(url, data);
-      const { refresh, access } = response.data; // Extract refresh and access tokens from the response
+      const response = await axios.post('http://localhost:8000/users/signup/', signupData);
+      console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
 
-      localStorage.setItem('refresh', refresh);
-      localStorage.setItem('access', access);
-      const base64Url = access.split('.')[1];
+      alert("회원가입 성공!")
+      navigate("/login");
+    } catch (error) {
+      console.error(error.response.data); // 회원가입 실패 시 서버로부터 받은 에러 데이터 출력
+    }
+  };
+  const handleLoginFormSubmit = async (e) => {
+    e.preventDefault();
+    // 로그인 요청을 보낼 데이터 객체
+    const loginData = {
+      email,
+      password,
+    };
+    try {
+      const response = await axios.post('http://localhost:8000/users/login/', loginData);
+      console.log(response.data); // 로그인 성공 시 서버로부터 받은 응답 데이터 출력
+
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+      const base64Url = response.data.access.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(function (c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-          })
-          .join('')
-      );
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      localStorage.setItem("payload", jsonPayload);
+      alert("로그인 성공!");
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
       if (payloadObject.is_admin) {
         navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
       } else {
-        // is_admin이 false인 경우 다른 페이지로 이동하거나 처리
+        navigate("/");
       }
     } catch (error) {
-      console.error(error.response.data); //실패 시 서버로부터 받은 에러 데이터 출력
+      console.error(error); // 로그인 실패 시 서버로부터 받은 에러 데이터 출력
     }
   };
   const SocialKakao = () => {
@@ -71,17 +86,19 @@ const AuthForm = ({ type }) => {
       </div>
       <div className='inputList'>
         <input
-          type="text"
-          placeholder="이름"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
           type="email"
           placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {type === 'signup' && (
+          <input
+            type="text"
+            placeholder="이름"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        )}
         <input
           type="password"
           placeholder="비밀번호"
@@ -94,10 +111,10 @@ const AuthForm = ({ type }) => {
             type="password"
             placeholder="비밀번호 확인"
             value={re_password}
-            onChange={(e) => setRe_password(e.target.value)}
+            onChange={(e) => setPasswordCheck(e.target.value)}
           />
         )}
-        <button onClick={handleFormSubmit}>
+        <button onClick={type === 'signup' ? handleSignupFormSubmit : handleLoginFormSubmit}>
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />
