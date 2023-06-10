@@ -1,0 +1,130 @@
+.product {
+    flex: 4;
+}
+
+.productTitleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.productAddButton {
+    width: 80px;
+    border: none;
+    padding: 5px;
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.productTop{
+    display: flex;
+}
+
+.productTopLeft,
+.productTopRight {
+    flex: 1;
+}
+
+.productTopRight{
+    padding: 20px;
+    margin: 20px;
+
+    -webkit-box-shadow: 0px 0px 12px -1px #000000;
+    box-shadow: 0px 0px 12px -1px #000000;
+}
+
+.productName{
+    font-weight: 600;
+}
+
+.productInfoImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.productInfoTop {
+    display: flex;
+    align-items: center;
+}
+
+.productInfoBottom {
+    margin-top: 10px;
+}
+
+.productInfoItem {
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.productInfoValsue {
+    font-weight: 300;
+}
+
+
+.productUploadImg {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.productFormRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.productUpload {
+    display: flex;
+    align-items: center;
+}
+
+.productButton {
+    width: 150px;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: darkblue;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+.productFormItem {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.productFormItem >label {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(121, 121, 121);
+}
+
+.productFormItem > input {
+    height: 20px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.productForm {
+    padding: 20px;
+    margin: 20px;
+
+    -webkit-box-shadow: 0px 0px 12px -1px #000000;
+    box-shadow: 0px 0px 12px -1px #000000;
+}

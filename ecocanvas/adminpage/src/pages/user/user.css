@@ -1,0 +1,109 @@
+.user {
+    flex: 4;
+    padding: 20px;
+}
+
+.userTitleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+.userContainer {
+    display: flex;
+    margin-top: 20px;
+}
+
+.userShow {
+    flex:1;
+    padding: 20px;
+
+    -webkit-box-shadow: 0px 0px 12px -1px #000000;
+    box-shadow: 0px 0px 12px -1px #000000;
+}
+
+.userUpdate {
+    flex :2;
+    padding: 20px;
+
+    -webkit-box-shadow: 0px 0px 12px -1px #000000;
+    box-shadow: 0px 0px 12px -1px #000000;
+
+    margin-left: 20px;
+}
+
+.userShowTitle{
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(179, 175, 175);
+}
+
+.userShowEmail {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.userShowName {
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+
+.userShowInfo {
+    display: flex;
+    align-items: center;
+    margin: 20px 0px;
+    color: rgb(97, 96, 96);
+}
+
+.userShowIcon {
+    font-size: 16px !important;
+}
+
+.userShowInfoTitle {
+    margin-left: 10px;
+}
+
+.userUpdateForm {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.userUpdateItem {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.userUpdateItem > label {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.userUpdateInput {
+    border: none;
+    width: 300px;
+    height: 30px;
+    border-bottom: 1px solid gray;
+}
+
+.userUpdateRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.userUpdateButton {
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    background-color: darkblue;
+    color: white;
+    font-weight: 600;
+}
