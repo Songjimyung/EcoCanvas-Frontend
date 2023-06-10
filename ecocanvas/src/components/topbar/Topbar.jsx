@@ -10,8 +10,10 @@ export default function Topbar() {
       <div className='topbarWrapper'>
         <div className='topLeft'>
         </div>
-        <div className='topMiddle'>
-          <h2><Link to='/' className='topMiddle'>ECO CANVAS</Link></h2>
+        <div className='topbarWrapper'>
+          <div >
+            <h2><Link to='/' className='topMiddle'>ECO CANVAS</Link></h2>
+          </div>
         </div>
         <div className='topRight'>
           <span><Link to='/login' className='signBtn'>로그인</Link></span> |

@@ -1,0 +1,38 @@
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  padding-inline-start: 20px;
+}
+
+.product-list li {
+  margin: 0;
+  padding: 0;
+  width: calc(33.33% - 10px);
+  /* 각 아이템의 너비 설정 */
+  margin-bottom: 10px;
+  /* 아이템 간의 간격 설정 */
+}
+
+.category-dropdown {
+  width: 150px;
+  height: 30px;
+  border: 1px solid #857d7d;
+  background-color: rgb(250, 253, 238);
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 14px;
+  margin-right: 10px
+}
+
+.category-dropdown option {
+  font-size: 14px;
+  color: #555;
+  background-color: rgb(250, 253, 238);
+}
+
+select option:checked {
+  background-color: #c4daaf;
+  font-weight: bold;
+}
