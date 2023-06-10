@@ -15,14 +15,14 @@ const AuthForm = ({ type }) => {
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
     // 회원가입 요청을 보낼 데이터 객체
-    const signupData = {
+    const signUpData = {
       email,
       username,
       password,
       re_password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/signup/', signupData);
+      const response = await axios.post('http://localhost:8000/users/signup/', signUpData);
       console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
 
       alert("회원가입 성공!")
@@ -53,7 +53,7 @@ const AuthForm = ({ type }) => {
       localStorage.setItem("payload", jsonPayload);
       alert("로그인 성공!");
 
-      navigate("/");
+      window.location.replace("/")
     } catch (error) {
       console.error(error); // 로그인 실패 시 서버로부터 받은 에러 데이터 출력
     }
