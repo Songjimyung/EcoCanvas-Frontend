@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import './campaignList.css'
 
-export default function CreateProduct() {
+export default function Campaign() {
   return (
-    <div></div>
+    <div>캠페인</div>
   )
 }
+
+export { Campaign };

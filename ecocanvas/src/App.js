@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Topbar from './components/topbar/Topbar'
 import Sidebar from './components/sidebar/Sidebar';
 import AdminSidebar from './admin_conponents/Adminsidebar/AdminSidebar';
@@ -11,8 +12,12 @@ import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { AdminHome } from "./admin_pages/admin_home/admin_Home";
 import { Routes, Route } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
-
+import UserList from "./admin_pages/userList/UserList"
+import User from "./admin_pages/user/User"
+import CreateUser from "./admin_pages/createUser/CreateUser"
+import ProductList from "./admin_pages/productList/ProductList"
+import Product from "./admin_pages/product/Product"
+import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -27,12 +32,13 @@ function App() {
 
   return (
     <div>
-      {!isAdmin && <div className=""></div>}
-      {/* {!isAdmin ? <Topbar /> : <AdminTopbar />} */}
-      <AdminTopbar />
-      {!isAdmin && <div className="container"></div>}
-      {/* {!isAdmin ? <Sidebar /> : <AdminSidebar />} */}
-      <AdminSidebar />
+      {!isAdmin ? <Topbar /> : <AdminTopbar />}
+      {/* <AdminTopbar /> */}
+      {isAdmin && <div className="container">
+        {!isAdmin ? <Sidebar /> : <AdminSidebar />}
+      </div>}
+
+      {/* <AdminSidebar /> */}
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
@@ -41,6 +47,12 @@ function App() {
         <Route path="/shop" element={<Shop />}></Route>
         <Route path="/product" element={<ShopDetail />}></Route>
         <Route path="/admin_home" element={<AdminHome />}></Route>
+        <Route path="/admin_users" element={<UserList />} />
+        <Route path="/admin_users/:userId" element={<User />} />
+        <Route path="/admin_createUser" element={<CreateUser />} />
+        <Route path="/admin_products" element={<ProductList />} />
+        <Route path="/admin_products/:productId" element={<Product />} />
+        <Route path="/admin_createProduct" element={<CreateProduct />} />
       </Routes>
     </div >
   );
