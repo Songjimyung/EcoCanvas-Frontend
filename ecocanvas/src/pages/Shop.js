@@ -7,6 +7,7 @@ const Shop = () => {
   const [productList, setProductList] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
 
   const handleCategorySelect = (event) => {
     const selectedCategoryId = event.target.value;
@@ -14,24 +15,34 @@ const Shop = () => {
   };
 
   useEffect(() => {
-    // 백엔드 API에서 상품 목록을 가져오는 함수
     const fetchProductList = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/shop/products/list/${categoryId}`);
-        setProductList(response.data); // 받아온 데이터를 상품 목록에 설정
-        console.log(productList); // 데이터를 받아온 후의 productList 출력
+        setProductList(response.data);
       } catch (error) {
         console.error('Error fetching product list:', error);
       }
     };
-    fetchProductList(); // 상품 목록을 가져오는 함수 호출
+    fetchProductList();
   }, [categoryId]);
 
   useEffect(() => {
-    // 선택된 카테고리에 대한 상품 목록을 필터링하여 업데이트합니다.
-    const filteredProducts = productList.filter(product => product.category === categoryId);
+    const fetchCategoryList = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/shop/categories/list');
+        setCategoryList(response.data);
+      } catch (error) {
+        console.error('Error fetching category list:', error);
+      }
+    };
+    fetchCategoryList();
+  }, []);
+
+  useEffect(() => {
+    const filteredProducts = productList.filter((product) => product.category === categoryId);
     setSelectedCategoryProducts(filteredProducts);
   }, [productList, categoryId]);
+
 
   return (
     <div>
@@ -39,10 +50,11 @@ const Shop = () => {
         <nav>
           <select className="category-dropdown" onChange={handleCategorySelect}>
             <option value="">카테고리 선택</option>
-            <option value="1">카테고리 1</option>
-            <option value="2">카테고리 2</option>
-            <option value="3">카테고리 3</option>
-            <option value="4">카테고리 4</option>
+            {categoryList.map(category => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
           </select>
           <select className="category-dropdown">
             <option value="">정렬</option>
