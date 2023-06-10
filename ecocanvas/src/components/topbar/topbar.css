@@ -1,0 +1,76 @@
+.topbar {
+  width: 100%;
+  height: 120px;
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.topbarWrapper {
+  height: 100%;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 30px;
+  color: darkgreen;
+  cursor: pointer;
+}
+
+.topbarIconContainer {
+  position: relative;
+  margin-right: 15px;
+  color: #555;
+}
+
+.topIconBadge {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+
+  background-color: rgb(233, 40, 40);
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  color: white;
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+}
+
+.topMiddle {
+  color: rgb(62, 172, 62);
+  font-size: 4.5rem;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+.topMiddle.active,
+.topMiddle:hover {
+  color: rgb(44, 143, 44);
+  ;
+}
+
+.signBtn {
+  color: rgb(41, 41, 41);
+  text-decoration: none;
+}
+
+.signBtn.active,
+.signBtn:hover {
+  color: rgb(44, 143, 44);
+  ;
+}
