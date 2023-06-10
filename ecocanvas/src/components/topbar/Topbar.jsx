@@ -1,26 +1,26 @@
 import React from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import './topbar.css';
+import './Topbar.css';
 import { Link } from 'react-router-dom';
 
 
 export default function Topbar() {
   return (
-    <div className='topbar'>
-      <div className='topbarWrapper'>
-        <div className='topLeft'>
+    <div className='_topbar'>
+      <div className='_topbarWrapper'>
+        <div className='_topLeft'>
         </div>
-        <div className='topbarWrapper'>
+        <div className='_topbarWrapper'>
           <div >
-            <h2><Link to='/' className='topMiddle'>ECO CANVAS</Link></h2>
+            <h2><Link to='/' className='_topMiddle'>ECO CANVAS</Link></h2>
           </div>
         </div>
-        <div className='topRight'>
-          <span><Link to='/login' className='signBtn'>로그인</Link></span> |
-          <span><Link to='/signup' className='signBtn'>회원가입</Link></span>
-          <div className='topbarIconContainer'>
+        <div className='_topRight'>
+          <span><Link to='/login' className='_signBtn'>로그인</Link></span> |
+          <span><Link to='/signup' className='_signBtn'>회원가입</Link></span>
+          <div className='_topbarIconContainer'>
             <NotificationsNoneIcon />
-            <span className='topIconBadge'>1</span>
+            <span className='_topIconBadge'>1</span>
           </div>
         </div>
       </div>

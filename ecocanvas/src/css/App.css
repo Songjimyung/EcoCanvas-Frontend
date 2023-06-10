@@ -1,7 +1,23 @@
+* {
+  /* 기본 스타일 설정 */
+  background-color: rgb(237, 237, 33);
+}
+
 .container {
   display: flex;
 }
 
-* {
-  background-color: beige;
+.App.admin * {
+  background-color: salmon;
+}
+
+.App.others {
+  background-color: wheat;
+}
+
+.App.adminothers {
+  flex: 4;
+
+  margin-top: 10px;
+  background-color: wheat;
 }

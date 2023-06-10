@@ -1,0 +1,47 @@
+.adminsidebar {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 50px);
+  background-color: rgb(240, 239, 239);
+  position: stricky;
+  top: 50px;
+  width: 100px;
+}
+
+
+.sidebarMenu222 {
+  margin-bottom: 2rem;
+}
+
+.sidebarTitle {
+  font-size: 0.9rem;
+  color: rgb(197, 197, 197)
+}
+
+.sidebarList {
+  list-style: none;
+  padding: 0.5rem;
+}
+
+.sidebarListItem {
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.sidebarListItem.active,
+.sidebarListItem:hover {
+  background-color: rgb(193, 189, 228);
+}
+
+.sidebarIcon {
+  margin-right: 10px;
+  font-size: 20px !important;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}

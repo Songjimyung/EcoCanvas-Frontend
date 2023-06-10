@@ -16,7 +16,6 @@ const AuthForm = ({ type }) => {
     const signupData = {
       username,
       email,
-      username,
       password,
       re_password,
     };
