@@ -12,14 +12,8 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
-    // 회원가입 요청을 보낼 데이터 객체
-    const signUpData = {
-      email,
-=======
     //요청을 보낼 데이터 객체
-    const signupData = {
->>>>>>> release:src/pages/AuthForm.js
+    const signUpData = {
       username,
       email,
       password,
@@ -56,10 +50,6 @@ const AuthForm = ({ type }) => {
 
       localStorage.setItem("payload", jsonPayload);
       alert("로그인 성공!");
-<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
-
-      window.location.replace("/")
-=======
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
@@ -69,7 +59,6 @@ const AuthForm = ({ type }) => {
       } else {
         navigate("/");
       }
->>>>>>> release:src/pages/AuthForm.js
     } catch (error) {
     }
   };
