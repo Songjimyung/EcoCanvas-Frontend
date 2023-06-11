@@ -12,15 +12,21 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
+    // 회원가입 요청을 보낼 데이터 객체
+    const signUpData = {
+      email,
+=======
     //요청을 보낼 데이터 객체
     const signupData = {
+>>>>>>> release:src/pages/AuthForm.js
       username,
       email,
       password,
       re_password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/signup/', signupData);
+      const response = await axios.post('http://localhost:8000/users/signup/', signUpData);
       console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
 
       alert("회원가입 성공!")
@@ -50,6 +56,10 @@ const AuthForm = ({ type }) => {
 
       localStorage.setItem("payload", jsonPayload);
       alert("로그인 성공!");
+<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
+
+      window.location.replace("/")
+=======
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
@@ -59,6 +69,7 @@ const AuthForm = ({ type }) => {
       } else {
         navigate("/");
       }
+>>>>>>> release:src/pages/AuthForm.js
     } catch (error) {
     }
   };
