@@ -55,11 +55,11 @@ const AuthForm = ({ type }) => {
       console.log(payloadObject.is_admin);
       if (payloadObject.is_admin) {
         navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
+        window.location.reload();
       } else {
         navigate("/");
       }
     } catch (error) {
-      console.error(error); // 로그인 실패 시 서버로부터 받은 에러 데이터 출력
     }
   };
   const SocialKakao = () => {

@@ -14,10 +14,10 @@ export default function Adminsidebar() {
   return (
     <div className="adminsidebar">
       <div className="sidebarWrapper">
-        <div className="sidebarMenu222">
+        <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <Link to="/" className="link">
+            <Link to="/admin_home" className="link">
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 Home
@@ -38,30 +38,82 @@ export default function Adminsidebar() {
           </ul>
         </div>
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">메뉴</h3>
+          <h3 className="sidebarTitle">캠페인/펀딩</h3>
           <ul className="sidebarList">
-            <Link to="/users" className="link">
+            <Link to="/admin_home" className="link">
+              <li className="sidebarListItem">
+                <HouseSharpIcon className="sidebarIcon" />
+                캠페인 신청내역
+              </li>
+            </Link>
+            <Link to="/" className="link">
+              <li className="sidebarListItem">
+                <CurrencyExchangeSharpIcon className="sidebarIcon" />
+                캠페인 정산
+              </li>
+            </Link>
+            <Link to="/" className="link">
+              <li className="sidebarListItem">
+                <LeaderboardSharpIcon className="sidebarIcon" />
+                펀딩 내역
+              </li>
+            </Link>
+          </ul>
+        </div>
+        <div className="sidebarMenu">
+          <h3 className="sidebarTitle">유저 관리</h3>
+          <ul className="sidebarList">
+            <Link to="/admin_users" className="link">
               <li className="sidebarListItem">
                 <GroupSharpIcon className="sidebarIcon" />
-                유저
+                유저목록
               </li>
             </Link>
-            <Link to="/products" className="link">
+            <Link to="/admin_users/:userId" className="link">
               <li className="sidebarListItem">
                 <StorefrontSharpIcon className="sidebarIcon" />
-                상품
+                유저정보
               </li>
             </Link>
-            <Link to="/campaigns" className="link">
+            <Link to="/admin_createUser" className="link">
               <li className="sidebarListItem">
-                <CampaignSharpIcon className="sidebarIcon" />
-                캠페인
+                <StorefrontSharpIcon className="sidebarIcon" />
+                유저등록
               </li>
             </Link>
             <Link to="/chats" className="link">
               <li className="sidebarListItem">
                 <PermPhoneMsgSharpIcon className="sidebarIcon" />
                 상담
+              </li>
+            </Link>
+          </ul>
+        </div>
+        <div className="sidebarMenu">
+          <h3 className="sidebarTitle">shop</h3>
+          <ul className="sidebarList">
+            <Link to="/admin_home" className="link">
+              <li className="sidebarListItem">
+                <HouseSharpIcon className="sidebarIcon" />
+                주문내역
+              </li>
+            </Link>
+            <Link to="/admin_products/:productId" className="link">
+              <li className="sidebarListItem">
+                <CurrencyExchangeSharpIcon className="sidebarIcon" />
+                재고관리
+              </li>
+            </Link>
+            <Link to="/admin_createProduct" className="link">
+              <li className="sidebarListItem">
+                <LeaderboardSharpIcon className="sidebarIcon" />
+                상품등록
+              </li>
+            </Link>
+            <Link to="/admin_products" className="link">
+              <li className="sidebarListItem">
+                <LeaderboardSharpIcon className="sidebarIcon" />
+                상품목록
               </li>
             </Link>
           </ul>
