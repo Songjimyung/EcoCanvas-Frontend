@@ -5,7 +5,7 @@ export default function CreateProduct() {
   const [formData, setFormData] = useState({
     image: "",
     product_name: "",
-    product_stuck: "",
+    product_stock: "",
     product_desc: "",
     category: "",
     product_price: ""
