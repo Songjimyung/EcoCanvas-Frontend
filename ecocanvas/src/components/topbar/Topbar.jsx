@@ -45,9 +45,15 @@ export default function Topbar() {
             </span>
           )}
           |
-          <span>
-            <Link to='/signup' className='signBtn'>회원가입</Link>
-          </span>
+          {isLoggedIn ? (
+            <span>
+              <Link to='/mypage' className='signBtn'>마이페이지</Link>
+            </span>
+          ) : (
+            <span>
+              <Link to='/login' className='signBtn'>회원가입</Link>
+            </span>
+          )}
           <div className='topbarIconContainer'>
             <NotificationsNoneIcon />
             <span className='topIconBadge'>1</span>

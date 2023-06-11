@@ -6,6 +6,7 @@ import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { Campaign } from "./pages/Campaign";
 import { Shop } from "./pages/Shop";
+import { Mypage } from "./pages/Mypage";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/campaign" element={<Campaign />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
+        <Route path="/mypage" element={<Mypage />}></Route>
       </Routes>
     </div >
   );
