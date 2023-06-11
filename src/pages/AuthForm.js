@@ -65,7 +65,7 @@ const AuthForm = ({ type }) => {
   const SocialKakao = () => {
     const handleLogin = () => {
       const REST_API_KEY = "0d5db60d8b7cf11250d01452825aea32";
-      const REDIRECT_URI = "http://localhost:8000/users/oauth/kakao/callback";
+      const REDIRECT_URI = "http://localhost:3000/users/oauth/kakao/callback";
       const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
       window.location.href = KAKAO_AUTH_URL;
@@ -75,7 +75,31 @@ const AuthForm = ({ type }) => {
       <button onClick={handleLogin}>카카오로 로그인</button>
     );
   };
+  const kakaoLogin = (e) => {
+    e.preventDefault();
 
+    let code = new URL(window.location.href).searchParams.get("code");
+    return function (dispatch, getState, { navigate }) {
+      axios({
+        method: "GET",
+        url: `http://localhost:8000/users/oauth/kakao/callback/?code=${code}`,
+      })
+        .then((res) => {
+          console.log(res); // 토큰이 넘어올 것임
+
+          const ACCESS_TOKEN = res.data.accessToken;
+
+          localStorage.setItem("token", ACCESS_TOKEN);    //예시로 로컬에 저장함    
+
+          navigate.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+
+        }).catch((err) => {
+          console.log("소셜로그인 에러", err);
+          window.alert("로그인에 실패하였습니다.");
+          navigate.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+        })
+    }
+  };
   return (
     <div>
       <div>
@@ -117,6 +141,7 @@ const AuthForm = ({ type }) => {
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />
+        <button onClick={kakaoLogin}>저장</button>
       </div>
     </div >
   );

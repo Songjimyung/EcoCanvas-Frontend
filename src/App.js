@@ -18,14 +18,16 @@ import CreateUser from "./admin_pages/createUser/CreateUser"
 import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
+import { CallbackKakao } from './pages/kakaocallback';
+
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const payload = localStorage.getItem('payload');
-    console.log(payload)
     if (payload) {
       const payloadObject = JSON.parse(payload);
+      console.log(payloadObject.is_admin);
       setIsAdmin(payloadObject.is_admin);
     }
   }, []);
@@ -34,26 +36,26 @@ function App() {
     <div>
       {!isAdmin ? <Topbar /> : <AdminTopbar />}
       {/* <AdminTopbar /> */}
-      {isAdmin && <div className="container">
+      <div className={!isAdmin ? "noncontainer" : 'container'}>
         {!isAdmin ? <Sidebar /> : <AdminSidebar />}
-      </div>}
-
-      {/* <AdminSidebar /> */}
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
-        <Route path="/campaign" element={<Campaign />}></Route>
-        <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/product" element={<ShopDetail />}></Route>
-        <Route path="/admin_home" element={<AdminHome />}></Route>
-        <Route path="/admin_users" element={<UserList />} />
-        <Route path="/admin_users/:userId" element={<User />} />
-        <Route path="/admin_createUser" element={<CreateUser />} />
-        <Route path="/admin_products" element={<ProductList />} />
-        <Route path="/admin_products/:productId" element={<Product />} />
-        <Route path="/admin_createProduct" element={<CreateProduct />} />
-      </Routes>
+        {/* <AdminSidebar /> */}
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/campaign" element={<Campaign />}></Route>
+          <Route path="/shop" element={<Shop />}></Route>
+          <Route path="/product" element={<ShopDetail />}></Route>
+          <Route path="/admin_home" element={<AdminHome />}></Route>
+          <Route path="/admin_users" element={<UserList />} />
+          <Route path="/admin_users/:userId" element={<User />} />
+          <Route path="/admin_createUser" element={<CreateUser />} />
+          <Route path="/admin_products" element={<ProductList />} />
+          <Route path="/admin_products/:productId" element={<Product />} />
+          <Route path="/admin_createProduct" element={<CreateProduct />} />
+          <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+        </Routes>
+      </div>
     </div >
   );
 }

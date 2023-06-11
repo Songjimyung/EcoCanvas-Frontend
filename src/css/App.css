@@ -1,0 +1,8 @@
+* {
+  /* 기본 스타일 설정 */
+  background-color: rgb(251, 251, 237);
+}
+
+.container {
+  display: flex;
+}
