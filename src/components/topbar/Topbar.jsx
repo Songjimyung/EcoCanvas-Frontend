@@ -22,41 +22,41 @@ export default function Topbar() {
   };
   
   return (
-    <div className='topbar'>
-      <div className='topbarWrapper'>
-        <div className='topLeft'></div>
-        <div className='topbarWrapper'>
+    <div className='_topbar'>
+      <div className='_topbarWrapper'>
+        <div className='_topLeft'></div>
+        <div className='_topbarWrapper'>
           <div>
             <h2>
-              <Link to='/' className='topMiddle'>
+              <Link to='/' className='_topMiddle'>
                 ECO CANVAS
               </Link>
             </h2>
           </div>
         </div>
-        <div className='topRight'>
+        <div className='_topRight'>
           {isLoggedIn ? (
             <span>
-              <Link onClick={handleLogout} className='signBtn'>로그아웃</Link>
+              <Link onClick={handleLogout} className='_signBtn'>로그아웃</Link>
             </span>
           ) : (
             <span>
-              <Link to='/login' className='signBtn'>로그인</Link>
+              <Link to='/login' className='_signBtn'>로그인</Link>
             </span>
           )}
           |
           {isLoggedIn ? (
             <span>
-              <Link to='/mypage' className='signBtn'>마이페이지</Link>
+              <Link to='/mypage' className='_signBtn'>마이페이지</Link>
             </span>
           ) : (
             <span>
-              <Link to='/login' className='signBtn'>회원가입</Link>
+              <Link to='/login' className='_signBtn'>회원가입</Link>
             </span>
           )}
-          <div className='topbarIconContainer'>
+          <div className='_topbarIconContainer'>
             <NotificationsNoneIcon />
-            <span className='topIconBadge'>1</span>
+            <span className='_topIconBadge'>1</span>
           </div>
         </div>
       </div>
