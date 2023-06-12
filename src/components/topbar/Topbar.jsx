@@ -51,7 +51,7 @@ export default function Topbar() {
             </span>
           ) : (
             <span>
-              <Link to='/login' className='_signBtn'>회원가입</Link>
+              <Link to='/signup' className='_signBtn'>회원가입</Link>
             </span>
           )}
           <div className='_topbarIconContainer'>

@@ -1,8 +1,27 @@
-* {
-  /* 기본 스타일 설정 */
-  background-color: rgb(251, 251, 237);
+@font-face {
+  font-family: 'KCC-Ganpan';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCC-Ganpan.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.container {
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
+:root {
+  --font-KCC-Ganpan: 'KCC-Ganpan';
+  --font-Nanum-Gothic: 'Nanum Gothic', sans-serif;
+}
+
+body {
+  font-family: var(--font-KCC-Ganpan);
+}
+
+html {
+  /* 기본 스타일 설정 */
+  background-color: white;
+}
+
+.adminContainer {
   display: flex;
 }
+

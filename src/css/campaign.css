@@ -1,0 +1,38 @@
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.campaignBadge, .campaignDangerBadge {
+    padding: 4px;
+    border-radius: 7px;
+    background-color: dodgerblue;
+}
+
+.campaignDangerBadge {
+    background-color: crimson;
+}
+
+.campaignImage {
+    width: 100%;
+}
+
+.campaignCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5%;
+    justify-content: space-around;
+    /* align-content: space-around; */
+    /* align-items: stretch; */
+}
+
+.campaignCard {
+    margin-bottom: 5%;
+    width: 35%;
+    font-family: var(--font-KCC-Ganpan);
+}
+
