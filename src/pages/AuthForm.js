@@ -14,8 +14,8 @@ const AuthForm = ({ type }) => {
     e.preventDefault();
     //요청을 보낼 데이터 객체
     const signUpData = {
-      username,
       email,
+      username,
       password,
       re_password,
     };
@@ -59,7 +59,7 @@ const AuthForm = ({ type }) => {
         navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
         window.location.reload();
       } else {
-        navigate("/");
+        window.location.replace("/")
       }
     } catch (error) {
     }

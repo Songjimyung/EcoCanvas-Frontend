@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import './topbar.css';
+import './Topbar.css';
 import { Link } from 'react-router-dom';
 
 
@@ -29,7 +29,7 @@ export default function Topbar() {
           <div>
             <h2>
               <Link to='/' className='_topMiddle'>
-                ECO CANVAS_
+                ECO CANVAS
               </Link>
             </h2>
           </div>
