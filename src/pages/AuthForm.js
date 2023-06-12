@@ -12,15 +12,15 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
-    //요청을 보낼 데이터 객체
-    const signupData = {
-      username,
+    // 회원가입 요청을 보낼 데이터 객체
+    const signUpData = {
       email,
+      username,
       password,
       re_password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/signup/', signupData);
+      const response = await axios.post('http://localhost:8000/users/signup/', signUpData);
       console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
 
       alert("회원가입 성공!")
@@ -57,7 +57,7 @@ const AuthForm = ({ type }) => {
         navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
         window.location.reload();
       } else {
-        navigate("/");
+        window.location.replace("/")
       }
     } catch (error) {
     }
