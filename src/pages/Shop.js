@@ -33,7 +33,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchCategoryList = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/shop/categories/list');
+        const response = await axios.get('http://localhost:8000/shop/categorys/list/');
         setCategoryList(response.data);
       } catch (error) {
         console.error('Error fetching category list:', error);
@@ -50,7 +50,7 @@ const Shop = () => {
           <select className="category-dropdown" onChange={handleCategorySelect}>
             <option value="">카테고리 선택</option>
             {categoryList.map(category => (
-              <option key={category.category_id} value={category.category_id}>
+              <option key={category.id} value={category.id}>
                 {category.category_name}
               </option>
             ))}
@@ -75,7 +75,7 @@ const Shop = () => {
               {productList.map(product => (
                 <li key={product.id}>
                   <Link to={`/products/${product.id}`}>
-                    <img src={product.image} alt={product.name} />
+                    <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
                   </Link>
                   <h3>{product.product_name}</h3>
                   <p>{product.product_desc}</p>
@@ -94,7 +94,7 @@ const Shop = () => {
               {productList.map(product => (
                 <li key={product.id}>
                   <Link to={`/products/${product.id}`}>
-                    <img src={product.image} alt={product.name} />
+                    <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
                   </Link>
                   <h3>{product.product_name}</h3>
                   <p>{product.product_desc}</p>

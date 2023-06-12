@@ -62,6 +62,7 @@ const AuthForm = ({ type }) => {
         window.location.replace("/")
       }
     } catch (error) {
+      console.log(error)
     }
   };
   const SocialKakao = () => {

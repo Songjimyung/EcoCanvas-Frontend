@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import './createProduct.css'
+import Toggle from '../../admin_conponents/toggle/Category_toggle';
 
 export default function CreateProduct() {
   const [formData, setFormData] = useState({
-    image: "",
+    uploaded_images: "",
     product_name: "",
     product_stock: "",
     product_desc: "",
@@ -35,12 +36,15 @@ export default function CreateProduct() {
 
     const selectedCategory = categoryList.find(category => category.id === parsedCategoryId);
     if (!selectedCategory) {
-      console.error('Invalid category');
+      console.error('카테고리가 존재하지 않습니다');
       return;
     }
 
     const formData = new FormData();
-    formData.append('image', e.target.elements.file.files[0]);
+    const fileInput = e.target.elements.uploaded_images;
+    for (let i = 0; i < fileInput.files.length; i++) {
+      formData.append('uploaded_images', fileInput.files[i]);
+    }
     formData.append('product_name', e.target.elements.product_name.value);
     formData.append('product_price', e.target.elements.product_price.value);
     formData.append('product_stock', e.target.elements.product_stock.value);
@@ -57,6 +61,8 @@ export default function CreateProduct() {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
+        alert("상품 등록 완료!")
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -65,14 +71,19 @@ export default function CreateProduct() {
 
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
     if (name === "category") {
       setCategoryId(value);
+    } else if (name === "uploaded_images") {
+      const selectedImages = Array.from(files);
+      setFormData({ ...formData, images: selectedImages });
+    } else {
+      setFormData({ ...formData, [name]: value });
     }
-    setFormData({ ...formData, [name]: value });
   };
   return (
     <div className="createProduct">
+      <h1>상품 등록</h1>
       <form className="addProductForm" onSubmit={handleFormSubmit}>
         <div className="addProductItem">
           <label>상품 이름</label>
@@ -90,9 +101,10 @@ export default function CreateProduct() {
           <label>상품 설명</label>
           <input type="text" name="product_desc" placeholder="상품 설명" onChange={handleInputChange}></input>
         </div>
+        <Toggle />
         <div className="addProductItem">
           <label>상품 카테고리</label>
-          <select className="category-dropdown" name="category" onChange={handleInputChange}>
+          <select className="select-category-dropdown" name="category" onChange={handleInputChange}>
             <option value="">카테고리 선택</option>
             {categoryList.map(category => (
               <option key={category.id} value={category.id}>
@@ -104,7 +116,7 @@ export default function CreateProduct() {
         </div>
         <div className="addProductItem">
           <label>상품 이미지</label>
-          <input type="file" id="file" onChange={handleInputChange} />
+          <input type="file" id="file" name="uploaded_images" onChange={handleInputChange} multiple />
         </div>
         <button className="addProductButton">생성하기</button>
       </form>

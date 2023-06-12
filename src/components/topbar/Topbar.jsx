@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import './Topbar.css';
+import './topbar.css';
 import { Link } from 'react-router-dom';
 
 
@@ -51,7 +51,7 @@ export default function Topbar() {
             </span>
           ) : (
             <span>
-              <Link to='/login' className='_signBtn'>회원가입</Link>
+              <Link to='/signup' className='_signBtn'>회원가입</Link>
             </span>
           )}
           <div className='_topbarIconContainer'>
