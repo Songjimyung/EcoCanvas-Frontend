@@ -19,6 +19,7 @@ import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
+import { CallbackGoogle } from './pages/GoogleCallback';
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin_products/:productId" element={<Product />} />
           <Route path="/admin_createProduct" element={<CreateProduct />} />
           <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+          <Route path="/users/google/callback" element={<CallbackGoogle />} />
         </Routes>
       </div>
     </div >

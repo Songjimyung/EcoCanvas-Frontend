@@ -100,6 +100,43 @@ const AuthForm = ({ type }) => {
         })
     }
   };
+
+  const SocialGoogle = () => {
+    const handleGoogleLogin = () => {
+      const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
+
+      window.location.href = GOOGLE_URL;
+    };
+
+    return (
+      <button onClick={handleGoogleLogin}>구글로 로그인</button>
+    );
+  };
+  const googleLogin = (e) => {
+    e.preventDefault();
+
+    return function (dispatch, getState, { navigate }) {
+      axios({
+        method: "GET",
+        url: 'http://localhost:8000/google/callback/',
+      })
+        .then((res) => {
+          console.log(res); // 토큰이 넘어올 것임
+
+          const ACCESS_TOKEN = res.data.accessToken;
+
+          localStorage.setItem("token", ACCESS_TOKEN);    //예시로 로컬에 저장함    
+
+          navigate.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
+
+        }).catch((err) => {
+          console.log("소셜로그인 에러", err);
+          window.alert("로그인에 실패하였습니다.");
+          navigate.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
+        })
+    }
+  };
+
   return (
     <div>
       <div>
@@ -141,7 +178,9 @@ const AuthForm = ({ type }) => {
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />
-        <button onClick={kakaoLogin}>저장</button>
+        <SocialGoogle />
+        <button onClick={kakaoLogin}>카카오 저장</button>
+        <button onClick={googleLogin}>구글 저장</button>
       </div>
     </div >
   );
