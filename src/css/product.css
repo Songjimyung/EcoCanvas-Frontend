@@ -36,3 +36,41 @@ select option:checked {
   background-color: #c4daaf;
   font-weight: bold;
 }
+
+
+.product-detail-wrap {
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
+  height: 800px;
+  margin-bottom: 300px;
+}
+
+.product-detail {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  height: 100%;
+  margin-top: 40px;
+  border: 3px solid rgb(213, 253, 180);
+}
+
+.product-detail-info {
+  margin-left: 200px;
+  margin-top: 50px;
+  font-size: 25px;
+  width: 50%;
+  border-bottom: 1px solid black;
+}
+
+.product-detail-img {
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+
+.product-detail img {
+  width: 250px;
+  height: 250px;
+}

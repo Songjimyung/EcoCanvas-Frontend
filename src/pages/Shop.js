@@ -74,7 +74,7 @@ const Shop = () => {
             <ul className="product-list">
               {productList.map(product => (
                 <li key={product.id}>
-                  <Link to={`/products/${product.id}`}>
+                  <Link to={`/product/${product.id}`}>
                     <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
                   </Link>
                   <h3>{product.product_name}</h3>
@@ -93,7 +93,7 @@ const Shop = () => {
             <ul className="product-list">
               {productList.map(product => (
                 <li key={product.id}>
-                  <Link to={`/products/${product.id}`}>
+                  <Link to={`/product/${product.id}`}>
                     <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
                   </Link>
                   <h3>{product.product_name}</h3>
