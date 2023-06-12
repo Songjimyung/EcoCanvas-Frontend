@@ -20,6 +20,7 @@ import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
+// import { PaymentButton } from './pages/Payment';
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
