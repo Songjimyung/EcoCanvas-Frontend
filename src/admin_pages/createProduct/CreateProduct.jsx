@@ -14,8 +14,13 @@ export default function CreateProduct() {
   const [categoryList, setCategoryList] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem('access');
+
     fetch("http://127.0.0.1:8000/shop/categorys/list/", {
       method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     }).then(response => response.json())
       .then(result => {
         console.log(result)
@@ -24,7 +29,9 @@ export default function CreateProduct() {
   }, []);
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const parsedCategoryId = parseInt(categoryId, 10); // Parse categoryId as an integer
+    const parsedCategoryId = parseInt(categoryId, 10);
+    const token = localStorage.getItem('access');
+
 
     const selectedCategory = categoryList.find(category => category.id === parsedCategoryId);
     if (!selectedCategory) {
@@ -42,6 +49,9 @@ export default function CreateProduct() {
 
     fetch(`http://127.0.0.1:8000/shop/products/list/${selectedCategory.id}/`, {
       method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: formData,
     })
       .then((response) => response.json())

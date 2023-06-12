@@ -12,14 +12,8 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
-    // 회원가입 요청을 보낼 데이터 객체
-    const signUpData = {
-      email,
-=======
     //요청을 보낼 데이터 객체
-    const signupData = {
->>>>>>> release:src/pages/AuthForm.js
+    const signUpData = {
       username,
       email,
       password,
@@ -56,10 +50,8 @@ const AuthForm = ({ type }) => {
 
       localStorage.setItem("payload", jsonPayload);
       alert("로그인 성공!");
-<<<<<<< HEAD:ecocanvas/src/pages/AuthForm.js
 
       window.location.replace("/")
-=======
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
@@ -69,7 +61,6 @@ const AuthForm = ({ type }) => {
       } else {
         navigate("/");
       }
->>>>>>> release:src/pages/AuthForm.js
     } catch (error) {
     }
   };
@@ -85,31 +76,6 @@ const AuthForm = ({ type }) => {
     return (
       <button onClick={handleLogin}>카카오로 로그인</button>
     );
-  };
-  const kakaoLogin = (e) => {
-    e.preventDefault();
-
-    let code = new URL(window.location.href).searchParams.get("code");
-    return function (dispatch, getState, { navigate }) {
-      axios({
-        method: "GET",
-        url: `http://localhost:8000/users/oauth/kakao/callback/?code=${code}`,
-      })
-        .then((res) => {
-          console.log(res); // 토큰이 넘어올 것임
-
-          const ACCESS_TOKEN = res.data.accessToken;
-
-          localStorage.setItem("token", ACCESS_TOKEN);    //예시로 로컬에 저장함    
-
-          navigate.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-
-        }).catch((err) => {
-          console.log("소셜로그인 에러", err);
-          window.alert("로그인에 실패하였습니다.");
-          navigate.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
-        })
-    }
   };
   return (
     <div>
@@ -152,7 +118,6 @@ const AuthForm = ({ type }) => {
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />
-        <button onClick={kakaoLogin}>저장</button>
       </div>
     </div >
   );
