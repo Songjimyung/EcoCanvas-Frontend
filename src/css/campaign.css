@@ -18,7 +18,7 @@ a {
 }
 
 .campaignImage {
-    width: 100%;
+    width: 30%;
 }
 
 .campaignCardContainer {
@@ -35,4 +35,3 @@ a {
     width: 35%;
     font-family: var(--font-KCC-Ganpan);
 }
-

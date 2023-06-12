@@ -16,6 +16,7 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
+
 const Campaign = () => {
   const [campaignList, setCampaignList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,8 +48,11 @@ const Campaign = () => {
     setCurrentPage(page);
   };
 
+  // 현재 페이지의 마지막 인덱스 (현재페이지 (1) * 한 페이지당 6개의 캠페인)
   const indexOfLastCampaign = currentPage * campaignsPerPage;
+  // 현재페이지의 첫 인덱스 (현재 페이지의 마지막 인덱스 - 한 페이지당 6개의 캠페인)
   const indexOfFirstCampaign = indexOfLastCampaign - campaignsPerPage;
+  // 캠페인 개수를 currentPage의 첫 인덱스부터, 끝 인덱스까지 (2페이지면 7~12)
   const currentCampaigns = campaignList.slice(indexOfFirstCampaign, indexOfLastCampaign);
 
   return (
@@ -58,7 +62,7 @@ const Campaign = () => {
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" margin={'0 4% 2% 0'}>
           <Link className="campaignBtn" to={'/campaign/create'}>
-            <Button variant="contained" color="success" startIcon={<CampaignIcon />}>
+            <Button variant="contained" color="primary" startIcon={<CampaignIcon />}>
               캠페인 신청하기
             </Button>
           </Link>
