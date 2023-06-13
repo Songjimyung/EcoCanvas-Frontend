@@ -78,6 +78,7 @@ const AuthForm = ({ type }) => {
       <button onClick={handleLogin}>카카오로 로그인</button>
     );
   };
+
   return (
     <div>
       <div>

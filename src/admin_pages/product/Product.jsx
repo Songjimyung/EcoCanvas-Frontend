@@ -5,6 +5,7 @@ import Chart from "../../admin_conponents/chart/Chart";
 import { productData } from "../../dummyData";
 import { Publish } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
+import  PaymentButton  from "../../pages/Payment";
 
 function UpdateProduct() {
   console.log("Update!")
@@ -15,6 +16,7 @@ export default function Product() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState([]);
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetch("http://127.0.0.1:8000/shop/products/" + id + "/", {
       method: 'GET',
@@ -24,13 +26,15 @@ export default function Product() {
         setProduct(result)
       })
   }, []);
+
   return (
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">상품</h1>
-        <Link to="/createProduct">
+        <Link to="/admin_createProduct">
           <button className="productAddButton">생성하기</button>
         </Link>
+        {product &&<PaymentButton product={product}/>}
       </div>
       <div className="productTop">
         <div className="productTopLeft">
@@ -91,4 +95,4 @@ export default function Product() {
       </div>
     </div>
   )
-}
+};
