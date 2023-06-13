@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
-    // 회원가입 요청을 보낼 데이터 객체
+    //요청을 보낼 데이터 객체
     const signUpData = {
       email,
       username,
@@ -50,6 +50,8 @@ const AuthForm = ({ type }) => {
 
       localStorage.setItem("payload", jsonPayload);
       alert("로그인 성공!");
+
+      window.location.replace("/")
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
@@ -60,6 +62,7 @@ const AuthForm = ({ type }) => {
         window.location.replace("/")
       }
     } catch (error) {
+      console.log(error)
     }
   };
   const SocialKakao = () => {
@@ -75,33 +78,8 @@ const AuthForm = ({ type }) => {
       <button onClick={handleLogin}>카카오로 로그인</button>
     );
   };
-  const kakaoLogin = (e) => {
-    e.preventDefault();
 
-    let code = new URL(window.location.href).searchParams.get("code");
-    return function (dispatch, getState, { navigate }) {
-      axios({
-        method: "GET",
-        url: `http://localhost:8000/users/oauth/kakao/callback/?code=${code}`,
-      })
-        .then((res) => {
-          console.log(res); // 토큰이 넘어올 것임
-
-          const ACCESS_TOKEN = res.data.accessToken;
-
-          localStorage.setItem("token", ACCESS_TOKEN);    //예시로 로컬에 저장함    
-
-          navigate.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-
-        }).catch((err) => {
-          console.log("소셜로그인 에러", err);
-          window.alert("로그인에 실패하였습니다.");
-          navigate.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
-        })
-    }
-  };
-
-  const SocialGoogle = () => {
+const SocialGoogle = () => {
     const handleGoogleLogin = () => {
       const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
 
@@ -112,30 +90,7 @@ const AuthForm = ({ type }) => {
       <button onClick={handleGoogleLogin}>구글로 로그인</button>
     );
   };
-  const googleLogin = (e) => {
-    e.preventDefault();
 
-    return function (dispatch, getState, { navigate }) {
-      axios({
-        method: "GET",
-        url: 'http://localhost:8000/google/callback/',
-      })
-        .then((res) => {
-          console.log(res); // 토큰이 넘어올 것임
-
-          const ACCESS_TOKEN = res.data.accessToken;
-
-          localStorage.setItem("token", ACCESS_TOKEN);    //예시로 로컬에 저장함    
-
-          navigate.replace("/main") // 토큰 받았았고 로그인됐으니 화면 전환시켜줌(메인으로)
-
-        }).catch((err) => {
-          console.log("소셜로그인 에러", err);
-          window.alert("로그인에 실패하였습니다.");
-          navigate.replace("/login"); // 로그인 실패하면 로그인화면으로 돌려보냄
-        })
-    }
-  };
 
   return (
     <div>
@@ -179,8 +134,6 @@ const AuthForm = ({ type }) => {
         </button>
         <SocialKakao />
         <SocialGoogle />
-        <button onClick={kakaoLogin}>카카오 저장</button>
-        <button onClick={googleLogin}>구글 저장</button>
       </div>
     </div >
   );
