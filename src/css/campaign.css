@@ -35,3 +35,17 @@ a {
     width: 35%;
     font-family: var(--font-KCC-Ganpan);
 }
+
+.campaignReviewDiv {
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.campaignCommentDiv {
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.campaignNothing {
+    text-align: center;
+}

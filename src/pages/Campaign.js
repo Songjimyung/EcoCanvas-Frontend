@@ -110,7 +110,7 @@ const Campaign = () => {
         <Pagination
           count={Math.ceil(campaignList.length / campaignsPerPage)}
           page={currentPage}
-          color="success"
+          color="primary"
           onChange={handlePageChange}
         />
       </Grid>
