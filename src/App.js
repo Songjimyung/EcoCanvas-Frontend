@@ -28,19 +28,23 @@ import { createTheme, ThemeProvider } from "@mui/material";
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
   typography: {
-    fontFamily: "'Nanum Gothic', sans-serif"
+    fontFamily: "'Pretendard-Regular'"
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: '#3eac3e',
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#11cb5f',
     },
     danger: {
       main: '#e53e3e',
+    },
+    black: {
+      main: '#000000',
+    },
+    gray: {
+      main: '#808080',
     },
   },
 })

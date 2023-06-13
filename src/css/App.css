@@ -5,11 +5,16 @@
   font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
 
 :root {
   --font-KCC-Ganpan: 'KCC-Ganpan';
-  --font-Nanum-Gothic: 'Nanum Gothic', sans-serif;
+  --font-Pretendard-Regular: 'Pretendard-Regular';
 }
 
 body {

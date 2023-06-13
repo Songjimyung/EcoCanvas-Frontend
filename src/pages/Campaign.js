@@ -8,9 +8,9 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import IconButton from '@mui/material/IconButton';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -60,9 +60,9 @@ const Campaign = () => {
       <h1>캠페인 둘러보기</h1>
 
       <div className="campaignCardContainer">
-        <Grid container justifyContent="flex-end" margin={'0 4% 2% 0'}>
+        <Grid container justifyContent="flex-end" marginBottom={'2%'}>
           <Link className="campaignBtn" to={'/campaign/create'}>
-            <Button variant="contained" color="primary" startIcon={<CampaignIcon />}>
+            <Button variant="contained" color="primary" startIcon={<CampaignIcon />} sx={{ height: '50px', fontSize: '1.3rem', color: 'white' }}>
               캠페인 신청하기
             </Button>
           </Link>
@@ -101,7 +101,7 @@ const Campaign = () => {
             </CardActions>
           </Card>
         ))}
-      </div>
+      </div >
 
       <span className="campaignBadge">7일 남음</span>
       <span className="campaignDangerBadge">마감임박</span>

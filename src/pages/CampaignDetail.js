@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import ShareIcon from '@mui/icons-material/Share';
 
 // Mui Tab
 function TabPanel(props) {
@@ -77,6 +78,7 @@ const CampaignDetail = () => {
   const [campaign, setCampaign] = useState('');
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
 
   // Tab 
   const [value, setValue] = useState(0);
@@ -135,93 +137,142 @@ const CampaignDetail = () => {
     e.target.src = campaign_default_image
   }
 
+  // 좋아요 버튼 함수
+  const handleLikeButton = () => {
+    setIsLiked(!isLiked);
+  };
+
 
   return (
-    <>
+    <div className="campaignContainer">
       {campaign ? (
-        <div className="campaignContentDiv">
-          <h2>{campaign.title}</h2>
-          <p>{campaign.content}</p>
-          <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
-          <p>주최자 : {campaign.user}</p>
-          <p>모집 인원 : {campaign.current_members} / {campaign.members}</p>
-          <p>캠페인 상태 : {campaign.status}</p>
-          <p>활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</p>
-          <p>신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</p>
-          <p>신청 종료일 : {campaign.campaign_end_date.substr(0, 13)}</p>
-          <Button variant="contained" color="danger">
-            좋아요 💕 {campaign.like.length}
-          </Button>
-          <Button variant="contained" color="primary">
-            캠페인 참여하기
-          </Button>
-          <p>펀딩 여부 : {campaign.is_funding === true ? "O" : "X"}</p>
-          {/* https://devbirdfeet.tistory.com/238 */}
-          {campaign.fundings ? (
-            <>
-              <p>{campaign.fundings.current}원</p>
-              <p>{campaign.fundings.goal}원</p>
-            </>
-          ) : (
-            <p>펀딩 정보가 없는 캠페인입니다.</p>
-          )}
-        </div>
+        <>
+          <h1>{campaign.title}</h1>
+          <div className="campaignContentDiv">
+            <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
+            <div className="campaignContentRight">
+              <div className="campaignStatus">{campaign.status}</div>
+              <div className="marginBottom10">{campaign.content}</div>
+              <div className="marginBottom10">주최 : {campaign.user}</div>
+              <div className="marginBottom10">모집 인원 : {campaign.participant.length} / {campaign.members}</div>
+              <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
+              <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
+              <div className="marginBottom10">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+              {campaign.fundings ? (
+                <div className="campaignFund">
+                  {/* https://devbirdfeet.tistory.com/238 */}
+                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성</div>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.current}원)</span>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ color: 'white', marginLeft: '25px', }}
+                  >펀딩 참여하기
+                  </Button>
+                </div>
+              ) : (
+                <div className="marginBottom10">펀딩을 진행하지 않는 캠페인입니다.</div>
+              )}
+              <div className="campaignContentBtn">
+                <Button
+                  variant={isLiked ? 'contained' : 'outlined'}
+                  color={isLiked ? 'danger' : 'gray'}
+                  sx={{
+                    height: '50px',
+                    fontSize: '1.3rem',
+                    color: isLiked ? 'white' : 'red',
+                    marginRight: '30px',
+                  }}
+                  onClick={handleLikeButton}
+                >
+                  💕 {campaign.like.length}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="gray"
+                  sx={{
+                    height: '50px',
+                    fontSize: '1.3rem',
+                    color: 'gray',
+                    marginRight: '30px',
+                  }} >
+                  <ShareIcon />
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    width: '250px',
+                    height: '50px',
+                    fontSize: '1.3rem',
+                    color: 'white',
+                  }}>
+                  캠페인 참여하기
+                </Button>
+              </div>
+            </div>
+
+          </div>
+        </>
       ) : (
-        <div className="campaignContentDiv">
+        <div className="campaignNothing">
           <h2>캠페인을 불러오지 못했습니다.</h2>
         </div>
-      )}
-
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="primary"
-          indicatorColor="primary"
-          aria-label="primary tabs example"
-          centered
-        >
-          <Tab label="캠페인 댓글" {...a11yProps(0)} />
-          <Tab label="캠페인 리뷰" {...a11yProps(1)} />
-          <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          {campaignComments.length > 0 ? (
-            campaignComments.map((campaignComment) => (
-              <div className="campaignCommentDiv" key={campaignComment.id}>
-                <p>{campaignComment.content}</p>
-                <span>{campaignComment.user}</span><br />
-                <span>{campaignComment.created_at}</span><br />
+      )
+      }
+      <div className="campaignBottom">
+        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="primary"
+            indicatorColor="primary"
+            centered
+          >
+            <Tab label="캠페인 댓글" {...a11yProps(0)} />
+            <Tab label="캠페인 리뷰" {...a11yProps(1)} />
+            <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            {campaignComments.length > 0 ? (
+              campaignComments.map((campaignComment) => (
+                <div className="campaignCommentDiv" key={campaignComment.id}>
+                  <div className="campaignCommentContent">
+                    {campaignComment.content}
+                  </div>
+                  <span>{campaignComment.user}</span><br />
+                  <span>{campaignComment.created_at}</span><br />
+                </div>
+              ))
+            ) : (
+              <div className="campaignNothing">
+                <h2>작성된 댓글이 없습니다.</h2>
               </div>
-            ))
-          ) : (
-            <div className="campaignCommentDiv">
-              <h2>작성된 댓글이 없습니다.</h2>
-            </div>
-          )}
-          <h2>캠페인 댓글 작성란 추가 예정</h2>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          {campaignReviews.length > 0 ? (
-            campaignReviews.map((campaignReview) => (
-              <div className="campaignReviewDiv" key={campaignReview.id}>
-                <h2>{campaignReview.title}</h2><br />
-                <span>{campaignReview.user}</span><br />
-                <span>{campaignReview.content}</span><br />
-                <span>{campaignReview.created_at}</span><br />
+            )}
+            <h2>캠페인 댓글 작성란 추가 예정</h2>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {campaignReviews.length > 0 ? (
+              campaignReviews.map((campaignReview) => (
+                <div className="campaignReviewDiv" key={campaignReview.id}>
+                  <h2>{campaignReview.title}</h2><br />
+                  <span>{campaignReview.user}</span><br />
+                  <span>{campaignReview.content}</span><br />
+                  <span>{campaignReview.created_at}</span><br />
+                </div>
+              ))
+            ) : (
+              <div className="campaignNothing">
+                <h2>작성된 리뷰가 없습니다.</h2>
               </div>
-            ))
-          ) : (
-            <div className="campaignReviewDiv">
-              <h2>작성된 리뷰가 없습니다.</h2>
-            </div>
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <InfoAnnounceMap text={infoAnnounce} />
-        </TabPanel>
-      </Box>
-    </>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <InfoAnnounceMap text={infoAnnounce} />
+          </TabPanel>
+        </Box>
+      </div>
+    </div >
   );
 };
 
