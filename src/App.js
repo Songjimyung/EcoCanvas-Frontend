@@ -11,6 +11,7 @@ import { Campaign } from "./pages/Campaign";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
+import BuyProduct from './pages/BuyProduct';
 import { AdminHome } from "./admin_pages/admin_home/admin_Home";
 import { Routes, Route } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
@@ -47,6 +48,7 @@ function App() {
           <Route path="/campaign" element={<Campaign />}></Route>
           <Route path="/shop" element={<Shop />}></Route>
           <Route path="/product/:productId" element={<ShopDetail />}></Route>
+          <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
           <Route path="/admin_home" element={<AdminHome />}></Route>
           <Route path="/admin_users" element={<UserList />} />

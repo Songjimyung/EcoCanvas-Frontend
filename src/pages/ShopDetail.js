@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import '../css/product.css'
 
@@ -33,6 +33,12 @@ const ShopDetail = () => {
               <p>상품명: {product.product_name}</p>
               <p>소개: {product.product_desc}</p>
               <p>Price: {product && product.product_price ? `$${product.product_price.toLocaleString()}` : 'N/A'}</p>
+              <Link to={`/product/buy/${product.id}`}>
+                <button className='buyBtn'>구매하기</button>
+              </Link>
+              <Link to={`/product/buy/${product.id}`}>
+                <button className='buyBtn'>Add to Cart</button>
+              </Link>
             </div>
           </div>
         </>

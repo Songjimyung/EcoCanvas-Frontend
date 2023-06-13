@@ -19,7 +19,6 @@
   width: 150px;
   height: 30px;
   border: 1px solid #857d7d;
-  background-color: rgb(250, 253, 238);
   border-radius: 4px;
   padding: 5px;
   font-size: 14px;
@@ -29,11 +28,10 @@
 .category-dropdown option {
   font-size: 14px;
   color: #555;
-  background-color: rgb(250, 253, 238);
 }
 
 select option:checked {
-  background-color: #c4daaf;
+  background-color: #ddeecd;
   font-weight: bold;
 }
 
@@ -53,24 +51,94 @@ select option:checked {
   padding: 20px;
   height: 100%;
   margin-top: 40px;
-  border: 3px solid rgb(213, 253, 180);
+  border: 3px solid rgb(226, 237, 217);
 }
 
 .product-detail-info {
-  margin-left: 200px;
+  margin-left: 150px;
   margin-top: 50px;
   font-size: 25px;
-  width: 50%;
-  border-bottom: 1px solid black;
+  width: 65%;
 }
-
-.product-detail-img {
-  margin-right: 30px;
-  margin-left: 30px;
-}
-
 
 .product-detail img {
   width: 250px;
   height: 250px;
+  margin: 30px 0 0 0;
+}
+
+.buyBtn {
+  margin-top: 20px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #c4daaf;
+}
+
+.buyBtn.active,
+.buyBtn:hover {
+  padding: 7px;
+  border: 2px solid black;
+}
+
+
+.product-detail {
+  padding: 20px;
+}
+
+.product-detail-info {
+  margin: auto;
+  margin-top: 20px;
+}
+
+h1 {
+  font-size: 50px;
+  color: #6b5fda;
+}
+
+.createOrder {
+  margin-top: 20px;
+}
+
+.addOrderForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.addOrderItem {
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 5px;
+  border: 1px solid #c1def8;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #e6eff8;
+}
+
+.addProductButton {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100px;
+  margin: auto;
+}
+
+.addProductButton:hover {
+  background-color: #75bc79;
+}
+
+.order-address {
+  width: 400px;
+  margin-right: 5px;
 }
