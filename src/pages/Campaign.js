@@ -62,7 +62,15 @@ const Campaign = () => {
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" marginBottom={'2%'}>
           <Link className="campaignBtn" to={'/campaign/create'}>
-            <Button variant="contained" color="primary" startIcon={<CampaignIcon />} sx={{ height: '50px', fontSize: '1.3rem', color: 'white' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<CampaignIcon />}
+              sx={{
+                height: '50px',
+                fontSize: '1.3rem',
+                color: 'white'
+              }}>
               캠페인 신청하기
             </Button>
           </Link>

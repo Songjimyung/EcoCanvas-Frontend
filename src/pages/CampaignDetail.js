@@ -167,6 +167,7 @@ const CampaignDetail = () => {
                     variant="contained"
                     color="primary"
                     sx={{ color: 'white', marginLeft: '25px', }}
+                    disabled={campaign.status >= 4}
                   >펀딩 참여하기
                   </Button>
                 </div>
@@ -183,6 +184,7 @@ const CampaignDetail = () => {
                     color: isLiked ? 'white' : 'red',
                     marginRight: '30px',
                   }}
+                  disabled={campaign.status >= 4}
                   onClick={handleLikeButton}
                 >
                   💕 {campaign.like.length}
@@ -192,10 +194,12 @@ const CampaignDetail = () => {
                   color="gray"
                   sx={{
                     height: '50px',
-                    fontSize: '1.3rem',
+                    fontSize: '1.2rem',
                     color: 'gray',
                     marginRight: '30px',
-                  }} >
+                  }}
+                  disabled={campaign.status >= 4}
+                >
                   <ShareIcon />
                 </Button>
                 <Button
@@ -206,7 +210,9 @@ const CampaignDetail = () => {
                     height: '50px',
                     fontSize: '1.3rem',
                     color: 'white',
-                  }}>
+                  }}
+                  disabled={campaign.status >= 4}
+                >
                   캠페인 참여하기
                 </Button>
               </div>
@@ -228,6 +234,11 @@ const CampaignDetail = () => {
             textColor="primary"
             indicatorColor="primary"
             centered
+            sx={{
+              '& .MuiTab-root': {
+                fontSize: '1.5rem'
+              },
+            }}
           >
             <Tab label="캠페인 댓글" {...a11yProps(0)} />
             <Tab label="캠페인 리뷰" {...a11yProps(1)} />
