@@ -79,6 +79,19 @@ const AuthForm = ({ type }) => {
     );
   };
 
+const SocialGoogle = () => {
+    const handleGoogleLogin = () => {
+      const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
+
+      window.location.href = GOOGLE_URL;
+    };
+
+    return (
+      <button onClick={handleGoogleLogin}>구글로 로그인</button>
+    );
+  };
+
+
   return (
     <div>
       <div>
@@ -120,6 +133,7 @@ const AuthForm = ({ type }) => {
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />
+        <SocialGoogle />
       </div>
     </div >
   );
