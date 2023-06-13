@@ -1,0 +1,29 @@
+.mypage-sidebar {
+  width: 200px;
+  padding: 20px;
+  border-right: 1px solid rgb(230, 228, 228);
+
+}
+
+.mypage-sidebar-wrap {
+  width: 200px;
+  height: 300px;
+  padding: 20px;
+  border-right: 1px solid rgb(230, 228, 228);
+  border-top: 1px solid rgb(230, 228, 228);
+}
+
+.mypage-div {
+  width: 240px;
+  margin-bottom: 200px;
+  border-bottom: 1px solid rgb(230, 228, 228);
+}
+
+.myprofile {
+  width: 70%;
+  height: 50%;
+  display: flex;
+  margin: auto;
+  border-radius: 100px;
+  background-color: rgb(46, 116, 245);
+}

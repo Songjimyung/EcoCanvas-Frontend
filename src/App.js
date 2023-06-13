@@ -22,6 +22,8 @@ import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
 import { CallbackGoogle } from './pages/GoogleCallback';
+import { MyPostCampaign } from './components/mycampaign/mycampaign'
+import { MyLikes } from './components/myLikes/myLikes'
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -51,6 +53,8 @@ function App() {
           <Route path="/product/:productId" element={<ShopDetail />}></Route>
           <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
+          <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
+          <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
           <Route path="/admin_home" element={<AdminHome />}></Route>
           <Route path="/admin_users" element={<UserList />} />
           <Route path="/admin_users/:userId" element={<User />} />

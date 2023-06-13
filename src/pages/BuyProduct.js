@@ -25,13 +25,15 @@ export default function BuyProduct() {
     user: ""
   });
   const [userId, setUserId] = useState('');
+  const [zipcode, setZipcode] = useState('');
 
   const onToggleModal = () => {
     setIsOpen((prev) => !prev);
   };
   const handleComplete = (data) => {
-    console.log(data.address);
+    console.log(data);
     setAddress(data.address);
+    setZipcode(data.zonecode);
     onToggleModal();
   };
   const increase = () => {
@@ -205,7 +207,7 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>우편번호</label>
-                    <input type="address" name="zip_code" onChange={handleInputChange} />
+                    <input type="address" name="zip_code" value={zipcode} onChange={handleInputChange} />
                   </div>
                   <div className="addOrderItem">
                     <label>상세주소</label>

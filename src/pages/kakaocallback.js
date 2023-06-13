@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
 const CallbackKakao = (props) => {
@@ -18,12 +18,9 @@ const CallbackKakao = (props) => {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         localStorage.setItem("payload", jsonPayload);
-        let error = token_req_json.error;
-        if (error !== null) {
-          throw new Error(error);
-        }
-
         console.log('카카오로그인 성공')
+        alert("카카오 로그인 성공!")
+        window.location.replace("/")
       } catch (error) {
         console.error(error);
       }
@@ -31,12 +28,6 @@ const CallbackKakao = (props) => {
 
     getToken();
   }, [code]);
-
-  return (
-    <div>
-      카카오 로그인 성공
-    </div>
-  );
 };
 
 export { CallbackKakao };
