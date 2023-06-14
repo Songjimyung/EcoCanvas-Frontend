@@ -13,6 +13,7 @@ import { CampaignCreate } from "./pages/CampaignCreate";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
+import BuyProduct from './pages/BuyProduct';
 import { AdminHome } from "./admin_pages/admin_home/admin_Home";
 import { Routes, Route } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
@@ -22,6 +23,7 @@ import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
+import { CallbackGoogle } from './pages/GoogleCallback';
 
 import { createTheme, ThemeProvider } from "@mui/material";
 
@@ -77,7 +79,8 @@ function App() {
             <Route path="/campaign/:id" element={<CampaignDetail />} />
             <Route path="/campaign/create" element={<CampaignCreate />} />
             <Route path="/shop" element={<Shop />}></Route>
-            <Route path="/product" element={<ShopDetail />}></Route>
+            <Route path="/product/:productId" element={<ShopDetail />}></Route>
+            <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/admin_home" element={<AdminHome />}></Route>
             <Route path="/admin_users" element={<UserList />} />
@@ -87,6 +90,7 @@ function App() {
             <Route path="/admin_products/:productId" element={<Product />} />
             <Route path="/admin_createProduct" element={<CreateProduct />} />
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+            <Route path="/users/google/callback" element={<CallbackGoogle />} />
           </Routes>
         </div>
       </div >

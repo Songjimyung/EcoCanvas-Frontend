@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   useEffect(() => {
     // 로그인 상태를 localstorage에서 확인
     const loggedInStatus = localStorage.getItem('access');
@@ -20,7 +20,7 @@ export default function Topbar() {
     localStorage.removeItem('payload');
     setIsLoggedIn(false);
   };
-  
+
   return (
     <div className='_topbar'>
       <div className='_topbarWrapper'>
