@@ -22,66 +22,113 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // Checkbox
 const label = { inputProps: { 'aria-label': 'Funding Checkbox' } };
 
+
+// CampaignCreate
 const CampaignCreate = () => {
   const [value, setValue] = useState(null);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [actStartDate, setActStartDate] = useState('');
+  const [actEndDate, setActEndDate] = useState('');
+  const [isFundChecked, setIsFundChecked] = useState(false);
+  const [selectedImageName, setSelectedImageName] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState('');
 
-  // 파일 업로드
+
+  // 펀딩 체크박스
+  const handleFundCheck = (event) => {
+    setIsFundChecked(event.target.checked);
+  };
+
+  // 이미지 업로드
   const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    console.log('첨부 이미지:', file);
+    const image = event.target.files[0];
+    console.log('첨부 이미지:', image);
+    handleIamgeName(event);
   };
   // 파일 업로드
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     console.log('첨부 파일:', file);
+    handleFileName(event);
   };
+
+  // 파일이름
+  const handleIamgeName = (event) => {
+    const image = event.target.files[0];
+    setSelectedImageName(image.name);
+  };
+  // 이미지이름
+  const handleFileName = (event) => {
+    const file = event.target.files[0];
+    setSelectedFileName(file.name);
+  };
+
 
   return (
     <div className='campaignCreateForm'>
       <h1>캠페인 신청하기</h1>
       <div className='campaignCreateBody'>
         <div className='marginBottom10'>
-          캠페인 제목
+          <div className='campaignCreateTitle'>캠페인 제목<span className='campaignCreateStar'>*</span></div>
           <TextField
             id="outlined-multiline-flexible"
-            label="Multiline"
+            label="제목"
             multiline
             maxRows={4}
-          />
-        </div>
-
-        <div className='marginBottom10'>
-          캠페인 내용
-          <TextField
-            id="outlined-multiline-static"
-            label="Multiline"
-            multiline
-            rows={4}
-          />
-        </div>
-
-        <div className='marginBottom10'>
-          캠페인 참가인원
-          <TextField
-            id="outlined-number"
-            label="Number"
-            type="number"
-            InputLabelProps={{
-              shrink: true,
+            sx={{
+              width: '100%',
             }}
           />
         </div>
 
         <div className='marginBottom10'>
-          캠페인 이미지
-          <label htmlFor="file-upload">
+          <div className='campaignCreateTitle'>캠페인 내용<span className='campaignCreateStar'>*</span></div>
+          <TextField
+            id="outlined-multiline-static"
+            label="내용"
+            multiline
+            rows={4}
+            sx={{
+              width: '100%',
+            }}
+          />
+        </div>
+
+        <div className='marginBottom10'>
+          <div className='campaignCreateTitle'>캠페인 참가인원<span className='campaignCreateStar'>*</span></div>
+          <TextField
+            id="outlined-number"
+            label="참가 인원"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{
+              width: '100%',
+            }}
+          />
+        </div>
+
+        <div className='marginBottom10'>
+          <div className='campaignCreateTitle'>캠페인 이미지<span className='campaignCreateStar'>*</span></div>
+          <TextField
+            value={selectedImageName}
+            label="이미지"
+            id="standard-size-small"
+            size="small"
+            variant="standard"
+            readOnly={true}
+          />
+          <label htmlFor="image-upload">
             <input
               style={{ display: 'none' }}
-              id="file-upload"
+              id="image-upload"
               type="file"
+              accept='image/jpg,impge/png,image/jpeg,image/gif'
               onChange={handleImageUpload}
             />
-            <Button variant="outlined" color="gray" component="span">
+            <Button variant="outlined" color="gray" component="div">
               파일 선택
             </Button>
           </label>
@@ -89,30 +136,36 @@ const CampaignCreate = () => {
 
         <div className='campaignDate'>
           <div>
-            캠페인 시작일
+            <div className='campaignCreateTitle'>캠페인 시작일<span className='campaignCreateStar'>*</span></div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
                   value={value}
                   onChange={(newValue) => setValue(newValue)}
-                  label="Date Picker"
+                  label="날짜를 선택해주세요."
                   format="YYYY/MM/DD"
                   defaultValue={dayjs('2022-04-17')}
+                  sx={{
+                    width: '100%',
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
           </div>
-          ~
+
           <div>
-            캠페인 마감일
+            <div className='campaignCreateTitle'>캠페인 마감일<span className='campaignCreateStar'>*</span></div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
                   value={value}
                   onChange={(newValue) => setValue(newValue)}
-                  label="Date Picker"
+                  label="날짜를 선택해주세요."
                   format="YYYY/MM/DD"
                   defaultValue={dayjs('2022-04-17')}
+                  sx={{
+                    width: '100%',
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -122,28 +175,28 @@ const CampaignCreate = () => {
 
         <div className='campaignDate'>
           <div>
-            활동 시작일
+            <div className='campaignCreateTitle'>활동 시작일</div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
                   value={value}
                   onChange={(newValue) => setValue(newValue)}
-                  label="Date Picker"
+                  label="날짜를 선택해주세요."
                   format="YYYY/MM/DD"
                   defaultValue={dayjs('2022-04-17')}
                 />
               </DemoContainer>
             </LocalizationProvider>
           </div>
-          ~
+
           <div>
-            활동 마감일
+            <div className='campaignCreateTitle'>활동 마감일</div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
                   value={value}
                   onChange={(newValue) => setValue(newValue)}
-                  label="Date Picker"
+                  label="날짜를 선택해주세요."
                   format="YYYY/MM/DD"
                   defaultValue={dayjs('2022-04-17')}
                 />
@@ -151,39 +204,59 @@ const CampaignCreate = () => {
             </LocalizationProvider>
           </div>
         </div>
-        <div>활동이 없는 캠페인은 비워주세요.</div>
+        <div className='campaignActivityEmpty'>※활동이 없는 캠페인은 비워주세요.</div>
+
 
         <div className='campaignFundCheck'>
-          <Checkbox {...label} defaultChecked />
+          <Checkbox
+            {...label}
+            checked={isFundChecked}
+            onChange={handleFundCheck}
+          />
           <span>펀딩 여부</span>
         </div>
 
         <div className='marginBottom10'>
-          펀딩 목표 금액
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+          <div className='campaignCreateTitle'>펀딩 목표 금액</div>
+          <FormControl sx={{ width: '100%', }}>
+            <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
             <OutlinedInput
               id="outlined-adornment-amount"
               startAdornment={<InputAdornment position="start">￦</InputAdornment>}
-              label="Amount"
+              label="금액"
+              disabled={!isFundChecked}
             />
           </FormControl>
         </div>
 
-        <label htmlFor="file-upload">
-          <input
-            style={{ display: 'none' }}
-            id="file-upload"
-            type="file"
-            onChange={handleFileUpload}
+        <div>
+          <div className='campaignCreateTitle'>펀딩 승인파일</div>
+          <TextField
+            value={selectedFileName}
+            label="파일 이름"
+            id="standard-size-small"
+            size="small"
+            variant="standard"
+            readOnly={true}
           />
-          <div>
-            펀딩 승인파일
-            <Button variant="outlined" color="gray" component="span">
+          <label htmlFor="file-upload">
+            <input
+              style={{ display: 'none' }}
+              id="file-upload"
+              type="file"
+              onChange={handleFileUpload}
+              disabled={!isFundChecked}
+            />
+            <Button
+              variant="outlined"
+              color="gray"
+              component="div"
+              disabled={!isFundChecked}
+            >
               파일 선택
             </Button>
-          </div>
-        </label>
+          </label>
+        </div>
 
         <Button
           variant="contained"
@@ -192,7 +265,7 @@ const CampaignCreate = () => {
           제출하기
         </Button>
       </div>
-    </div>
+    </div >
   );
 };
 

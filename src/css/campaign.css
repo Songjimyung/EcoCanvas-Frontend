@@ -130,8 +130,9 @@ a {
 .campaignCreateBody {
     display: flex;
     flex-direction: column;
-    text-align: center;
+    /* text-align: center; */
     margin: auto;
+    margin-top: 50px;
     max-width: 50%;
 }
 
@@ -139,4 +140,24 @@ a {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+}
+
+.campaignCreateTitle {
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.campaignActivityEmpty {
+    text-align: right;
+    color: gray;
+    font-size: 0.85rem;
+}
+
+.campaignFundCheck {
+    margin-top: 30px;
+}
+
+.campaignCreateStar {
+    color: rgb(255, 103, 15)
 }
