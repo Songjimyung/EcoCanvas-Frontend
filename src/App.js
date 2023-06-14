@@ -22,12 +22,12 @@ import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
 import { CallbackGoogle } from './pages/GoogleCallback';
-import { MyPostCampaign } from './components/mypagelist/myCampaign'
-import { MyLikes } from './components/mypagelist/myLikes'
-import { MyDelivery } from './components/mypagelist/myDelivery';
-import { MyOrder } from './components/mypagelist/myOrder';
-import { MyRefundreceipt } from './components/mypagelist/myRefundreceipt';
-import { MyReviewComment } from './components/mypagelist/myReviewcomment';
+import { MyPostCampaign } from './pages/mypagelist/myCampaign'
+import { MyLikes } from './pages/mypagelist/myLikes'
+import { MyDelivery } from './pages/mypagelist/myDelivery';
+import { MyOrder } from './pages/mypagelist/myOrder';
+import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
+import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 

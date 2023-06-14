@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/mypageSidebar"
-import '../components/mypageSidebar/mypageSidebar.css'
+import Pagination from '@mui/material/Pagination';
+import Sidebar from "../../components/mypageSidebar/mypageSidebar"
+import '../../components/mypageSidebar/mypageSidebar.css'
 import { format } from 'date-fns';
 
-const Mypage = () => {
+
+const MyPostCampaign = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignData, setCampaignData] = useState([])
   const cardsPerPage = 10;
@@ -71,4 +73,5 @@ const Mypage = () => {
   );
 };
 
-export { Mypage };
+
+export { MyPostCampaign };

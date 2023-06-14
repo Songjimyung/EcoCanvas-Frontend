@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "../mypageSidebar/mypageSidebar"
-import "../mypageSidebar/mypageSidebar.css"
+import Sidebar from "../../components/mypageSidebar/mypageSidebar"
+import "../../components/mypageSidebar/mypageSidebar.css"
 
 
 const MyRefundreceipt = () => {
