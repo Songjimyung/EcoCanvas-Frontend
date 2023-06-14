@@ -2,17 +2,40 @@ import React, { useState, useEffect } from 'react';
 import '../css/product.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { CardActionArea, CardActions } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Pagination from '@mui/material/Pagination';
+import product_default_img from '../img/sample_product.png';
+
+
 
 const Shop = () => {
   const [productList, setProductList] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [categoryList, setCategoryList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productPerPage = 6;
+
 
   const handleCategorySelect = (event) => {
     const selectedCategoryId = event.target.value;
     setCategoryId(selectedCategoryId);
   };
-
+  const getImageUrl = (imagePath) => {
+    return `http://localhost:8000${imagePath}`;
+  };
+  const onErrorImg = (e) => {
+    e.target.src = product_default_img;
+  };
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
   useEffect(() => {
     const fetchProductList = async () => {
       try {
@@ -41,7 +64,11 @@ const Shop = () => {
     };
     fetchCategoryList();
   }, []);
-
+  const indexOfLastProduct = currentPage * productPerPage;
+  // 현재페이지의 첫 인덱스 (현재 페이지의 마지막 인덱스 - 한 페이지당 6개의 캠페인)
+  const indexOfFirstProduct = indexOfLastProduct - productPerPage;
+  // 캠페인 개수를 currentPage의 첫 인덱스부터, 끝 인덱스까지 (2페이지면 7~12)
+  const currentProduct = productList.slice(indexOfFirstProduct, indexOfLastProduct);
 
   return (
     <div>
@@ -66,44 +93,44 @@ const Shop = () => {
         </nav>
       </header>
       <main>
-        <section>
-          <h2>인기 상품</h2>
-          {productList.length === 0 ? (
-            <p>상품이 없습니다.</p>
-          ) : (
-            <ul className="product-list">
-              {productList.map(product => (
-                <li key={product.id}>
-                  <Link to={`/product/${product.id}`}>
-                    <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
-                  </Link>
-                  <h3>{product.product_name}</h3>
-                  <p>{product.product_desc}</p>
-                  <p>{product.product_price}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-        <section>
-          <h2>{categoryId ? `${categoryId} 상품` : '카테고리를 선택하세요'}</h2>
-          {productList.length === 0 ? (
-            <p>상품이 없습니다.</p>
-          ) : (
-            <ul className="product-list">
-              {productList.map(product => (
-                <li key={product.id}>
-                  <Link to={`/product/${product.id}`}>
-                    <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
-                  </Link>
-                  <h3>{product.product_name}</h3>
-                  <p>{product.product_desc}</p>
-                  <p>{product.product_price}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+        <div className="productCardContainer">
+          {currentProduct.map((product) => (
+            <Card sx={{ maxWidth: 450 }} key={product.id} className="productCard">
+              <Link to={`/product/${product.id}`}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="250"
+                    image={getImageUrl(product.images[0]['image_file'])}
+                    alt="product_image"
+                    onError={onErrorImg}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {product.product_name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A'}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
+              <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          ))}
+        </div >
+        <Grid container justifyContent="center">
+          <Pagination
+            count={Math.ceil(productList.length / productPerPage)}
+            page={currentPage}
+            color="primary"
+            onChange={handlePageChange}
+          />
+        </Grid>
       </main>
     </div>
   );

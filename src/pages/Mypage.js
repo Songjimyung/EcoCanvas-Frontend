@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/mypageSidebar"
+import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/MypageSidebar"
 import '../components/mypageSidebar/mypageSidebar.css'
 import { format } from 'date-fns';
 
@@ -27,7 +27,8 @@ const Mypage = () => {
           current_members: campaign.current_members,
           campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
           activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
-          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd')
+          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd'),
+          image: campaign.image
         }));
         console.log(result)
         setCampaignData(campaigns)
@@ -48,6 +49,7 @@ const Mypage = () => {
           {currentCards.map((card, index) => (
             <div className="card" key={index}>
               <h3>{card.title}</h3>
+
               <p>{card.content}</p>
               <p>모집인원 : {card.members}</p>
               <p>참가인원 : {card.current_members}</p>

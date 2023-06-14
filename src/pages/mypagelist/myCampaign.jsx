@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Pagination from '@mui/material/Pagination';
-import Sidebar from "../../components/mypageSidebar/mypageSidebar"
+import Sidebar from "../../components/mypageSidebar/MypageSidebar"
 import '../../components/mypageSidebar/mypageSidebar.css'
-import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 
 const MyPostCampaign = () => {
@@ -12,7 +12,7 @@ const MyPostCampaign = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/mypage/attend/", {
+    fetch("http://127.0.0.1:8000/campaigns/mypage/participart/", {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -21,17 +21,18 @@ const MyPostCampaign = () => {
       console.log(response)
     ))
       .then(result => {
+        console.log(result)
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,
           content: campaign.content,
           members: campaign.members,
           current_members: campaign.current_members,
-          campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
-          activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
-          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd')
+          campaign_end_date: campaign.campaign_end_date,
+          activity_start_date: campaign.activity_start_date,
+          activity_end_date: campaign.activity_end_date,
+          image: campaign.image
         }));
-        console.log(result)
         setCampaignData(campaigns)
       })
   }, []);
@@ -49,6 +50,9 @@ const MyPostCampaign = () => {
         <Sidebar /><div className="card-section">
           {currentCards.map((card, index) => (
             <div className="card" key={index}>
+              <Link to={`/campaign/${card.id}`}>
+                <img src={`http://localhost:8000${card.image}`} alt={card.title} />
+              </Link>
               <h3>{card.title}</h3>
               <p>{card.content}</p>
               <p>모집인원 : {card.members}</p>

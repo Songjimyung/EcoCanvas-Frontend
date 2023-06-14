@@ -87,6 +87,12 @@ function App() {
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
+            <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
+            <Route path="/mypage/myorders" element={<MyOrder />}></Route>
+            <Route path="/mypage/mydelivery" element={<MyDelivery />}></Route>
+            <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
+            <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin_home" element={<AdminHome />}></Route>
             <Route path="/admin_users" element={<UserList />} />
             <Route path="/admin_users/:userId" element={<User />} />

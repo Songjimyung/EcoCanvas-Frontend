@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../../components/mypageSidebar/mypageSidebar"
+import Sidebar from "../../components/mypageSidebar/MypageSidebar"
 import "../../components/mypageSidebar/mypageSidebar.css"
 
 

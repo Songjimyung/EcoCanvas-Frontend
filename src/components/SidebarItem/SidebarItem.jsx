@@ -1,5 +1,5 @@
 import React from "react";
-import './SidebarItem.css'
+import './sidebarItem.css'
 
 function SidebarItem({ menu, isActive }) {
   return isActive === true ? (
