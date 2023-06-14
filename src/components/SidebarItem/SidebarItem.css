@@ -1,0 +1,11 @@
+.sidebar-item-active {
+  color: rgb(75, 142, 93);
+}
+
+.sidebar-item {
+  color: rgb(27, 27, 28);
+}
+
+.menu-name {
+  text-decoration: none;
+}
