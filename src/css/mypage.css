@@ -1,0 +1,44 @@
+.mypage-comments {
+  margin-top: 20px;
+  width: 500px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.comment-list {
+  margin-top: 10px;
+}
+
+.comment {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-weight: bold;
+}
+
+.comment-date {
+  color: #888;
+}
+
+.comment-content {
+  margin-top: 5px;
+}
+
+.review-pagination {
+  margin-bottom: 50px;
+
+}
+
+.mypage-container-review {
+  display: flex;
+  justify-content: space-between;
+}

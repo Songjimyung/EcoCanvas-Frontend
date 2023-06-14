@@ -56,7 +56,7 @@ const MyPostCampaign = () => {
     setCurrentPage(value);
   };
   return (
-    <>
+    <div>
       <div className="mypage-block">
         <Sidebar /><div className="card-section">
           {currentCards.map((card, index) => (
@@ -88,7 +88,7 @@ const MyPostCampaign = () => {
           size="large"
         />
       </div>
-    </>
+    </div>
   );
 };
 

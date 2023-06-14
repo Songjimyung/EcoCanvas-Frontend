@@ -11,7 +11,6 @@
   top: 50px;
   width: 250px;
   margin-right: 100px;
-  margin-bottom: 50px;
   margin-top: 50px;
   border-right: 1px solid rgb(230, 228, 228);
   border-top: 1px solid rgb(230, 228, 228);
@@ -35,6 +34,7 @@
 
 .mypage-block {
   display: flex;
+  justify-content: flex-start;
 }
 
 .card-section {
@@ -54,10 +54,7 @@
 }
 
 .pagination-container {
-  margin-left: 850px;
-  margin-bottom: 50px;
-}
-
-.mypage-container {
   display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
 }
