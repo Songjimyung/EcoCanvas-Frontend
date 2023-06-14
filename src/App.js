@@ -8,6 +8,8 @@ import { Home } from './pages/Home';
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { Campaign } from "./pages/Campaign";
+import { CampaignDetail } from "./pages/CampaignDetail";
+import { CampaignCreate } from "./pages/CampaignCreate";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
@@ -23,6 +25,32 @@ import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
 import { CallbackGoogle } from './pages/GoogleCallback';
 
+import { createTheme, ThemeProvider } from "@mui/material";
+
+// MUI로 만든 컴포넌트 폰트지정, 컬러지정
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Pretendard-Regular'"
+  },
+  palette: {
+    primary: {
+      main: '#3eac3e',
+    },
+    secondary: {
+      main: '#11cb5f',
+    },
+    danger: {
+      main: '#e53e3e',
+    },
+    black: {
+      main: '#000000',
+    },
+    gray: {
+      main: '#808080',
+    },
+  },
+})
+
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -36,33 +64,37 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {!isAdmin ? <Topbar /> : <AdminTopbar />}
-      {/* <AdminTopbar /> */}
-      <div className={!isAdmin ? "noncontainer" : 'container'}>
-        {!isAdmin ? <Sidebar /> : <AdminSidebar />}
-        {/* <AdminSidebar /> */}
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/campaign" element={<Campaign />}></Route>
-          <Route path="/shop" element={<Shop />}></Route>
-          <Route path="/product/:productId" element={<ShopDetail />}></Route>
-          <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
-          <Route path="/mypage" element={<Mypage />}></Route>
-          <Route path="/admin_home" element={<AdminHome />}></Route>
-          <Route path="/admin_users" element={<UserList />} />
-          <Route path="/admin_users/:userId" element={<User />} />
-          <Route path="/admin_createUser" element={<CreateUser />} />
-          <Route path="/admin_products" element={<ProductList />} />
-          <Route path="/admin_products/:productId" element={<Product />} />
-          <Route path="/admin_createProduct" element={<CreateProduct />} />
-          <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
-          <Route path="/users/google/callback" element={<CallbackGoogle />} />
-        </Routes>
-      </div>
-    </div >
+    <ThemeProvider theme={theme}>
+      <div>
+        {!isAdmin ? <Topbar /> : <AdminTopbar />}
+        {/* <AdminTopbar /> */}
+        <div className={!isAdmin ? "" : 'adminContainer'}>
+          {!isAdmin ? <Sidebar /> : <AdminSidebar />}
+          {/* <AdminSidebar /> */}
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/campaign" element={<Campaign />}></Route>
+            <Route path="/campaign/:id" element={<CampaignDetail />} />
+            <Route path="/campaign/create" element={<CampaignCreate />} />
+            <Route path="/shop" element={<Shop />}></Route>
+            <Route path="/product/:productId" element={<ShopDetail />}></Route>
+            <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
+            <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/admin_home" element={<AdminHome />}></Route>
+            <Route path="/admin_users" element={<UserList />} />
+            <Route path="/admin_users/:userId" element={<User />} />
+            <Route path="/admin_createUser" element={<CreateUser />} />
+            <Route path="/admin_products" element={<ProductList />} />
+            <Route path="/admin_products/:productId" element={<Product />} />
+            <Route path="/admin_createProduct" element={<CreateProduct />} />
+            <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+            <Route path="/users/google/callback" element={<CallbackGoogle />} />
+          </Routes>
+        </div>
+      </div >
+    </ThemeProvider>
   );
 }
 

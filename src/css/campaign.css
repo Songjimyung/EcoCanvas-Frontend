@@ -1,0 +1,163 @@
+.campaignContainer {
+    font-family: var(--font-Pretendard-Regular);
+}
+
+.campaignCreateForm {
+    font-family: var(--font-Pretendard-Regular);
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+
+.campaignBadge, .campaignDangerBadge {
+    color: white;
+    padding: 4px;
+    border-radius: 7px;
+    background-color: dodgerblue;
+}
+
+.campaignDangerBadge {
+    background-color: crimson;
+}
+
+/* list card */
+.campaignCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5%;
+    min-width: 750px;
+    justify-content: space-between;
+    /* align-content: space-around; */
+    /* align-items: stretch; */
+}
+
+.campaignCard {
+    margin-bottom: 5%;
+    min-width: 350px;
+    width: 35%;
+    font-family: var(--font-KCC-Ganpan);
+}
+
+/* detail Top */
+.campaignContentDiv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.campaignImage {
+    max-width: 90%;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.campaignStatus {
+    display: inline-block;
+    color: white;
+    background-color: #3eac3e;
+    padding: 5px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+.campaignFund {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.campaignFundPercent {
+    color: #3eac3e;
+    font-weight: bolder;
+    font-size: 2rem;
+    margin-right: 10px;
+}
+
+.campaignFundcurrent {
+    padding-top: 15px;
+    color: gray;
+}
+
+.marginBottom10 {
+    margin-bottom: 10px;
+}
+
+.campaignContentBtn {
+    display: flex;
+}
+
+@media (max-width: 800px) {
+    .campaignContentDiv {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .campaignContentRight {
+        margin-top: 50px;
+    }
+}
+
+/* detail Bottom(review, comment, info) */
+.campaignBottom {
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.campaignReviewDiv {
+    margin-bottom: 5%;
+}
+
+.campaignCommentDiv {
+    margin-bottom: 5%;
+}
+
+.campaignNothing {
+    text-align: center;
+    margin: 200px auto 200px auto;
+}
+
+/* create */
+.campaignCreateBody {
+    display: flex;
+    flex-direction: column;
+    /* text-align: center; */
+    margin: auto;
+    margin-top: 50px;
+    max-width: 50%;
+}
+
+.campaignDate {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.campaignCreateTitle {
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.campaignActivityEmpty {
+    text-align: right;
+    color: gray;
+    font-size: 0.85rem;
+}
+
+.campaignFundCheck {
+    margin-top: 30px;
+}
+
+.campaignCreateStar {
+    color: rgb(255, 103, 15)
+}
