@@ -43,8 +43,10 @@ const Shop = () => {
           const response = await axios.get(`http://localhost:8000/shop/products/list/${categoryId}`);
           setProductList(response.data);
           console.log(response.data)
-        } else {
-          setProductList([]); // categoryId가 비어있을 경우 productList를 빈 배열로 초기화
+        } else { // categoryId 값이 존재하지 않을 경우 최신 상품 목록이 보여지도록 수정 
+          const defaultResponse = await axios.get('http://localhost:8000/shop/products/list/recent/');
+          setProductList(defaultResponse.data);
+          console.log(defaultResponse.data)
         }
       } catch (error) {
         console.error('Error fetching product list:', error);
@@ -101,7 +103,7 @@ const Shop = () => {
                   <CardMedia
                     component="img"
                     height="250"
-                    image={getImageUrl(product.images[0]['image_file'])}
+                    image={product.images && product.images.length > 0 ? getImageUrl(product.images[0]['image_file']) : product_default_img}
                     alt="product_image"
                     onError={onErrorImg}
                   />

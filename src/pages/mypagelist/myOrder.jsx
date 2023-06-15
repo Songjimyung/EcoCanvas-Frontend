@@ -78,15 +78,19 @@ const MyOrder = () => {
             </tr>
           </thead>
           <tbody>
-            {currentOrderCards.map((order) => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{order.product}</td>
-                <td>{order.order_totalprice}</td>
-                <td>{order.status}</td>
-                <td><button className="details-button" onClick={() => openModal(order.id)}>세부 정보 보기</button></td>
-              </tr>
-            ))}
+            {currentOrderCards.length > 0 ? (
+              currentOrderCards.map((order) => (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>{order.product}</td>
+                  <td>{order.order_totalprice}</td>
+                  <td>{order.status}</td>
+                  <td><button className="details-button" onClick={() => openModal(order.id)}>세부 정보 보기</button></td>
+                </tr>
+              ))
+            ) : (
+              <h2>주문내역이 없습니다.</h2>
+            )}
           </tbody>
         </table>
         <div className="order-pagination">

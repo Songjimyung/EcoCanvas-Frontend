@@ -55,21 +55,25 @@ const MyLikes = () => {
     <>
       <div className="mypage-block">
         <Sidebar /><div className="card-section">
-          {currentCards.map((card, index) => (
-            <div className="card" key={index}>
-              <Link to={`/campaign/${card.id}`}>
-                {card.image ? (
-                  <img src={`http://localhost:8000${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
-                ) : (
-                  <img src={campaign_default_image} alt="Default Campaign" style={{ width: '200px', height: '200px' }} />
-                )}
-              </Link>
-              <Link to={`/campaign/${card.id}`}>
-                <h3>{card.title}</h3>
-              </Link>
-              <p>캠페인 현황 : <span style={{ color: 'blue' }}>{statusMap[card.status]}</span></p>
-            </div>
-          ))}
+          {currentCards.length > 0 ? (
+            currentCards.map((card, index) => (
+              <div className="card" key={index}>
+                <Link to={`/campaign/${card.id}`}>
+                  {card.image ? (
+                    <img src={`http://localhost:8000${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
+                  ) : (
+                    <img src={campaign_default_image} alt="Default Campaign" style={{ width: '200px', height: '200px' }} />
+                  )}
+                </Link>
+                <Link to={`/campaign/${card.id}`}>
+                  <h3>{card.title}</h3>
+                </Link>
+                <p>캠페인 현황 : <span style={{ color: 'blue' }}>{statusMap[card.status]}</span></p>
+              </div>
+            ))
+          ) : (
+            <h2>좋아요한 내역이 없습니다.</h2>
+          )}
         </div>
       </div>
       <div className="pagination-container">
