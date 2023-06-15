@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import '../css/product.css'
+import { Card, Typography, Grid, Button, IconButton } from '@mui/material';
+import { ShoppingCart } from '@mui/icons-material';
+
 
 const ShopDetail = () => {
   let { productId } = useParams();
@@ -21,30 +24,38 @@ const ShopDetail = () => {
   }, [productId]);
 
   return (
-    <div className="product-detail-wrap">
-      {product ? (
-        <>
-          <h1>{product.product_name}</h1>
-          <div className='product-detail'>
+    <div className="product-detail-wrap" >
+      <Card style={{ height: '800px' }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
             {product.images && product.images.length > 0 && (
-              <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} />
+              <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} style={{ height: '100%', objectFit: 'cover', marginTop: '20px' }} />
             )}
-            <div className='product-detail-info'>
-              <p>상품명: {product.product_name}</p>
-              <p>소개: {product.product_desc}</p>
-              <p>Price: {product && product.product_price ? `$${product.product_price.toLocaleString()}` : 'N/A'}</p>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <div className="product-detail-info">
+              <Typography variant="h5" gutterBottom>
+                {product.product_name}
+              </Typography>
+              <Typography variant="subtitle1" style={{ fontSize: '12px', marginBottom: '50px' }}>
+                조회수 {product.hits}
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {product.product_desc}
+              </Typography>
+              <Typography variant="body1" paragraph>
+                {product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A'}
+              </Typography>
               <Link to={`/product/buy/${product.id}`}>
-                <button className='buyBtn'>구매하기</button>
+                <Button variant="contained" className='buyBtn'>구매하기</Button>
               </Link>
-              <Link to={`/product/buy/${product.id}`}>
-                <button className='buyBtn'>Add to Cart</button>
-              </Link>
+              <IconButton>
+                <ShoppingCart />
+              </IconButton>
             </div>
-          </div>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+          </Grid>
+        </Grid>
+      </Card>
     </div>
   );
 };

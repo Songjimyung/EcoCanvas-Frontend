@@ -14,12 +14,12 @@ import Pagination from '@mui/material/Pagination';
 import product_default_img from '../img/sample_product.png';
 
 
-
 const Shop = () => {
   const [productList, setProductList] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('latest'); // Initialize sortBy state with 'latest'
   const productPerPage = 6;
 
 
@@ -27,45 +27,75 @@ const Shop = () => {
     const selectedCategoryId = event.target.value;
     setCategoryId(selectedCategoryId);
   };
+
+  const handleSortBySelect = (event) => {
+    const selectedSortBy = event.target.value;
+    setSortBy(selectedSortBy);
+  };
+
   const getImageUrl = (imagePath) => {
     return `http://localhost:8000${imagePath}`;
   };
+
   const onErrorImg = (e) => {
     e.target.src = product_default_img;
   };
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        if (categoryId) { // categoryId 값이 존재할 때에만 API 요청 보내도록 수정
-          const response = await axios.get(`http://localhost:8000/shop/products/list/${categoryId}`);
-          setProductList(response.data);
-          console.log(response.data)
-        } else { // categoryId 값이 존재하지 않을 경우 최신 상품 목록이 보여지도록 수정 
-          const defaultResponse = await axios.get('http://localhost:8000/shop/products/list/recent/');
-          setProductList(defaultResponse.data);
-          console.log(defaultResponse.data)
+        let url = 'http://localhost:8000/shop/products/list/';
+
+        if (categoryId) { // 카테고리 선택시 동적으로 요청하도록
+          url += `${categoryId}/`;
         }
+        if (sortBy === 'hits') {
+          if (categoryId) {
+            url += 'hits/';
+          } else {
+            alert("카테고리를 선택해주세요!")
+          }
+        }
+        if (sortBy === 'highprice') {
+          if (categoryId) {
+            url += 'highprice/';
+          } else {
+            alert("카테고리를 선택해주세요!")
+          }
+        }
+        if (sortBy === 'lowprice') {
+          if (categoryId) {
+            url += 'lowprice/';
+          } else {
+            alert("카테고리를 선택해주세요!")
+          }
+        }
+        const response = await axios.get(url);
+        setProductList(response.data);
+        console.log(response.data);
       } catch (error) {
-        console.error('Error fetching product list:', error);
+        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
     };
-    fetchProductList();
-  }, [categoryId]);
 
-  useEffect(() => {
     const fetchCategoryList = async () => {
       try {
         const response = await axios.get('http://localhost:8000/shop/categorys/list/');
         setCategoryList(response.data);
       } catch (error) {
-        console.error('Error fetching category list:', error);
+        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
     };
+    fetchProductList();
     fetchCategoryList();
-  }, []);
+  }, [categoryId, sortBy]);
+
+
+
   const indexOfLastProduct = currentPage * productPerPage;
   // 현재페이지의 첫 인덱스 (현재 페이지의 마지막 인덱스 - 한 페이지당 6개의 캠페인)
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
@@ -84,13 +114,12 @@ const Shop = () => {
               </option>
             ))}
           </select>
-          <select className="category-dropdown">
-            <option value="">정렬</option>
-            <option value="category1">최신순</option>
-            <option value="category2">조회순</option>
-            <option value="category3">가격높은순</option>
-            <option value="category4">가격낮은순</option>
-            <option value="category3">구매순</option>
+          <select className="category-dropdown" onChange={handleSortBySelect}>
+            <option value="latest">최신순</option>
+            <option value="hits">조회순</option>
+            <option value="highprice">가격높은순</option>
+            <option value="lowprice">가격낮은순</option>
+            <option value="purchases">구매순</option>
           </select>
         </nav>
       </header>

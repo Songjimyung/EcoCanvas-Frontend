@@ -28,11 +28,9 @@ function Sidebar() {
 
   // payload에서 user_id 가져와서 GET요청 
   useEffect(() => {
-    const token = localStorage.getItem('access');
     const payload = localStorage.getItem('payload');
     if (payload) {
       const payloadObject = JSON.parse(payload);
-      console.log(payloadObject.user_id)
       setUserId(payloadObject.user_id);
     }
   }, []);
@@ -49,7 +47,6 @@ function Sidebar() {
         });
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
           const user_info = result.map((user) => ({
             username: user.username,
             email: user.email,

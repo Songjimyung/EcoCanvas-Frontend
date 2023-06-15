@@ -29,7 +29,6 @@ const Mypage = () => {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => response.json(
-      console.log(response)
     ))
       .then(result => {
         const campaigns = result.map((campaign) => ({
@@ -42,7 +41,6 @@ const Mypage = () => {
           image: campaign.image,
           status: campaign.status
         }));
-        console.log(result)
         setCampaignData(campaigns)
       })
   }, []);

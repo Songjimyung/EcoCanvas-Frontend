@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// axios.defaults.withCredentials = true;
+import '../css/AuthForm.css'
 
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
@@ -75,11 +75,11 @@ const AuthForm = ({ type }) => {
     };
 
     return (
-      <button onClick={handleLogin}>카카오로 로그인</button>
+      <button onClick={handleLogin}>카카오 로그인</button>
     );
   };
 
-const SocialGoogle = () => {
+  const SocialGoogle = () => {
     const handleGoogleLogin = () => {
       const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
 
@@ -87,7 +87,7 @@ const SocialGoogle = () => {
     };
 
     return (
-      <button onClick={handleGoogleLogin}>구글로 로그인</button>
+      <button onClick={handleGoogleLogin}>구글 로그인</button>
     );
   };
 

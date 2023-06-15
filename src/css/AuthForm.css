@@ -7,29 +7,25 @@
 }
 
 .inputList>input {
-  margin: 20px 0px 30px 0px;
+  margin: 15px 0px 15px 0px;
   padding: 15px;
   border-radius: 25px;
-  background-color: #e0facd;
-  color: #4c8538;
   font-size: 1.5rem;
-}
-
-.inputList input::placeholder {
-  color: #94ad89;
-  /* 원하는 색상으로 변경 */
+  width: 20%;
 }
 
 .inputList>button {
-  padding: 10px;
+  padding: 5px;
   border-radius: 6px;
-  background-color: #62ae49;
-  border-color: rgb(86, 141, 78);
+  margin-bottom: 5px;
+  color: #e7e5e5;
+  font-size: 1.5rem;
+  width: 20%;
+  background-color: #3b375c;
 }
 
 .inputList>button.active,
 .inputList>button:hover {
-  padding: 13px;
-  color: rgb(255, 255, 255);
-  border-color: aliceblue;
+  padding: 6px;
+  border: 3px solid rgb(248, 248, 248);
 }
