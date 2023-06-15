@@ -91,7 +91,7 @@ const CampaignDetail = () => {
   useEffect(() => {
     const fetchCampaignDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/campaigns/${id}`);
+        const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
         setCampaign(response.data);
         console.log(response.data);
       } catch (error) {
@@ -105,7 +105,7 @@ const CampaignDetail = () => {
   useEffect(() => {
     const fetchCampaignComment = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}`);
+        const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
         setCampaignComment(response.data);
         console.log(response.data);
       } catch (error) {
@@ -119,7 +119,7 @@ const CampaignDetail = () => {
   useEffect(() => {
     const fetchCampaignReview = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/campaigns/review/${id}`);
+        const response = await axios.get(`http://localhost:8000/campaigns/review/${id}/`);
         setCampaignReview(response.data);
         console.log(response.data);
       } catch (error) {
@@ -157,7 +157,11 @@ const CampaignDetail = () => {
               <div className="marginBottom10">모집 인원 : {campaign.participant.length} / {campaign.members}</div>
               <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
               <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
-              <div className="marginBottom10">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+              {campaign.activity_start_date && campaign.activity_end_date ? (
+                <div className="marginBottom10">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+              ) : (
+                <div className="marginBottom10">활동이 없는 캠페인입니다.</div>
+              )}
               {campaign.fundings ? (
                 <div className="campaignFund">
                   {/* https://devbirdfeet.tistory.com/238 */}

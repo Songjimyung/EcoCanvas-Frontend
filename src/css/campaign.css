@@ -64,7 +64,7 @@ a {
     color: white;
     background-color: #3eac3e;
     padding: 5px;
-    border-radius: 50px;
+    border-radius: 15px;
     margin-bottom: 10px;
 }
 
@@ -148,7 +148,7 @@ a {
     margin-left: 5px;
 }
 
-.campaignActivityEmpty {
+.campaignExplain {
     text-align: right;
     color: gray;
     font-size: 0.85rem;
