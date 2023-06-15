@@ -4,12 +4,21 @@ import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 
+// MUI
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Button from '@mui/material/Button';
-import PropTypes from 'prop-types';
+import TextField from '@mui/material/TextField';
+import SendIcon from '@mui/icons-material/Send';
 import ShareIcon from '@mui/icons-material/Share';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+// modal
+import Modal from "../components/modal/Modal"
 
 // Mui Tab
 function TabPanel(props) {
@@ -74,11 +83,15 @@ const InfoAnnounceMap = ({ text }) => {
 
 
 const CampaignDetail = () => {
+  // Detail GET
   const { id } = useParams();
   const [campaign, setCampaign] = useState('');
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
   const [isLiked, setIsLiked] = useState(false);
+
+  // comment POST
+  const [createComment, setCreateComment] = useState('');
 
   // Tab 
   const [value, setValue] = useState(0);
@@ -87,7 +100,7 @@ const CampaignDetail = () => {
     setValue(newValue);
   };
 
-  // 캠페인 디테일
+  // 캠페인 디테일 GET
   useEffect(() => {
     const fetchCampaignDetail = async () => {
       try {
@@ -101,21 +114,22 @@ const CampaignDetail = () => {
     fetchCampaignDetail();
   }, [id]);
 
-  // 캠페인 댓글
+  // 캠페인 댓글 GET
+  const fetchCampaignComment = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
+      setCampaignComment(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching campaign comment:", error);
+    }
+  };
   useEffect(() => {
-    const fetchCampaignComment = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
-        setCampaignComment(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching campaign comment:", error);
-      }
-    };
     fetchCampaignComment();
-  }, [id]);
+    // eslint-disable-next-line
+  }, []);
 
-  // 캠페인 리뷰
+  // 캠페인 리뷰 GET
   useEffect(() => {
     const fetchCampaignReview = async () => {
       try {
@@ -142,6 +156,42 @@ const CampaignDetail = () => {
     setIsLiked(!isLiked);
   };
 
+  // 댓글 POST
+  const token = localStorage.getItem('access')
+  const axiosCommentCreate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`http://localhost:8000/campaigns/comment/${id}/`, {
+        'content': createComment,
+      }, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      alert("댓글 작성 성공!");
+      console.log(response)
+      // 작성 후 바로 댓글 재렌더링시키기
+      fetchCampaignComment();
+    } catch (error) {
+      alert("댓글 작성에 실패했습니다.");
+      console.log(error);
+    }
+  };
+
+  const handleCommentCreate = (event) => {
+    setCreateComment(event.target.value);
+  };
+
+  // Modal
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="campaignContainer">
@@ -162,7 +212,7 @@ const CampaignDetail = () => {
               ) : (
                 <div className="marginBottom10">활동이 없는 캠페인입니다.</div>
               )}
-              {campaign.fundings ? (
+              {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
                   {/* https://devbirdfeet.tistory.com/238 */}
                   <div className="campaignFundPercent">{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성</div>
@@ -172,8 +222,36 @@ const CampaignDetail = () => {
                     color="primary"
                     sx={{ color: 'white', marginLeft: '25px', }}
                     disabled={campaign.status >= 4}
+                    onClick={openModal}
                   >펀딩 참여하기
                   </Button>
+                  <Modal open={modalOpen} close={closeModal} header="펀딩 감사합니다!">
+                    {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
+                    <div className="modalMent">펀딩 금액을 입력해주세요.</div>
+                    <FormControl sx={{ width: '100%', }}>
+                      <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-amount"
+                        startAdornment={<InputAdornment position="start">￦</InputAdornment>}
+                        label="금액"
+                        inputProps={{ min: 0 }}
+                      // value={}
+                      // onChange={}
+                      />
+                    </FormControl>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        color: 'white',
+                        marginTop: '20px',
+                        marginLeft: '335px',
+                      }}
+                    // onClick={}
+                    >
+                      펀딩하기
+                    </Button>
+                  </Modal>
                 </div>
               ) : (
                 <div className="marginBottom10">펀딩을 진행하지 않는 캠페인입니다.</div>
@@ -252,11 +330,16 @@ const CampaignDetail = () => {
             {campaignComments.length > 0 ? (
               campaignComments.map((campaignComment) => (
                 <div className="campaignCommentDiv" key={campaignComment.id}>
+                  <div className="campaignCommentUser">
+                    {campaignComment.user}
+                  </div>
                   <div className="campaignCommentContent">
                     {campaignComment.content}
                   </div>
-                  <span>{campaignComment.user}</span><br />
-                  <span>{campaignComment.created_at}</span><br />
+                  <div className="campaignCommentCreatedAt">
+                    {campaignComment.created_at}
+                  </div>
+                  <hr />
                 </div>
               ))
             ) : (
@@ -264,7 +347,31 @@ const CampaignDetail = () => {
                 <h2>작성된 댓글이 없습니다.</h2>
               </div>
             )}
-            <h2>캠페인 댓글 작성란 추가 예정</h2>
+            <TextField
+              id="filled-multiline-flexible"
+              label="댓글을 작성해주세요."
+              multiline
+              maxRows={3}
+              variant="filled"
+              sx={{
+                width: '70%',
+                marginRight: '20px',
+              }}
+              value={createComment}
+              onChange={handleCommentCreate}
+            />
+            <Button
+              variant="contained"
+              endIcon={<SendIcon />}
+              sx={{
+                color: 'white',
+                fontSize: '0.8rem',
+                marginTop: '10px',
+              }}
+              onClick={axiosCommentCreate}
+            >
+              작성하기
+            </Button>
           </TabPanel>
           <TabPanel value={value} index={1}>
             {campaignReviews.length > 0 ? (

@@ -15,6 +15,13 @@ a {
     color: black;
 }
 
+hr {
+    background:rgb(207, 207, 207);
+    height:1px;
+    border:0;
+    margin-top: 20px;
+}
+
 
 .campaignBadge, .campaignDangerBadge {
     color: white;
@@ -114,16 +121,36 @@ a {
 }
 
 .campaignReviewDiv {
-    margin-bottom: 5%;
-}
-
-.campaignCommentDiv {
-    margin-bottom: 5%;
+    margin-bottom: 20px;
 }
 
 .campaignNothing {
     text-align: center;
     margin: 200px auto 200px auto;
+}
+
+/* comment */
+.campaignCommentDiv {
+    margin-bottom: 20px;
+}
+
+.campaignCommentUser {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+}
+
+.campaignCommentContent {
+    margin-bottom: 5px;
+}
+
+.campaignCommentCreatedAt {
+    color: gray;
+    font-size: 0.8rem;
+}
+
+.modalMent {
+    margin-bottom: 20px;
 }
 
 /* create */

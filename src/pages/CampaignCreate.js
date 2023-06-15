@@ -10,7 +10,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -60,6 +59,7 @@ const CampaignCreate = () => {
     formData.append('goal', campaignFundGoal);
     formData.append('current', 0);
     formData.append('approve_file', campaignApproveFile);
+
 
     try {
       const response = await axios.post(`http://localhost:8000/campaigns/`, formData, {
@@ -182,6 +182,7 @@ const CampaignCreate = () => {
             sx={{
               width: '100%',
             }}
+            inputProps={{ min: 0 }}
             onChange={handleCampaignMembers}
           />
         </div>
@@ -220,9 +221,8 @@ const CampaignCreate = () => {
                   onChange={handleCampaignStartDate}
                   label="날짜를 선택해주세요."
                   format="YYYY-MM-DD"
-                  defaultValue={dayjs('2022-04-17')}
                   sx={{
-                    width: '100%',
+                    marginRight: '30px',
                   }}
                 />
               </DemoContainer>
@@ -238,7 +238,6 @@ const CampaignCreate = () => {
                   onChange={handleCampaignEndDate}
                   label="날짜를 선택해주세요."
                   format="YYYY-MM-DD"
-                  defaultValue={dayjs('2022-04-17')}
                   sx={{
                     width: '100%',
                   }}
@@ -259,7 +258,9 @@ const CampaignCreate = () => {
                   onChange={handleActivityStartDate}
                   label="날짜를 선택해주세요."
                   format="YYYY-MM-DD"
-                  defaultValue={dayjs('2022-04-17')}
+                  sx={{
+                    marginRight: '30px',
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -274,7 +275,6 @@ const CampaignCreate = () => {
                   onChange={handleActivityEndDate}
                   label="날짜를 선택해주세요."
                   format="YYYY-MM-DD"
-                  defaultValue={dayjs('2022-04-17')}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -301,6 +301,7 @@ const CampaignCreate = () => {
               startAdornment={<InputAdornment position="start">￦</InputAdornment>}
               label="금액"
               disabled={!isFundChecked}
+              inputProps={{ min: 0 }}
               value={campaignFundGoal}
               onChange={handleCampaignFundGoal}
             />
