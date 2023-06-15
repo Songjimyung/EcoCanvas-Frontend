@@ -142,3 +142,18 @@ input {
   width: 400px;
   margin-right: 5px;
 }
+
+.productCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5%;
+  min-width: 750px;
+  justify-content: space-between;
+}
+
+.productCard {
+  margin-bottom: 5%;
+  min-width: 350px;
+  width: 35%;
+  font-family: var(--font-KCC-Ganpan);
+}

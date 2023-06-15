@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/MypageSidebar"
-import '../components/mypageSidebar/mypageSidebar.css'
-import { format } from 'date-fns';
+import Pagination from '@mui/material/Pagination';
+import Sidebar from "../../components/mypageSidebar/MypageSidebar"
+import '../../components/mypageSidebar/mypageSidebar.css'
 import { Link } from 'react-router-dom';
-import campaign_default_image from '../img/campaign_default_image.jpg';
+import campaign_default_image from '../../img/campaign_default_image.jpg';
 
-const Mypage = () => {
+
+const MyPostCampaign = () => {
   const statusMap = {
     0: "미승인",
     1: "승인",
@@ -23,7 +24,7 @@ const Mypage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/mypage/attend/", {
+    fetch("http://127.0.0.1:8000/campaigns/mypage/participart/", {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -32,17 +33,17 @@ const Mypage = () => {
       console.log(response)
     ))
       .then(result => {
+        console.log(result)
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,
           content: campaign.content,
-          campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
-          activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
-          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd'),
+          campaign_end_date: campaign.campaign_end_date,
+          activity_start_date: campaign.activity_start_date,
+          activity_end_date: campaign.activity_end_date,
           image: campaign.image,
           status: campaign.status
         }));
-        console.log(result)
         setCampaignData(campaigns)
       })
   }, []);
@@ -55,7 +56,7 @@ const Mypage = () => {
     setCurrentPage(value);
   };
   return (
-    <>
+    <div>
       <div className="mypage-block">
         <Sidebar /><div className="card-section">
           {currentCards.length > 0 ? (
@@ -71,16 +72,16 @@ const Mypage = () => {
                 <Link to={`/campaign/${card.id}`}>
                   <h3>{card.title}</h3>
                 </Link>
-                <p>캠페인 현황: <span style={{ color: 'blue' }}>{statusMap[card.status]}</span></p>
+                <p>캠페인 현황 : <span style={{ color: 'blue' }}>{statusMap[card.status]}</span></p>
                 <p>캠페인 마감일: {card.campaign_end_date}</p>
-                <p>활동 시작일: {card.activity_start_date}</p>
-                <p>활동 마감일: {card.activity_start_date}</p>
+                <p>활동 시작일 : {card.activity_start_date}</p>
+                <p>활동 마감일 : {card.activity_start_date}</p>
               </div>
             ))
           ) : (
-            <h2>캠페인 참가 내역이 없습니다.</h2>
-          )}
-
+            <h2>캠페인 작성 내역이 없습니다.</h2>
+          )
+          }
         </div>
       </div>
       <div className="pagination-container">
@@ -92,8 +93,9 @@ const Mypage = () => {
           size="large"
         />
       </div>
-    </>
+    </div>
   );
 };
 
-export { Mypage };
+
+export { MyPostCampaign };
