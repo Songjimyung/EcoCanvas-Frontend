@@ -31,6 +31,7 @@ import { MyOrder } from './pages/mypagelist/myOrder';
 import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
+import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -95,6 +96,7 @@ function App() {
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin_home" element={<AdminHome />}></Route>
             <Route path="/admin_users" element={<UserList />} />
+            <Route path="/admin_campaign" element={<ApplyListCampaign />} />
             <Route path="/admin_users/:userId" element={<User />} />
             <Route path="/admin_createUser" element={<CreateUser />} />
             <Route path="/admin_products" element={<ProductList />} />

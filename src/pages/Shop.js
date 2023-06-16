@@ -18,10 +18,9 @@ const Shop = () => {
   const [productList, setProductList] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [categoryList, setCategoryList] = useState([]);
+  const [sortBy, setSortBy] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState('latest'); // Initialize sortBy state with 'latest'
-  const productPerPage = 6;
-
+  const [totalPages, setTotalPages] = useState(0);
 
   const handleCategorySelect = (event) => {
     const selectedCategoryId = event.target.value;
@@ -41,10 +40,9 @@ const Shop = () => {
     e.target.src = product_default_img;
   };
 
-  const handlePageChange = (event, page) => {
+  const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-
   useEffect(() => {
     const fetchProductList = async () => {
       try {
@@ -54,29 +52,19 @@ const Shop = () => {
           url += `${categoryId}/`;
         }
         if (sortBy === 'hits') {
-          if (categoryId) {
-            url += 'hits/';
-          } else {
-            alert("카테고리를 선택해주세요!")
-          }
+          url += '?sort_by=hits';
+        } else if (sortBy === 'highprice') {
+          url += '?sort_by=high_price';
+        } else if (sortBy === 'lowprice') {
+          url += '?sort_by=low_price';
         }
-        if (sortBy === 'highprice') {
-          if (categoryId) {
-            url += 'highprice/';
-          } else {
-            alert("카테고리를 선택해주세요!")
-          }
-        }
-        if (sortBy === 'lowprice') {
-          if (categoryId) {
-            url += 'lowprice/';
-          } else {
-            alert("카테고리를 선택해주세요!")
-          }
-        }
+
+        url += `?page=${currentPage}`;
+
         const response = await axios.get(url);
-        setProductList(response.data);
-        console.log(response.data);
+        setProductList(response.data.results);
+        setTotalPages(response.data.count);
+        console.log(response.data)
       } catch (error) {
         console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
@@ -92,15 +80,7 @@ const Shop = () => {
     };
     fetchProductList();
     fetchCategoryList();
-  }, [categoryId, sortBy]);
-
-
-
-  const indexOfLastProduct = currentPage * productPerPage;
-  // 현재페이지의 첫 인덱스 (현재 페이지의 마지막 인덱스 - 한 페이지당 6개의 캠페인)
-  const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  // 캠페인 개수를 currentPage의 첫 인덱스부터, 끝 인덱스까지 (2페이지면 7~12)
-  const currentProduct = productList.slice(indexOfFirstProduct, indexOfLastProduct);
+  }, [categoryId, sortBy, currentPage]);
 
   return (
     <div>
@@ -125,7 +105,7 @@ const Shop = () => {
       </header>
       <main>
         <div className="productCardContainer">
-          {currentProduct.map((product) => (
+          {productList.map((product) => (
             <Card sx={{ maxWidth: 450 }} key={product.id} className="productCard">
               <Link to={`/product/${product.id}`}>
                 <CardActionArea>
@@ -156,7 +136,7 @@ const Shop = () => {
         </div >
         <Grid container justifyContent="center">
           <Pagination
-            count={Math.ceil(productList.length / productPerPage)}
+            count={Math.ceil(totalPages)}
             page={currentPage}
             color="primary"
             onChange={handlePageChange}
