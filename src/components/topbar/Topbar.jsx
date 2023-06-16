@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import './Topbar.css';
+import './topbar.css';
 import { Link } from 'react-router-dom';
 
 
@@ -19,6 +19,7 @@ export default function Topbar() {
     localStorage.removeItem('refresh');
     localStorage.removeItem('payload');
     setIsLoggedIn(false);
+    alert("로그아웃 되었습니다.")
   };
 
   return (

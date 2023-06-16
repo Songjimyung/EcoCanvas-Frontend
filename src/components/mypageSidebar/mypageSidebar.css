@@ -1,0 +1,60 @@
+.mypage-sidebar {
+  width: 200px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.mypage-sidebar-wrap1 {
+  display: flex;
+  height: calc(90vh - 50px);
+  position: stricky;
+  top: 50px;
+  width: 250px;
+  margin-right: 100px;
+  margin-top: 50px;
+  border-right: 1px solid rgb(230, 228, 228);
+  border-top: 1px solid rgb(230, 228, 228);
+  border-bottom: 1px solid rgb(230, 228, 228);
+}
+
+.mypage-wrap {
+  width: 200px;
+}
+
+.myprofile {
+  width: 70%;
+  height: 150px;
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-radius: 100px;
+  background-color: rgb(46, 116, 245);
+}
+
+.mypage-block {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  height: 300px;
+}
+
+.card {
+  width: 200px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  margin-right: 40px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}

@@ -24,7 +24,12 @@ import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
 import { CallbackKakao } from './pages/kakaocallback';
 import { CallbackGoogle } from './pages/GoogleCallback';
-
+import { MyPostCampaign } from './pages/mypagelist/myCampaign'
+import { MyLikes } from './pages/mypagelist/myLikes'
+import { MyDelivery } from './pages/mypagelist/myDelivery';
+import { MyOrder } from './pages/mypagelist/myOrder';
+import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
+import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
@@ -51,6 +56,7 @@ const theme = createTheme({
   },
 })
 
+// App 시작
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -82,6 +88,12 @@ function App() {
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
+            <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
+            <Route path="/mypage/myorders" element={<MyOrder />}></Route>
+            <Route path="/mypage/mydelivery" element={<MyDelivery />}></Route>
+            <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
+            <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin_home" element={<AdminHome />}></Route>
             <Route path="/admin_users" element={<UserList />} />
             <Route path="/admin_users/:userId" element={<User />} />

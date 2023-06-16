@@ -62,6 +62,7 @@ const AuthForm = ({ type }) => {
         window.location.replace("/")
       }
     } catch (error) {
+      alert("이메일과 비밀번호를 확인해주세요.")
       console.log(error)
     }
   };
@@ -79,7 +80,7 @@ const AuthForm = ({ type }) => {
     );
   };
 
-const SocialGoogle = () => {
+  const SocialGoogle = () => {
     const handleGoogleLogin = () => {
       const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
 
