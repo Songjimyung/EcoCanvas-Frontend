@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
+import sharekakao from "../img/sharekakao.webp"
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,6 +17,18 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 
+// modal
+import Modal from "../components/modal/Modal"
+
+// share
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  TwitterShareButton,
+} from "react-share";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+
 
 const Campaign = () => {
   const [campaignList, setCampaignList] = useState([]);
@@ -25,7 +38,7 @@ const Campaign = () => {
   useEffect(() => {
     const axiosCampaignList = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/campaigns');
+        const response = await axios.get('http://localhost:8000/campaigns/');
         setCampaignList(response.data);
         console.log(response.data);
       } catch (error) {
@@ -55,8 +68,68 @@ const Campaign = () => {
   // 캠페인 개수를 currentPage의 첫 인덱스부터, 끝 인덱스까지 (2페이지면 7~12)
   const currentCampaigns = campaignList.slice(indexOfFirstCampaign, indexOfLastCampaign);
 
+  // 좋아요
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 좋아요
+  const handleLikeButton = (campaignId) => {
+    setIsLiked(!isLiked);
+    axiosLike(campaignId);
+  };
+  // 좋아요 누른상태인지 상태확인 get함수
+  const token = localStorage.getItem('access')
+
+  // const axiosCampaignLikeStatus = async (campaignId) => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:8000/campaigns/${campaignId}/like/`, {
+  //       headers: {
+  //         "Authorization": `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log(response)
+  //     console.log(response.data.is_liked)
+  //     setIsLiked(response.data.is_liked);
+  //   } catch (error) {
+  //     console.error('좋아요 상태 불러오기 실패:', error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   axiosCampaignLikeStatus();
+  // }, []);
+
+  // 좋아요 axios
+  const axiosLike = async (campaignId) => {
+    try {
+      const response = await axios.post(`http://localhost:8000/campaigns/${campaignId}/like/`, {}, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setIsLiked(response.data.is_liked);
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Share Modal
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
+  const openShareModal = () => {
+    setShareModalOpen(true);
+  };
+  const closeShareModal = () => {
+    setShareModalOpen(false);
+  };
+  // Share url
+  const currentUrl = window.location.href;
+  const generateCampaignUrl = (campaignId) => {
+    return `${currentUrl}/${campaignId}`;
+  };
+
+
   return (
-    <>
+    <div className="campaignContainer">
       <h1>캠페인 둘러보기</h1>
 
       <div className="campaignCardContainer">
@@ -93,19 +166,59 @@ const Campaign = () => {
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
-                    달성률(%) 모금금액
+                    {Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성 <br />
+                    인원 : {campaign.participant.length} / {campaign.members}
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Link>
 
             <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
+              <IconButton
+                aria-label="add to favorites"
+                onClick={() => {
+                  handleLikeButton(campaign.id);
+                }}
+              >
+                <FavoriteIcon
+                  sx={{ color: isLiked ? 'red' : '', }} />
               </IconButton>
-              <IconButton aria-label="share">
+              <IconButton
+                aria-label="share"
+                onClick={openShareModal}>
                 <ShareIcon />
               </IconButton>
+              <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
+                {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
+                <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, 모달 여섯개씩 켜지고있는 것 같음. 항상 끝자리 캠페인으로 Share)</div>
+                <div>
+                  <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
+                    <button
+                      className="shareUrlBtn"
+                      onClick={() => alert("복사 완료!")}>
+                      URL
+                    </button>
+                  </CopyToClipboard>
+                  <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
+                    <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                  </FacebookShareButton>
+                  <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
+                    <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                  </TwitterShareButton>
+                  <button
+                    className="shareKakaoBtn"
+                    style={{
+                      padding: '0',
+                      backgroundColor: 'transparent'
+                    }}>
+                    <img
+                      src={sharekakao}
+                      alt="kakaoShareButton"
+                      className="shareKakaoBtn" />
+                  </button>
+                </div>
+
+              </Modal>
             </CardActions>
           </Card>
         ))}
@@ -122,7 +235,7 @@ const Campaign = () => {
           onChange={handlePageChange}
         />
       </Grid>
-    </>
+    </div>
   );
 };
 

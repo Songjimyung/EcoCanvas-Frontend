@@ -19,6 +19,7 @@ export default function Topbar() {
     localStorage.removeItem('refresh');
     localStorage.removeItem('payload');
     setIsLoggedIn(false);
+    alert("로그아웃 되었습니다.")
   };
 
   return (

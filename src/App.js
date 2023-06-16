@@ -57,6 +57,7 @@ const theme = createTheme({
   },
 })
 
+// App 시작
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
