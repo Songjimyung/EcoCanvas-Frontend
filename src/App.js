@@ -15,7 +15,7 @@ import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
 import BuyProduct from './pages/BuyProduct';
 import { AdminHome } from "./admin_pages/admin_home/admin_Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
 import User from "./admin_pages/user/User"
 import CreateUser from "./admin_pages/createUser/CreateUser"
@@ -60,6 +60,8 @@ const theme = createTheme({
 // App 시작
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const location = useLocation();
+  const isMypage = location.pathname === '/mypage';
 
   useEffect(() => {
     const payload = localStorage.getItem('payload');
@@ -76,7 +78,7 @@ function App() {
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
-          {!isAdmin ? <Sidebar /> : <AdminSidebar />}
+          {!isAdmin ? <Sidebar /> : (isMypage ? null : <AdminSidebar />)}
           {/* <AdminSidebar /> */}
           <Routes>
             <Route path="/" element={<Home />}></Route>

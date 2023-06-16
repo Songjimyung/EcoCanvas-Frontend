@@ -10,13 +10,14 @@ export default function ProductList() {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/shop/products/list/", {
+    fetch("http://127.0.0.1:8000/shop/products/admin/list/", {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => response.json())
       .then(result => {
+        console.log(result)
         const products = result.map((product, index) => ({
           index: index,
           id: product.id,

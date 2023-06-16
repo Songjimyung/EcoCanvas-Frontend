@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import './applycampaignList.css'
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Typography } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
-import moment from 'moment';
 
 
 
@@ -140,7 +139,7 @@ export default function ApplyListCampaign() {
                 </tr>
               ))
             ) : (
-              <h2>주문내역이 없습니다.</h2>
+              <h2>캠페인 신청 내역이 없습니다.</h2>
             )}
           </tbody>
         </table>
