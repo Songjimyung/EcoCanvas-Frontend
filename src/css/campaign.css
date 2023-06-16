@@ -101,6 +101,31 @@ hr {
     display: flex;
 }
 
+.modalMent {
+    margin-bottom: 20px;
+}
+
+.shareUrlBtn {
+    width: 48px;
+    height: 48px;
+    color: white;
+    border-radius: 24px;
+    border: 0px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #3eac3e;
+    top: 0px;
+}
+
+.shareKakaoBtn {
+    width: 48px;
+    height: 48px;
+    /* border-radius: 24px; */
+    /* border: 0px; */
+    cursor: pointer;
+}
+
 @media (max-width: 800px) {
     .campaignContentDiv {
         display: flex;
@@ -147,10 +172,6 @@ hr {
 .campaignCommentCreatedAt {
     color: gray;
     font-size: 0.8rem;
-}
-
-.modalMent {
-    margin-bottom: 20px;
 }
 
 /* create */

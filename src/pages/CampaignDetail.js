@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
+import sharekakao from "../img/sharekakao.webp"
 
 // MUI
 import PropTypes from 'prop-types';
@@ -17,8 +18,18 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+
 // modal
 import Modal from "../components/modal/Modal"
+
+// share
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  TwitterShareButton,
+} from "react-share";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 // Mui Tab
 function TabPanel(props) {
@@ -88,7 +99,6 @@ const CampaignDetail = () => {
   const [campaign, setCampaign] = useState('');
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
-  const [isLiked, setIsLiked] = useState(false);
 
   // comment POST
   const [createComment, setCreateComment] = useState('');
@@ -101,46 +111,48 @@ const CampaignDetail = () => {
   };
 
   // 캠페인 디테일 GET
+  const axiosCampaignDetail = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
+      setCampaign(response.data);
+      console.log(response.data);
+      setLikeCount(response.data.like.length);
+    } catch (error) {
+      console.error("캠페인 디테일 불러오기 실패:", error);
+    }
+  };
   useEffect(() => {
-    const fetchCampaignDetail = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
-        setCampaign(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching campaign detail:", error);
-      }
-    };
-    fetchCampaignDetail();
+    axiosCampaignDetail();
+    // eslint-disable-next-line
   }, [id]);
 
   // 캠페인 댓글 GET
-  const fetchCampaignComment = async () => {
+  const axiosCampaignComment = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
       console.log(response.data);
     } catch (error) {
-      console.error("Error fetching campaign comment:", error);
+      console.error("캠페인 댓글 불러오기 실패:", error);
     }
   };
   useEffect(() => {
-    fetchCampaignComment();
+    axiosCampaignComment();
     // eslint-disable-next-line
   }, []);
 
   // 캠페인 리뷰 GET
   useEffect(() => {
-    const fetchCampaignReview = async () => {
+    const axiosCampaignReview = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/campaigns/review/${id}/`);
         setCampaignReview(response.data);
         console.log(response.data);
       } catch (error) {
-        console.error("Error fetching campaign review:", error);
+        console.error("캠페인 리뷰 불러오기 실패:", error);
       }
     };
-    fetchCampaignReview();
+    axiosCampaignReview();
   }, [id]);
 
   const getImageUrl = (imagePath) => {
@@ -150,11 +162,6 @@ const CampaignDetail = () => {
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image
   }
-
-  // 좋아요 버튼 함수
-  const handleLikeButton = () => {
-    setIsLiked(!isLiked);
-  };
 
   // 댓글 POST
   const token = localStorage.getItem('access')
@@ -172,7 +179,7 @@ const CampaignDetail = () => {
       alert("댓글 작성 성공!");
       console.log(response)
       // 작성 후 바로 댓글 재렌더링시키기
-      fetchCampaignComment();
+      axiosCampaignComment();
     } catch (error) {
       alert("댓글 작성에 실패했습니다.");
       console.log(error);
@@ -183,15 +190,72 @@ const CampaignDetail = () => {
     setCreateComment(event.target.value);
   };
 
-  // Modal
-  const [modalOpen, setModalOpen] = useState(false);
+  // Fund Modal
+  const [fundModalOpen, setFundModalOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
+  const openFundModal = () => {
+    setFundModalOpen(true);
   };
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeFundModal = () => {
+    setFundModalOpen(false);
   };
+  // Share Modal
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
+  const openShareModal = () => {
+    setShareModalOpen(true);
+  };
+  const closeShareModal = () => {
+    setShareModalOpen(false);
+  };
+
+  // 좋아요
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  // 좋아요 빨갛게 하는 함수
+  const handleLikeButton = () => {
+    setIsLiked(!isLiked);
+  };
+  // 좋아요 누른상태인지 상태확인 get함수
+  const axiosCampaignLikeStatus = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/${id}/like/`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      console.log(response)
+      console.log(response.data.is_liked)
+      setIsLiked(response.data.is_liked);
+    } catch (error) {
+      console.error('좋아요 상태 불러오기 실패:', error);
+    }
+  };
+  useEffect(() => {
+    axiosCampaignLikeStatus();
+    // eslint-disable-next-line
+  }, []);
+
+  // 좋아요 axios
+  const axiosLike = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/campaigns/${id}/like/`, {}, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setIsLiked(response.data.is_liked);
+      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Share url
+  const currentUrl = window.location.href;
+
 
   return (
     <div className="campaignContainer">
@@ -222,10 +286,10 @@ const CampaignDetail = () => {
                     color="primary"
                     sx={{ color: 'white', marginLeft: '25px', }}
                     disabled={campaign.status >= 4}
-                    onClick={openModal}
+                    onClick={openFundModal}
                   >펀딩 참여하기
                   </Button>
-                  <Modal open={modalOpen} close={closeModal} header="펀딩 감사합니다!">
+                  <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
                     {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
                     <div className="modalMent">펀딩 금액을 입력해주세요.</div>
                     <FormControl sx={{ width: '100%', }}>
@@ -267,9 +331,12 @@ const CampaignDetail = () => {
                     marginRight: '30px',
                   }}
                   disabled={campaign.status >= 4}
-                  onClick={handleLikeButton}
+                  onClick={() => {
+                    handleLikeButton();
+                    axiosLike();
+                  }}
                 >
-                  💕 {campaign.like.length}
+                  ❤ {likeCount}
                 </Button>
                 <Button
                   variant="outlined"
@@ -281,9 +348,41 @@ const CampaignDetail = () => {
                     marginRight: '30px',
                   }}
                   disabled={campaign.status >= 4}
+                  onClick={openShareModal}
                 >
                   <ShareIcon />
                 </Button>
+                <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
+                  {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
+                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현)</div>
+                  <div>
+                    <CopyToClipboard text={currentUrl}>
+                      <button
+                        className="shareUrlBtn"
+                        onClick={() => alert("복사 완료!")}>
+                        URL
+                      </button>
+                    </CopyToClipboard>
+                    <FacebookShareButton url={currentUrl}>
+                      <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                    </FacebookShareButton>
+                    <TwitterShareButton url={currentUrl}>
+                      <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                    </TwitterShareButton>
+                    <button
+                      className="shareKakaoBtn"
+                      style={{
+                        padding: '0',
+                        backgroundColor: 'transparent'
+                      }}>
+                      <img
+                        src={sharekakao}
+                        alt="kakaoShareButton"
+                        className="shareKakaoBtn" />
+                    </button>
+                  </div>
+
+                </Modal>
                 <Button
                   variant="contained"
                   color="primary"
