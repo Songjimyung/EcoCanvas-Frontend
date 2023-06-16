@@ -115,10 +115,9 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
       setCampaign(response.data);
-      console.log(response.data);
       setLikeCount(response.data.like.length);
     } catch (error) {
-      console.error("캠페인 디테일 불러오기 실패:", error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -131,9 +130,8 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
-      console.log(response.data);
     } catch (error) {
-      console.error("캠페인 댓글 불러오기 실패:", error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -147,9 +145,9 @@ const CampaignDetail = () => {
       try {
         const response = await axios.get(`http://localhost:8000/campaigns/review/${id}/`);
         setCampaignReview(response.data);
-        console.log(response.data);
+
       } catch (error) {
-        console.error("캠페인 후기 불러오기 실패:", error);
+        console.log(error)
       }
     };
     axiosCampaignReview();
@@ -176,13 +174,13 @@ const CampaignDetail = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
-      alert("댓글 작성 성공!");
       console.log(response)
+      alert("댓글 작성 성공!");
       // 작성 후 바로 댓글 재렌더링시키기
       axiosCampaignComment();
     } catch (error) {
+      console.log(error)
       alert("댓글 작성에 실패했습니다.");
-      console.log(error);
     }
   };
 
@@ -244,11 +242,9 @@ const CampaignDetail = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
-      console.log(response)
-      console.log(response.data.is_liked)
       setIsLiked(response.data.is_liked);
     } catch (error) {
-      console.error('좋아요 상태 불러오기 실패:', error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -266,9 +262,45 @@ const CampaignDetail = () => {
       });
       setIsLiked(response.data.is_liked);
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-      console.log(response)
     } catch (error) {
-      console.log(error);
+      console.log(error)
+    }
+  };
+  // 캠페인 참여
+  const [isParticipated, setIsParticipated] = useState(false);
+
+  // 캠페인 참여정보 초기값 GET
+  const axiosParticipateStatus = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/${id}/participation/`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setIsParticipated(response.data.is_participated);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  useEffect(() => {
+    axiosParticipateStatus();
+    // eslint-disable-next-line
+  }, []);
+  // 캠페인 참여 axios
+  const axiosParticipate = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/campaigns/${id}/participation/`, {}, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      console.log(response)
+      setIsParticipated(response.data.is_participated);
+      console.log(isParticipated)
+      isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
+    } catch (error) {
+      console.log(error)
+      alert("캠페인 참여에 실패했습니다.")
     }
   };
 
@@ -412,6 +444,7 @@ const CampaignDetail = () => {
                     color: 'white',
                   }}
                   disabled={campaign.status.includes("종료")}
+                  onClick={axiosParticipate}
                 >
                   캠페인 참여하기
                 </Button>
