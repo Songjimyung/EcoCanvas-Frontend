@@ -38,7 +38,12 @@ const Campaign = () => {
   useEffect(() => {
     const axiosCampaignList = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/campaigns/');
+        const token = localStorage.getItem('access');
+        const response = await axios.get('http://localhost:8000/campaigns/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setCampaignList(response.data);
         console.log(response.data);
       } catch (error) {
@@ -166,7 +171,7 @@ const Campaign = () => {
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
-                    {Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성 <br />
+                    {/* {Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성 <br /> */}
                     인원 : {campaign.participant.length} / {campaign.members}
                   </Typography>
                 </CardContent>

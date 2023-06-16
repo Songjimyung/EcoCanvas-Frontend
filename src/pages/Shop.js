@@ -136,7 +136,7 @@ const Shop = () => {
         </div >
         <Grid container justifyContent="center">
           <Pagination
-            count={Math.ceil(totalPages)}
+            count={Math.ceil(totalPages / currentPage)}
             page={currentPage}
             color="primary"
             onChange={handlePageChange}
