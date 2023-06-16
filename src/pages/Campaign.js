@@ -166,7 +166,11 @@ const Campaign = () => {
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
-                    {Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성 <br />
+                    {campaign.fundings && campaign.fundings.goal !== 0 ? (
+                      <>{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성<br /></>
+                    ) : (
+                      <div>펀딩이 없는 캠페인입니다.</div>
+                    )}
                     인원 : {campaign.participant.length} / {campaign.members}
                   </Typography>
                 </CardContent>
