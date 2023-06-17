@@ -216,7 +216,6 @@ const CampaignDetail = () => {
       return newState;
     });
   };
-
   const closeReviewModal = (event, index) => {
     event.stopPropagation();
     setReviewModalOpen((prevState) => {

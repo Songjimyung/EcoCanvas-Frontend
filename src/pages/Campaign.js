@@ -115,13 +115,22 @@ const Campaign = () => {
   };
 
   // Share Modal
-  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState([]);
 
-  const openShareModal = () => {
-    setShareModalOpen(true);
+  const openShareModal = (index) => {
+    setShareModalOpen((prevState) => {
+      const newState = [...prevState];
+      newState[index] = true;
+      return newState;
+    });
   };
-  const closeShareModal = () => {
-    setShareModalOpen(false);
+  const closeShareModal = (event, index) => {
+    event.stopPropagation();
+    setShareModalOpen((prevState) => {
+      const newState = [...prevState];
+      newState[index] = false;
+      return newState;
+    });
   };
   // Share url
   const currentUrl = window.location.href;
@@ -151,7 +160,7 @@ const Campaign = () => {
           </Link>
         </Grid>
 
-        {campaignList.map((campaign) => (
+        {campaignList.map((campaign, index) => (
           <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
@@ -177,56 +186,57 @@ const Campaign = () => {
                     ) : (
                       <div>펀딩이 없는 캠페인입니다.</div>
                     )}
-                    인원 : {campaign.participant.length} / {campaign.members}
+                    참여인원 : {campaign.participant.length} / {campaign.members}
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Link>
 
             <CardActions disableSpacing>
-              <IconButton
-                aria-label="add to favorites"
-                onClick={() => {
-                  handleLikeButton(campaign.id);
-                }}
-              >
-                <FavoriteIcon
-                  sx={{ color: isLiked ? 'red' : '', }} />
-              </IconButton>
-              <IconButton
-                aria-label="share"
-                onClick={openShareModal}>
-                <ShareIcon />
-              </IconButton>
-              <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, 모달 여섯개씩 켜지고있는 것 같음. 항상 끝자리 캠페인으로 Share)</div>
-                <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
+              <div key={campaign.id}>
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={() => {
+                    handleLikeButton(campaign.id);
+                  }}
+                >
+                  <FavoriteIcon
+                    sx={{ color: isLiked ? 'red' : '', }} />
+                </IconButton>
+                <IconButton
+                  aria-label="share"
+                  onClick={() => openShareModal(index)}>
+                  <ShareIcon />
+                </IconButton>
+                <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
+                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, URL이 이상하게잡히는 오류있음)</div>
+                  <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
+                    <button
+                      className="shareUrlBtn"
+                      onClick={() => alert("복사 완료!")}>
+                      URL
+                    </button>
+                  </CopyToClipboard>
+                  <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
+                    <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                  </FacebookShareButton>
+                  <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
+                    <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                  </TwitterShareButton>
                   <button
-                    className="shareUrlBtn"
-                    onClick={() => alert("복사 완료!")}>
-                    URL
+                    className="shareKakaoBtn"
+                    style={{
+                      padding: '0',
+                      backgroundColor: 'transparent'
+                    }}>
+                    <img
+                      src={sharekakao}
+                      alt="kakaoShareButton"
+                      className="shareKakaoBtn" />
                   </button>
-                </CopyToClipboard>
-                <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
-                  <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                </FacebookShareButton>
-                <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
-                  <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                </TwitterShareButton>
-                <button
-                  className="shareKakaoBtn"
-                  style={{
-                    padding: '0',
-                    backgroundColor: 'transparent'
-                  }}>
-                  <img
-                    src={sharekakao}
-                    alt="kakaoShareButton"
-                    className="shareKakaoBtn" />
-                </button>
 
-
-              </Modal>
+                </Modal>
+              </div>
             </CardActions>
           </Card>
         ))}
