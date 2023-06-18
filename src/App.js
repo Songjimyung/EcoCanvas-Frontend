@@ -32,6 +32,7 @@ import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
+import { MyProfile } from './pages/mypagelist/myprofile'
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -61,7 +62,7 @@ const theme = createTheme({
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
-  const isMypage = location.pathname === '/mypage';
+  const isMypage = location.pathname.startsWith('/mypage');
 
   useEffect(() => {
     const payload = localStorage.getItem('payload');
@@ -91,6 +92,7 @@ function App() {
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/mypage/profile" element={<MyProfile />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>

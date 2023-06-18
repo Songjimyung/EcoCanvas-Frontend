@@ -4,6 +4,7 @@ import axios from "axios";
 import '../css/product.css'
 import { Card, Grid, Typography, Button, IconButton, CircularProgress } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
+import product_default_img from '../img/sample_product.png';
 
 
 const ShopDetail = () => {
@@ -36,9 +37,11 @@ const ShopDetail = () => {
         ) : (
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              {product.images && product.images.length > 0 && (
-                <img src={`http://localhost:8000${product.images[0]['image_file']}`} alt={product.name} style={{ height: '100%', objectFit: 'cover', marginTop: '20px' }} />
-              )}
+              <img
+                src={product.images && product.images.length > 0 ? `http://localhost:8000${product.images[0]['image_file']}` : product_default_img}
+                alt={product.name}
+                style={{ height: '100%', objectFit: 'cover', marginTop: '20px' }}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <div className="product-detail-info">

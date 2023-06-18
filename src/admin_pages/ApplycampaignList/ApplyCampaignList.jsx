@@ -25,7 +25,7 @@ export default function ApplyListCampaign() {
       .then(response => response.json())
       .then(result => {
         console.log(result)
-        console.log(result[2]['fundings']['approve_file'])
+
         const campaignApplication = result.map((campaign) => {
           const approveFile = campaign.fundings && campaign.fundings.approve_file ? campaign.fundings.approve_file : '';
           const goal = campaign.fundings && campaign.fundings.goal ? campaign.fundings.goal : '';
@@ -52,6 +52,7 @@ export default function ApplyListCampaign() {
         });
 
         setApplyData(campaignApplication);
+
       });
   }, []);
 
@@ -60,7 +61,7 @@ export default function ApplyListCampaign() {
     let updatedCampaign = { ...selectedApply };
 
     if (action === 'approve') {
-      updatedCampaign = { ...updatedCampaign, status: '1' };
+      updatedCampaign = { ...updatedCampaign, status: '2' };
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
@@ -74,9 +75,10 @@ export default function ApplyListCampaign() {
 
     })
       .then(() => {
-        console.log(`캠페인 상태변경(${action === 'approve' ? '승인' : '반려'})이 완료되었습니다.`);
+        alert(`캠페인 상태변경(${action === 'approve' ? '승인' : '반려'})이 완료되었습니다.`);
         setSelectedApply(null);
         setOpen(false);
+        window.location.reload();
       })
       .catch(error => {
         console.error(error);
@@ -98,7 +100,6 @@ export default function ApplyListCampaign() {
     setOpen(true);
 
   };
-
 
   const handleClose = () => {
     setSelectedApply(null);
@@ -132,7 +133,7 @@ export default function ApplyListCampaign() {
                   <td>{campaign.id}</td>
                   <td>{campaign.title}</td>
                   <td>{campaign.is_funding ? 'Yes' : 'No'}</td>
-                  <td style={{ color: campaign.status === '미승인' ? 'red' : 'black' }}>
+                  <td style={{ color: campaign.status === '미승인' ? 'red' : campaign.status === '캠페인 모집중' ? 'blue' : 'black' }}>
                     {campaign.status}
                   </td>                  <td>{campaign.user}</td>
                   <td><button className="details-button" onClick={() => handleOpen(campaign.id)}>세부 정보 보기</button></td>
