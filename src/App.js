@@ -15,9 +15,10 @@ import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
 import BuyProduct from './pages/BuyProduct';
 import { AdminHome } from "./admin_pages/admin_home/admin_Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
 import User from "./admin_pages/user/User"
+import { AdminOrderList } from "./admin_pages/orderList/OrderList"
 import CreateUser from "./admin_pages/createUser/CreateUser"
 import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
@@ -26,11 +27,13 @@ import { CallbackKakao } from './pages/kakaocallback';
 import { CallbackGoogle } from './pages/GoogleCallback';
 import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
-import { MyDelivery } from './pages/mypagelist/myDelivery';
+import DeliveryTracking from './pages/mypagelist/myDelivery';
 import { MyOrder } from './pages/mypagelist/myOrder';
 import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
+import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
+import { MyProfile } from './pages/mypagelist/myprofile'
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -59,6 +62,8 @@ const theme = createTheme({
 // App 시작
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const location = useLocation();
+  const isMypage = location.pathname.startsWith('/mypage');
 
   useEffect(() => {
     const payload = localStorage.getItem('payload');
@@ -75,7 +80,7 @@ function App() {
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
-          {!isAdmin ? <Sidebar /> : <AdminSidebar />}
+          {!isAdmin ? <Sidebar /> : (isMypage ? null : <AdminSidebar />)}
           {/* <AdminSidebar /> */}
           <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -88,14 +93,17 @@ function App() {
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
+            <Route path="/mypage/profile" element={<MyProfile />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
-            <Route path="/mypage/mydelivery" element={<MyDelivery />}></Route>
+            <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
             <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin_home" element={<AdminHome />}></Route>
+            <Route path="/admin_orderlist" element={<AdminOrderList />}></Route>
             <Route path="/admin_users" element={<UserList />} />
+            <Route path="/admin_campaign" element={<ApplyListCampaign />} />
             <Route path="/admin_users/:userId" element={<User />} />
             <Route path="/admin_createUser" element={<CreateUser />} />
             <Route path="/admin_products" element={<ProductList />} />

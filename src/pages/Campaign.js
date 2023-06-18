@@ -37,6 +37,21 @@ const Campaign = () => {
   const campaignsPerPage = 6;
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const axiosCampaignList = async () => {
+      try {
+        const token = localStorage.getItem('access');
+        const response = await axios.get('http://localhost:8000/campaigns/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCampaignList(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching campaign:', error);
+      }
+    };
   // Filter and Order with Querystring
   const [end, setEnd] = useState(null);
   const [order, setOrder] = useState("recent");
