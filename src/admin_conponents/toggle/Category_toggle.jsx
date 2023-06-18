@@ -11,7 +11,7 @@ function Toggle({ content }) {
     category_number
   };
   const handleSubmit = () => {
-    axios.post("http://127.0.0.1:8000/shop/category/", CategoryData)
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/shop/category/`, CategoryData)
       .then((response) => {
         console.log(response)
         alert("카테고리 등록 완료!")

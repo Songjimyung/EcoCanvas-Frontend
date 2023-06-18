@@ -32,7 +32,7 @@ export default function UserList() {
   useEffect(() => {
     const token = localStorage.getItem('access');
     console.log(token)
-    fetch("http://127.0.0.1:8000/users/list/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/list/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

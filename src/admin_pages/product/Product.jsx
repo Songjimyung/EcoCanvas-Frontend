@@ -18,7 +18,7 @@ export default function Product() {
   const [product, setProduct] = useState([]);
 // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/shop/products/" + id + "/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/` + id + "/", {
       method: 'GET',
     }).then(response => response.json())
       .then(result => {
