@@ -115,7 +115,7 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
       setCampaign(response.data);
-      setLikeCount(response.data.like.length);
+      setLikeCount(response.data.like_count);
     } catch (error) {
       console.log(error)
     }
@@ -216,7 +216,6 @@ const CampaignDetail = () => {
       return newState;
     });
   };
-
   const closeReviewModal = (event, index) => {
     event.stopPropagation();
     setReviewModalOpen((prevState) => {
@@ -319,7 +318,7 @@ const CampaignDetail = () => {
               <div className="campaignStatus">{campaign.status}</div>
               <div className="marginBottom10">{campaign.content}</div>
               <div className="marginBottom10">주최 : {campaign.user}</div>
-              <div className="marginBottom10">모집 인원 : {campaign.participant.length} / {campaign.members}</div>
+              <div className="marginBottom10">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
               <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
               <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
@@ -336,7 +335,7 @@ const CampaignDetail = () => {
                     variant="contained"
                     color="primary"
                     sx={{ color: 'white', marginLeft: '25px', }}
-                    disabled={campaign.status.includes("종료")}
+                    disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                     onClick={openFundModal}
                   >펀딩 참여하기
                   </Button>
@@ -381,7 +380,7 @@ const CampaignDetail = () => {
                     color: isLiked ? 'white' : 'red',
                     marginRight: '30px',
                   }}
-                  disabled={campaign.status.includes("종료")}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={() => {
                     handleLikeButton();
                     axiosLike();
@@ -398,7 +397,7 @@ const CampaignDetail = () => {
                     color: 'gray',
                     marginRight: '30px',
                   }}
-                  disabled={campaign.status.includes("종료")}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={openShareModal}
                 >
                   <ShareIcon />
@@ -443,7 +442,7 @@ const CampaignDetail = () => {
                     fontSize: '1.3rem',
                     color: 'white',
                   }}
-                  disabled={campaign.status.includes("종료")}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={axiosParticipate}
                 >
                   캠페인 참여하기
