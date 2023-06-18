@@ -7,16 +7,6 @@ import campaign_default_image from '../../img/campaign_default_image.jpg';
 
 
 const MyLikes = () => {
-  const statusMap = {
-    0: "미승인",
-    1: "승인",
-    2: "모집중",
-    3: "캠페인 활동중",
-    4: "종료",
-    5: "종료 - 펀딩 모금실패",
-    6: "종료 - 인원 모집실패",
-    7: "종료 - 둘 다 실패",
-  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignData, setCampaignData] = useState([])
@@ -68,7 +58,7 @@ const MyLikes = () => {
                 <Link to={`/campaign/${card.id}`}>
                   <h3>{card.title}</h3>
                 </Link>
-                <p>캠페인 현황 : <span style={{ color: 'blue' }}>{statusMap[card.status]}</span></p>
+                <p>캠페인 현황 : <span style={{ color: 'blue' }}>{card.status}</span></p>
               </div>
             ))
           ) : (

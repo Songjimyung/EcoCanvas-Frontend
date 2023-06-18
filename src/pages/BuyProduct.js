@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import '../css/product.css';
 import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
@@ -26,7 +26,8 @@ export default function BuyProduct() {
   });
   const [userId, setUserId] = useState('');
   const [zipcode, setZipcode] = useState('');
-
+  const [loadProfileAddress, setLoadProfileAddress] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const onToggleModal = () => {
     setIsOpen((prev) => !prev);
   };
@@ -34,6 +35,7 @@ export default function BuyProduct() {
     console.log(data);
     setAddress(data.address);
     setZipcode(data.zonecode);
+    setIsComplete(true);
     onToggleModal();
   };
   const increase = () => {
@@ -86,9 +88,27 @@ export default function BuyProduct() {
     fetchUserId();
   }, [productId]);
 
+
+  const handleProfile = (e) => {
+    const isChecked = e.target.checked;
+    setLoadProfileAddress(isChecked);
+    if (!isChecked) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        receiver_name: "",
+        receiver_number: "",
+        zip_code: "",
+        address: "",
+        address_detail: "",
+        address_message: "",
+      }));
+    }
+  }
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
+
     console.log(e.target.elements.receiver_number.value)
     const formData = new FormData();
     formData.append('zip_code', e.target.elements.zip_code.value);
@@ -121,10 +141,48 @@ export default function BuyProduct() {
       });
   };
 
+  useEffect(() => {
+    const fetchProfileAddress = async () => {
+      try {
+        const token = localStorage.getItem('access');
+        if (token) {
+          const response = await fetch(`http://localhost:8000/users/profile/`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const result = await response.json();
+          console.log(result);
+          const addressInfo = {
+            receiver_name: result.receiver_name,
+            receiver_number: result.receiver_number,
+            zip_code: result.zip_code,
+            address: result.address,
+            address_detail: result.address_detail,
+            address_message: result.address_message
+          };
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            ...addressInfo,
+          }));
+        }
+      } catch (error) {
+        console.error('오류', error);
+      }
+    };
+
+    if (loadProfileAddress) {
+      fetchProfileAddress();
+    }
+  }, [loadProfileAddress]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const columns = [
@@ -180,6 +238,10 @@ export default function BuyProduct() {
             <div className='product-detail-info'>
               <h1>ORDER</h1>
               <div className="createOrder">
+                <div className="addOrderItem">
+                  <label>기존 배송지 사용</label>
+                  <input type="checkbox" name="load_profile_address" onChange={handleProfile} />
+                </div>
                 <form className="addOrderForm" onSubmit={handleFormSubmit}>
                   <div className="addOrderItem">
                     <label>받으시는 분</label>
@@ -187,11 +249,11 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>휴대전화</label>
-                    <input type="tel" name="receiver_number" onChange={handleInputChange} maxLength="13" />
+                    <input type="tel" name="receiver_number" value={formData.receiver_number} onChange={handleInputChange} maxLength="13" />
                   </div>
                   <div className="addOrderItem">
                     <label>주소</label>
-                    <input type="address" name="address" value={Address} onChange={handleInputChange} className="order-address"></input>
+                    <input type="address" name="address" value={isComplete ? Address : formData.address} onChange={handleInputChange} className="order-address" />
                     <Button type="primary" className="addProductButton" onClick={onToggleModal}>
                       주소 검색
                     </Button>
@@ -207,15 +269,15 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>우편번호</label>
-                    <input type="address" name="zip_code" value={zipcode} onChange={handleInputChange} />
+                    <input type="address" name="zip_code" value={isComplete ? zipcode : formData.zip_code} onChange={handleInputChange} />
                   </div>
                   <div className="addOrderItem">
                     <label>상세주소</label>
-                    <input type="address" name="address_detail" onChange={handleInputChange} />
+                    <input type="address_detail" name="address_detail" value={formData.address_detail} onChange={handleInputChange} />
                   </div>
                   <div className="addOrderItem">
                     <label>배송메세지</label>
-                    <input type="text" name="address_message" onChange={handleInputChange} className="order-address" />
+                    <input type="text" name="address_message" value={formData.address_message} onChange={handleInputChange} className="order-address" />
                   </div>
                   <div className='check-order'>
                     <p>주문 수량 : {num}</p>

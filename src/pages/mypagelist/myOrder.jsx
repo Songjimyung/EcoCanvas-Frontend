@@ -2,51 +2,44 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../components/mypageSidebar/mypageSidebar.css";
 import "../../css/mypage.css";
-import { format } from 'date-fns';
 import Pagination from '@mui/material/Pagination';
+import Grid from '@mui/material/Grid';
+import axios from 'axios';
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [currentOrderPage, setCurrentOrderPage] = useState(1);
-  const cardsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    const token = localStorage.getItem('access');
+    const fetchOrderList = async () => {
+      const token = localStorage.getItem('access');
+      try {
+        let url = 'http://localhost:8000/shop/mypage/order/';
+        url += `?page=${currentPage}`;
 
-    fetch("http://127.0.0.1:8000/shop/mypage/order/", {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }); setMyOrderData(response.data.results);
+        const totalPages = Math.ceil(response.data.count / 6);
+        setTotalPages(totalPages);
+        console.log(response.data)
+      } catch (error) {
+        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
-    })
-      .then(response => response.json())
-      .then(result => {
-        const myorders = result.map((order) => ({
-          id: order.id,
-          product: order.product,
-          order_totalprice: order.order_totalprice,
-          status: order["order_info"][0]["status"],
-          zip_code: order.zip_code,
-          address: order.address,
-          address_detail: order.address_detail,
-          address_message: order.address_message,
-          order_date: format(new Date(order.order_date), 'yyyy-MM-dd'),
-          order_quantity: order.order_quantity,
-          receiver_name: order.receiver_name,
-          receiver_number: order.receiver_number
-        }));
-        setMyOrderData(myorders);
-      });
-  }, []);
+    };
+    fetchOrderList();
+  }, [currentPage]);
 
-  const handleOrderPageChange = (event, value) => {
-    setCurrentOrderPage(value);
+  const handlePageChange = async (event, page) => {
+    setCurrentPage(page);
   };
 
-  const indexOfLastOrderCard = currentOrderPage * cardsPerPage;
-  const indexOfFirstOrderCard = indexOfLastOrderCard - cardsPerPage;
-  const currentOrderCards = myorderData.slice(indexOfFirstOrderCard, indexOfLastOrderCard);
+
 
   const openModal = (orderId) => {
     setSelectedOrder(orderId);
@@ -78,13 +71,13 @@ const MyOrder = () => {
             </tr>
           </thead>
           <tbody>
-            {currentOrderCards.length > 0 ? (
-              currentOrderCards.map((order) => (
+            {myorderData.length > 0 ? (
+              myorderData.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.product}</td>
                   <td>{order.order_totalprice}</td>
-                  <td>{order.status}</td>
+                  <td>{order["order_info"][0]["status"] || "알 수 없음"}</td>
                   <td><button className="details-button" onClick={() => openModal(order.id)}>세부 정보 보기</button></td>
                 </tr>
               ))
@@ -93,15 +86,14 @@ const MyOrder = () => {
             )}
           </tbody>
         </table>
-        <div className="order-pagination">
+        <Grid container justifyContent="center">
           <Pagination
-            count={Math.ceil(myorderData.length / cardsPerPage)}
-            page={currentOrderPage}
-            onChange={handleOrderPageChange}
+            count={totalPages}
+            page={currentPage}
             color="primary"
-            size="large"
+            onChange={handlePageChange}
           />
-        </div>
+        </Grid>
       </div>
       <div id="orderModal" className="modal">
         <div className="modal-content">
@@ -115,7 +107,12 @@ const MyOrder = () => {
                   <p>수령인: {selectedOrderData.receiver_name}</p>
                   <p>상품명: {selectedOrderData.product}</p>
                   <p>가격: {selectedOrderData.order_totalprice}원</p>
-                  <p>주문상태: <span style={{ color: 'blue' }}>{selectedOrderData.status}</span></p>
+                  <p>
+                    주문상태:{" "}
+                    <span style={{ color: "blue" }}>
+                      {selectedOrderData["order_info"]?.[0]?.status || "알 수 없음"}
+                    </span>
+                  </p>
                   <p>주문일: {selectedOrderData.order_date}</p>
                 </div>
               </div>

@@ -5,7 +5,6 @@ import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp
 import LeaderboardSharpIcon from '@mui/icons-material/LeaderboardSharp';
 import GroupSharpIcon from '@mui/icons-material/GroupSharp';
 import StorefrontSharpIcon from '@mui/icons-material/StorefrontSharp';
-import CampaignSharpIcon from '@mui/icons-material/CampaignSharp';
 import PermPhoneMsgSharpIcon from '@mui/icons-material/PermPhoneMsgSharp';
 import { Link } from "react-router-dom";
 
@@ -40,7 +39,7 @@ export default function Adminsidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">캠페인/펀딩</h3>
           <ul className="sidebarList">
-            <Link to="/admin_home" className="link">
+            <Link to="/admin_campaign" className="link">
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 캠페인 신청내역
@@ -92,7 +91,7 @@ export default function Adminsidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">shop</h3>
           <ul className="sidebarList">
-            <Link to="/admin_home" className="link">
+            <Link to="/admin_orderlist" className="link">
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 주문내역

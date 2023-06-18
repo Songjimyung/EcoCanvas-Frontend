@@ -50,8 +50,10 @@ const MyReviewComment = () => {
           id: comment.id,
           content: comment.content,
           campaign: comment.campaign_title,
-          user: comment.author
+          user: comment.author,
+          campaign_id: comment.campaign
         }));
+        console.log(result)
         setCommentData(comments);
       });
   }, []);
@@ -109,7 +111,7 @@ const MyReviewComment = () => {
                 <div className="comment">
                   <div className="comment-info">
                     <span className="comment-date">
-                      <Link to={`/campaign/${card.campaign}`}>{card.campaign}</Link>
+                      <Link to={`/campaign/${card.campaign_id}`}>{card.campaign}</Link>
                     </span>
                     <span className="comment-author">{card.user}</span>
                   </div>

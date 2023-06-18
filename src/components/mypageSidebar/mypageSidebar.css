@@ -29,7 +29,7 @@
   margin-top: 20px;
   margin-bottom: 30px;
   border-radius: 100px;
-  background-color: rgb(46, 116, 245);
+  background-color: rgb(188, 210, 251);
 }
 
 .mypage-block {
@@ -57,4 +57,9 @@
   display: flex;
   justify-content: center;
   margin-bottom: 50px;
+}
+
+.profile-imgBtn {
+  height: 20px;
+  margin: auto;
 }
