@@ -192,12 +192,35 @@ const CampaignDetail = () => {
 
   // Fund Modal
   const [fundModalOpen, setFundModalOpen] = useState(false);
-
+  const [amount, setAmount] = useState(0);
   const openFundModal = () => {
     setFundModalOpen(true);
   };
   const closeFundModal = () => {
     setFundModalOpen(false);
+  };
+
+  const handleAmountSubmit = (event) => {
+    setAmount(event.target.value);
+  };
+
+  const handleFundSubmit = async () => {
+    const requestData = {
+      amount: amount,
+      campaign: id,
+      selected_card : "1"
+    };
+    console.log(requestData);
+    try {
+        const response = await axios.post(`http://localhost:8000/payments/schedule/`, requestData, 
+        {headers: {
+          "Authorization": `Bearer ${token}`}})
+          console.log(response.data);
+          alert("후원 감사합니다!")
+          setFundModalOpen(false)
+      } catch(error) {
+        console.error("후원 실패", error);
+      }
   };
   // Share Modal
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -299,8 +322,8 @@ const CampaignDetail = () => {
                         startAdornment={<InputAdornment position="start">￦</InputAdornment>}
                         label="금액"
                         inputProps={{ min: 0 }}
-                      // value={}
-                      // onChange={}
+                        value={amount}
+                        onChange={handleAmountSubmit}
                       />
                     </FormControl>
                     <Button
@@ -311,7 +334,7 @@ const CampaignDetail = () => {
                         marginTop: '20px',
                         marginLeft: '335px',
                       }}
-                    // onClick={}
+                       onClick={handleFundSubmit}
                     >
                       펀딩하기
                     </Button>
