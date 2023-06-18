@@ -115,10 +115,9 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
       setCampaign(response.data);
-      console.log(response.data);
-      setLikeCount(response.data.like.length);
+      setLikeCount(response.data.like_count);
     } catch (error) {
-      console.error("캠페인 디테일 불러오기 실패:", error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -131,9 +130,8 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
-      console.log(response.data);
     } catch (error) {
-      console.error("캠페인 댓글 불러오기 실패:", error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -141,15 +139,15 @@ const CampaignDetail = () => {
     // eslint-disable-next-line
   }, []);
 
-  // 캠페인 리뷰 GET
+  // 캠페인 후기 GET
   useEffect(() => {
     const axiosCampaignReview = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/campaigns/review/${id}/`);
         setCampaignReview(response.data);
-        console.log(response.data);
+
       } catch (error) {
-        console.error("캠페인 리뷰 불러오기 실패:", error);
+        console.log(error)
       }
     };
     axiosCampaignReview();
@@ -176,13 +174,13 @@ const CampaignDetail = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
-      alert("댓글 작성 성공!");
       console.log(response)
+      alert("댓글 작성 성공!");
       // 작성 후 바로 댓글 재렌더링시키기
       axiosCampaignComment();
     } catch (error) {
+      console.log(error)
       alert("댓글 작성에 실패했습니다.");
-      console.log(error);
     }
   };
 
@@ -208,6 +206,24 @@ const CampaignDetail = () => {
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
+  // Review Modal
+  const [reviewModalOpen, setReviewModalOpen] = useState([]);
+
+  const openReviewModal = (index) => {
+    setReviewModalOpen((prevState) => {
+      const newState = [...prevState];
+      newState[index] = true;
+      return newState;
+    });
+  };
+  const closeReviewModal = (event, index) => {
+    event.stopPropagation();
+    setReviewModalOpen((prevState) => {
+      const newState = [...prevState];
+      newState[index] = false;
+      return newState;
+    });
+  };
 
   // 좋아요
   const [isLiked, setIsLiked] = useState(false);
@@ -225,11 +241,9 @@ const CampaignDetail = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
-      console.log(response)
-      console.log(response.data.is_liked)
       setIsLiked(response.data.is_liked);
     } catch (error) {
-      console.error('좋아요 상태 불러오기 실패:', error);
+      console.log(error)
     }
   };
   useEffect(() => {
@@ -247,9 +261,45 @@ const CampaignDetail = () => {
       });
       setIsLiked(response.data.is_liked);
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-      console.log(response)
     } catch (error) {
-      console.log(error);
+      console.log(error)
+    }
+  };
+  // 캠페인 참여
+  const [isParticipated, setIsParticipated] = useState(false);
+
+  // 캠페인 참여정보 초기값 GET
+  const axiosParticipateStatus = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/${id}/participation/`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setIsParticipated(response.data.is_participated);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  useEffect(() => {
+    axiosParticipateStatus();
+    // eslint-disable-next-line
+  }, []);
+  // 캠페인 참여 axios
+  const axiosParticipate = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/campaigns/${id}/participation/`, {}, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      console.log(response)
+      setIsParticipated(response.data.is_participated);
+      console.log(isParticipated)
+      isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
+    } catch (error) {
+      console.log(error)
+      alert("캠페인 참여에 실패했습니다.")
     }
   };
 
@@ -268,7 +318,7 @@ const CampaignDetail = () => {
               <div className="campaignStatus">{campaign.status}</div>
               <div className="marginBottom10">{campaign.content}</div>
               <div className="marginBottom10">주최 : {campaign.user}</div>
-              <div className="marginBottom10">모집 인원 : {campaign.participant.length} / {campaign.members}</div>
+              <div className="marginBottom10">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
               <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
               <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
@@ -285,7 +335,7 @@ const CampaignDetail = () => {
                     variant="contained"
                     color="primary"
                     sx={{ color: 'white', marginLeft: '25px', }}
-                    disabled={campaign.status >= 4}
+                    disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                     onClick={openFundModal}
                   >펀딩 참여하기
                   </Button>
@@ -309,7 +359,7 @@ const CampaignDetail = () => {
                       sx={{
                         color: 'white',
                         marginTop: '20px',
-                        marginLeft: '335px',
+                        marginLeft: '385px',
                       }}
                     // onClick={}
                     >
@@ -330,7 +380,7 @@ const CampaignDetail = () => {
                     color: isLiked ? 'white' : 'red',
                     marginRight: '30px',
                   }}
-                  disabled={campaign.status >= 4}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={() => {
                     handleLikeButton();
                     axiosLike();
@@ -347,7 +397,7 @@ const CampaignDetail = () => {
                     color: 'gray',
                     marginRight: '30px',
                   }}
-                  disabled={campaign.status >= 4}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={openShareModal}
                 >
                   <ShareIcon />
@@ -392,7 +442,8 @@ const CampaignDetail = () => {
                     fontSize: '1.3rem',
                     color: 'white',
                   }}
-                  disabled={campaign.status >= 4}
+                  disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
+                  onClick={axiosParticipate}
                 >
                   캠페인 참여하기
                 </Button>
@@ -422,7 +473,7 @@ const CampaignDetail = () => {
             }}
           >
             <Tab label="캠페인 댓글" {...a11yProps(0)} />
-            <Tab label="캠페인 리뷰" {...a11yProps(1)} />
+            <Tab label="캠페인 후기" {...a11yProps(1)} />
             <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
           </Tabs>
           <TabPanel value={value} index={0}>
@@ -474,17 +525,43 @@ const CampaignDetail = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             {campaignReviews.length > 0 ? (
-              campaignReviews.map((campaignReview) => (
-                <div className="campaignReviewDiv" key={campaignReview.id}>
-                  <h2>{campaignReview.title}</h2><br />
-                  <span>{campaignReview.user}</span><br />
-                  <span>{campaignReview.content}</span><br />
-                  <span>{campaignReview.created_at}</span><br />
+              campaignReviews.map((campaignReview, index) => (
+                <div
+                  className="campaignCommentDiv"
+                  key={campaignReview.id}
+                  onClick={() => openReviewModal(index)}
+                >
+                  <h2>
+                    {campaignReview.title}
+                  </h2>
+                  <div className="campaignCommentContent">
+                    {campaignReview.user}
+                  </div>
+                  <div className="campaignCommentCreatedAt">
+                    {campaignReview.created_at}
+                  </div>
+                  <hr />
+
+                  <Modal open={reviewModalOpen[index] || false} close={(event) => closeReviewModal(event, index)} header="캠페인 후기">
+                    <h2>
+                      {campaignReview.title}
+                    </h2>
+                    <img className="campaignImage" src={getImageUrl(campaignReview.image)} alt="review_image" onError={onErrorImg} />
+                    <div className="campaignCommentContent">
+                      {campaignReview.user}
+                    </div>
+                    <div className="campaignCommentContent">
+                      {campaignReview.content}
+                    </div>
+                    <div className="campaignCommentCreatedAt">
+                      {campaignReview.created_at}
+                    </div>
+                  </Modal>
                 </div>
               ))
             ) : (
               <div className="campaignNothing">
-                <h2>작성된 리뷰가 없습니다.</h2>
+                <h2>작성된 후기가 없습니다.</h2>
               </div>
             )}
           </TabPanel>
