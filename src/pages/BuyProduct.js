@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import '../css/product.css';
 import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
@@ -18,7 +18,7 @@ export default function BuyProduct() {
     receiver_number: "",
     zip_code: "",
     address: "",
-    detail_address: "",
+    address_detail: "",
     address_message: "",
     order_quantity: "",
     order_totalprice: "",
@@ -99,7 +99,7 @@ export default function BuyProduct() {
         receiver_number: "",
         zip_code: "",
         address: "",
-        detail_address: "",
+        address_detail: "",
         address_message: "",
       }));
     }
@@ -146,7 +146,6 @@ export default function BuyProduct() {
       try {
         const token = localStorage.getItem('access');
         if (token) {
-          const payload = jwtDecode(token);
           const response = await fetch(`http://localhost:8000/users/profile/`, {
             method: 'GET',
             headers: {
@@ -160,7 +159,7 @@ export default function BuyProduct() {
             receiver_number: result.receiver_number,
             zip_code: result.zip_code,
             address: result.address,
-            detail_address: result.detail_address,
+            address_detail: result.address_detail,
             address_message: result.address_message
           };
           setFormData((prevFormData) => ({
@@ -254,7 +253,7 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>주소</label>
-                    <input type="address" name="address" value={isComplete ? Address : formData.address} onChange={handleInputChange} className="order-address"></input>
+                    <input type="address" name="address" value={isComplete ? Address : formData.address} onChange={handleInputChange} className="order-address" />
                     <Button type="primary" className="addProductButton" onClick={onToggleModal}>
                       주소 검색
                     </Button>
@@ -274,7 +273,7 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>상세주소</label>
-                    <input type="address" name="address_detail" value={formData.detail_address} onChange={handleInputChange} />
+                    <input type="address_detail" name="address_detail" value={formData.address_detail} onChange={handleInputChange} />
                   </div>
                   <div className="addOrderItem">
                     <label>배송메세지</label>

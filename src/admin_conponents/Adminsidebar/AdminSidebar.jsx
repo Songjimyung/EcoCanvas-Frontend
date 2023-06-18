@@ -91,7 +91,7 @@ export default function Adminsidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">shop</h3>
           <ul className="sidebarList">
-            <Link to="/admin_home" className="link">
+            <Link to="/admin_orderlist" className="link">
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 주문내역

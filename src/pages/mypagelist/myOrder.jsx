@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../components/mypageSidebar/mypageSidebar.css";
 import "../../css/mypage.css";
-import { format } from 'date-fns';
 import Pagination from '@mui/material/Pagination';
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
@@ -32,23 +31,6 @@ const MyOrder = () => {
       } catch (error) {
         console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
-      //     .then(response => response.json())
-      // .then(result => {
-      //   const myorders = result.map((order) => ({
-      //     id: order.id,
-      //     product: order.product,
-      //     order_totalprice: order.order_totalprice,
-      //     status: order["order_info"][0]["status"],
-      //     zip_code: order.zip_code,
-      //     address: order.address,
-      //     address_detail: order.address_detail,
-      //     address_message: order.address_message,
-      //     order_date: format(new Date(order.order_date), 'yyyy-MM-dd'),
-      //     order_quantity: order.order_quantity,
-      //     receiver_name: order.receiver_name,
-      //     receiver_number: order.receiver_number
-      //   }));
-      //   setMyOrderData(myorders);
     };
     fetchOrderList();
   }, [currentPage]);
@@ -95,7 +77,7 @@ const MyOrder = () => {
                   <td>{order.id}</td>
                   <td>{order.product}</td>
                   <td>{order.order_totalprice}</td>
-                  <td>{order['order_info'][0]['status']}</td>
+                  <td>{order["order_info"][0]["status"] || "알 수 없음"}</td>
                   <td><button className="details-button" onClick={() => openModal(order.id)}>세부 정보 보기</button></td>
                 </tr>
               ))
@@ -125,7 +107,12 @@ const MyOrder = () => {
                   <p>수령인: {selectedOrderData.receiver_name}</p>
                   <p>상품명: {selectedOrderData.product}</p>
                   <p>가격: {selectedOrderData.order_totalprice}원</p>
-                  <p>주문상태: <span style={{ color: 'blue' }}>{selectedOrderData['order_info'][0]['status']}</span></p>
+                  <p>
+                    주문상태:{" "}
+                    <span style={{ color: "blue" }}>
+                      {selectedOrderData["order_info"]?.[0]?.status || "알 수 없음"}
+                    </span>
+                  </p>
                   <p>주문일: {selectedOrderData.order_date}</p>
                 </div>
               </div>

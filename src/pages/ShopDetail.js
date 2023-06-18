@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import '../css/product.css'
-import { Card, Grid, Typography, Button, IconButton, CircularProgress } from '@mui/material';
+import { Card, Grid, Typography, Button, IconButton, CircularProgress, Snackbar } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 import product_default_img from '../img/sample_product.png';
 
@@ -11,7 +11,17 @@ const ShopDetail = () => {
   let { productId } = useParams();
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stockAlertOpen, setStockAlertOpen] = useState(false);
 
+  useEffect(() => {
+    // 재고 알람 체크
+    if (product.product_stock && product.product_stock < 10) {
+      setStockAlertOpen(true);
+    }
+  }, [product]);
+  const handleStockAlertClose = () => {
+    setStockAlertOpen(false);
+  };
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -55,6 +65,9 @@ const ShopDetail = () => {
                   {product.product_desc}
                 </Typography>
                 <Typography variant="body1" paragraph>
+                  재고 : {product.product_stock}
+                </Typography>
+                <Typography variant="body1" paragraph>
                   {product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A'}
                 </Typography>
                 <Link to={`/product/buy/${product.id}`}>
@@ -68,6 +81,12 @@ const ShopDetail = () => {
           </Grid>
         )}
       </Card>
+      <Snackbar
+        open={stockAlertOpen}
+        autoHideDuration={3000}
+        onClose={handleStockAlertClose}
+        message="재고가 얼마남지 않았어요!"
+      />
     </div>
   );
 };

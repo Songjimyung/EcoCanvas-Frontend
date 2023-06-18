@@ -53,13 +53,15 @@ const Shop = () => {
         }
         if (sortBy === 'hits') {
           url += '?sort_by=hits';
+        } else if (sortBy === 'latest') {
+          url += '?sort_by=latest';
         } else if (sortBy === 'highprice') {
           url += '?sort_by=high_price';
         } else if (sortBy === 'lowprice') {
           url += '?sort_by=low_price';
         }
 
-        url += `?page=${currentPage}`;
+        url += `&page=${currentPage}`;
 
         const response = await axios.get(url);
         setProductList(response.data.results);
