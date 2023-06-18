@@ -235,8 +235,12 @@ const Campaign = () => {
                     component={'span'}
                   >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
-                    {Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성 <br />
-                    인원 : {campaign.participant.length} / {campaign.members}
+                    {campaign.fundings && campaign.fundings.goal !== 0 ? (
+                      <>{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성<br /></>
+                    ) : (
+                      <div>펀딩이 없는 캠페인입니다.</div>
+                    )}
+                    참여인원 : {campaign.participant_count} / {campaign.members}
                   </Typography>
                 </CardContent>
               </CardActionArea>
