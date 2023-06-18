@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/campaign.css';
@@ -33,21 +33,24 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 const Campaign = () => {
   const [campaignList, setCampaignList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [campaignCount, setCampaignCount] = useState(0);
   const campaignsPerPage = 6;
 
-  useEffect(() => {
-    const axiosCampaignList = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/campaigns/');
-        setCampaignList(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching campaign:', error);
-      }
-    };
+  // Campaign GET
+  const axiosCampaignList = async (currentPage) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/campaigns/?page=${currentPage}`);
+      setCampaignList(response.data.results);
+      setCampaignCount(response.data.count);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching campaign:', error);
+    }
+  };
 
-    axiosCampaignList();
-  }, []);
+  useEffect(() => {
+    axiosCampaignList(currentPage);
+  }, [currentPage]);
 
   const getImageUrl = (imagePath) => {
     return `http://localhost:8000${imagePath}`;
@@ -57,16 +60,15 @@ const Campaign = () => {
     e.target.src = campaign_default_image;
   };
 
+  // pagination
+  const navigate = useNavigate();
+
   const handlePageChange = (event, page) => {
-    setCurrentPage(page);
+    const pageNumber = parseInt(page);
+    setCurrentPage(pageNumber);
+    navigate(`/campaign?page=${pageNumber}`);
   };
 
-  // 현재 페이지의 마지막 인덱스 (현재페이지 (1) * 한 페이지당 6개의 캠페인)
-  const indexOfLastCampaign = currentPage * campaignsPerPage;
-  // 현재페이지의 첫 인덱스 (현재 페이지의 마지막 인덱스 - 한 페이지당 6개의 캠페인)
-  const indexOfFirstCampaign = indexOfLastCampaign - campaignsPerPage;
-  // 캠페인 개수를 currentPage의 첫 인덱스부터, 끝 인덱스까지 (2페이지면 7~12)
-  const currentCampaigns = campaignList.slice(indexOfFirstCampaign, indexOfLastCampaign);
 
   // 좋아요
   const [isLiked, setIsLiked] = useState(false);
@@ -149,7 +151,7 @@ const Campaign = () => {
           </Link>
         </Grid>
 
-        {currentCampaigns.map((campaign) => (
+        {campaignList.map((campaign) => (
           <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
@@ -164,7 +166,11 @@ const Campaign = () => {
                   <Typography gutterBottom variant="h5" component="div">
                     {campaign.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    component={'span'}
+                  >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
                       <>{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성<br /></>
@@ -193,34 +199,32 @@ const Campaign = () => {
                 <ShareIcon />
               </IconButton>
               <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
                 <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, 모달 여섯개씩 켜지고있는 것 같음. 항상 끝자리 캠페인으로 Share)</div>
-                <div>
-                  <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
-                    <button
-                      className="shareUrlBtn"
-                      onClick={() => alert("복사 완료!")}>
-                      URL
-                    </button>
-                  </CopyToClipboard>
-                  <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
-                    <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                  </FacebookShareButton>
-                  <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
-                    <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                  </TwitterShareButton>
+                <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
                   <button
-                    className="shareKakaoBtn"
-                    style={{
-                      padding: '0',
-                      backgroundColor: 'transparent'
-                    }}>
-                    <img
-                      src={sharekakao}
-                      alt="kakaoShareButton"
-                      className="shareKakaoBtn" />
+                    className="shareUrlBtn"
+                    onClick={() => alert("복사 완료!")}>
+                    URL
                   </button>
-                </div>
+                </CopyToClipboard>
+                <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
+                  <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                </FacebookShareButton>
+                <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
+                  <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                </TwitterShareButton>
+                <button
+                  className="shareKakaoBtn"
+                  style={{
+                    padding: '0',
+                    backgroundColor: 'transparent'
+                  }}>
+                  <img
+                    src={sharekakao}
+                    alt="kakaoShareButton"
+                    className="shareKakaoBtn" />
+                </button>
+
 
               </Modal>
             </CardActions>
@@ -233,7 +237,7 @@ const Campaign = () => {
 
       <Grid container justifyContent="center">
         <Pagination
-          count={Math.ceil(campaignList.length / campaignsPerPage)}
+          count={Math.ceil(campaignCount / campaignsPerPage)}
           page={currentPage}
           color="primary"
           onChange={handlePageChange}
