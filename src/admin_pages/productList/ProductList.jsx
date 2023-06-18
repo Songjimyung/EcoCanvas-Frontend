@@ -1,37 +1,51 @@
 import React, { useEffect, useState } from "react";
 import './productList.css';
-import { DataGrid } from '@mui/x-data-grid'
 import { DeleteOutline } from '@mui/icons-material'
-// import { productRows } from '../../dummyData'
 import { Link } from 'react-router-dom'
+import Pagination from '@mui/material/Pagination';
+import Grid from '@mui/material/Grid';
+import axios from 'axios';
+import { DataGrid } from '@mui/x-data-grid';
 
 export default function ProductList() {
-  const [productList, setProductData] = useState([])
-  useEffect(() => {
-    const token = localStorage.getItem('access');
+  const [productList, setProductList] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-    fetch("http://127.0.0.1:8000/shop/products/admin/list/", {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).then(response => response.json())
-      .then(result => {
-        console.log(result)
-        const products = result.map((product, index) => ({
+  const handlePageChange = async (event, page) => {
+    setCurrentPage(page);
+  };
+
+  useEffect(() => {
+    const fetchProductList = async () => {
+      try {
+        let url = 'http://localhost:8000/shop/products/admin/list/';
+        url += `?page=${currentPage}`;
+
+        const response = await axios.get(url);
+        const products = response.data.results.map((product, index) => ({
           index: index,
           id: product.id,
           name: product.product_name,
           price: product.product_price,
           stock: product.product_stack,
+          img: product.product_image
         }));
-        setProductData(products)
-      })
-  }, []);
+        setProductList(products);
+        const totalPages = Math.ceil(response.data.count / 6);
+        setTotalPages(totalPages);
+        console.log(products)
+      } catch (error) {
+        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      }
+
+    }
+    fetchProductList();
+  }, [currentPage]);
 
 
   const handleDelete = (index) => {
-    setProductData(productList.filter((item) => item.index !== index))
+    setProductList(productList.filter((item) => item.index !== index))
   }
 
   const columns = [
@@ -80,18 +94,22 @@ export default function ProductList() {
   ]
 
   return (
-
     <div className="productList">
       <DataGrid
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } }
-        }}
         rows={productList}
-        disableSelectionOnClick
         columns={columns}
-        pageSizeOptions={[5, 10, 15]}
-        checkboxSelection
+        autoHeight
+        checkboxSelection={false}
+        disableSelectionOnClick
       />
+      <Grid container justifyContent="center">
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          color="primary"
+          onChange={handlePageChange}
+        />
+      </Grid>
     </div>
-  )
+  );
 }

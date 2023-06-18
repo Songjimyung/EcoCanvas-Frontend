@@ -63,7 +63,8 @@ const Shop = () => {
 
         const response = await axios.get(url);
         setProductList(response.data.results);
-        setTotalPages(response.data.count);
+        const totalPages = Math.ceil(response.data.count / 6);
+        setTotalPages(totalPages);
         console.log(response.data)
       } catch (error) {
         console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
@@ -136,7 +137,7 @@ const Shop = () => {
         </div >
         <Grid container justifyContent="center">
           <Pagination
-            count={Math.ceil(totalPages / currentPage)}
+            count={totalPages}
             page={currentPage}
             color="primary"
             onChange={handlePageChange}
