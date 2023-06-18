@@ -20,7 +20,7 @@ const AuthForm = ({ type }) => {
       re_password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/signup/', signUpData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/`, signUpData);
       console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
 
       alert("회원가입 성공!")
@@ -37,7 +37,7 @@ const AuthForm = ({ type }) => {
       password,
     };
     try {
-      const response = await axios.post('http://localhost:8000/users/login/', loginData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login/`, loginData);
       console.log(response.data); // 로그인 성공 시 서버로부터 받은 응답 데이터 출력
 
       localStorage.setItem("access", response.data.access);
@@ -69,7 +69,7 @@ const AuthForm = ({ type }) => {
   const SocialKakao = () => {
     const handleLogin = () => {
       const REST_API_KEY = "0d5db60d8b7cf11250d01452825aea32";
-      const REDIRECT_URI = "http://localhost:3000/users/oauth/kakao/callback";
+      const REDIRECT_URI = `${process.env.REACT_APP_FRONTEND_URL}/users/oauth/kakao/callback`;
       const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
       window.location.href = KAKAO_AUTH_URL;
@@ -82,7 +82,7 @@ const AuthForm = ({ type }) => {
 
   const SocialGoogle = () => {
     const handleGoogleLogin = () => {
-      const GOOGLE_URL = 'http://127.0.0.1:8000/users/google/login/'
+      const GOOGLE_URL = `${process.env.REACT_APP_BACKEND_URL}/users/google/login/`
 
       window.location.href = GOOGLE_URL;
     };

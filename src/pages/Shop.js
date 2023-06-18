@@ -33,7 +33,7 @@ const Shop = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
   };
 
   const onErrorImg = (e) => {
@@ -46,7 +46,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        let url = 'http://localhost:8000/shop/products/list/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/shop/products/list/`;
 
         if (categoryId) { // 카테고리 선택시 동적으로 요청하도록
           url += `${categoryId}/`;
@@ -75,7 +75,7 @@ const Shop = () => {
 
     const fetchCategoryList = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/shop/categorys/list/');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
         setCategoryList(response.data);
       } catch (error) {
         console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);

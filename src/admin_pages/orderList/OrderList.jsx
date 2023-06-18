@@ -17,7 +17,7 @@ export default function AdminOrderList() {
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        let url = 'http://localhost:8000/shop/order/list/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/shop/order/list/`;
         url += `?page=${currentPage}`;
 
         const response = await axios.get(url);
@@ -62,7 +62,7 @@ export default function AdminOrderList() {
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
-    fetch(`http://127.0.0.1:8000/campaigns/status/${selected.id}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/status/${selected.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

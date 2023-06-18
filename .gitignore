@@ -1,6 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 yarn.lock
 
+# 환경변수
+.env
+.env.development
+.env.production
+
 # dependencies
 /node_modules
 /.pnp
