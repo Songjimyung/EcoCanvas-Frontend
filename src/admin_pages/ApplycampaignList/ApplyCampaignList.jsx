@@ -2,33 +2,35 @@ import React, { useEffect, useState } from "react";
 import './applycampaignList.css'
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Typography } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
+import axios from 'axios';
 
 
 
 export default function ApplyListCampaign() {
   const [ApplyData, setApplyData] = useState([]);
   const [selectedApply, setSelectedApply] = useState(null);
-  const [currentApplyPage, setCurrentApplyPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const cardsPerPage = 5;
 
   useEffect(() => {
-    const token = localStorage.getItem('access');
+    const fetchData = async () => {
+      const token = localStorage.getItem('access');
+      try {
+        let url = `${process.env.REACT_APP_BACKEND_URL}/campaigns/admin/campaign_list/`;
+        url += `?page=${currentPage}`;
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result)
 
-        const campaignApplication = result.map((campaign) => {
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const campaigns = response.data.results.map((campaign, index) => {
           const approveFile = campaign.fundings && campaign.fundings.approve_file ? campaign.fundings.approve_file : '';
           const goal = campaign.fundings && campaign.fundings.goal ? campaign.fundings.goal : '';
+
           console.log(campaign.fundings);
           console.log(campaign.approve_file);
           console.log(approveFile);
@@ -50,18 +52,22 @@ export default function ApplyListCampaign() {
             goal: goal
           };
         });
-
-        setApplyData(campaignApplication);
-
-      });
-  }, []);
+        setApplyData(campaigns);
+        const totalPages = Math.ceil(response.data.count / 10);
+        setTotalPages(totalPages);
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchData();
+  }, [currentPage]);
 
   const handleAction = (action) => {
     const token = localStorage.getItem('access');
     let updatedCampaign = { ...selectedApply };
 
     if (action === 'approve') {
-      updatedCampaign = { ...updatedCampaign, status: '2' };
+      updatedCampaign = { ...updatedCampaign, status: '1' };
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
@@ -85,13 +91,8 @@ export default function ApplyListCampaign() {
       });
   };
 
-
-  const indexOfLastOrderCard = currentApplyPage * cardsPerPage;
-  const indexOfFirstOrderCard = indexOfLastOrderCard - cardsPerPage;
-  const currentOrderCards = ApplyData.slice(indexOfFirstOrderCard, indexOfLastOrderCard);
-
-  const handleApplyPageChange = (event, value) => {
-    setCurrentApplyPage(value);
+  const handlePageChange = async (event, page) => {
+    setCurrentPage(page);
   };
 
   const handleOpen = (campaignId) => {
@@ -127,8 +128,8 @@ export default function ApplyListCampaign() {
             </tr>
           </thead>
           <tbody>
-            {currentOrderCards.length > 0 ? (
-              currentOrderCards.map((campaign) => (
+            {ApplyData.length > 0 ? (
+              ApplyData.map((campaign) => (
                 <tr key={campaign.id}>
                   <td>{campaign.id}</td>
                   <td>{campaign.title}</td>
@@ -144,15 +145,14 @@ export default function ApplyListCampaign() {
             )}
           </tbody>
         </table>
-        <div className="campaign-pagination">
+        <Grid container justifyContent="center">
           <Pagination
-            count={Math.ceil(ApplyData.length / cardsPerPage)}
-            page={currentApplyPage}
-            onChange={handleApplyPageChange}
+            count={totalPages}
+            page={currentPage}
             color="primary"
-            size="large"
+            onChange={handlePageChange}
           />
-        </div>
+        </Grid>
       </div>
       <Dialog open={open} onClose={handleClose} style={{ textAlign: 'center' }}>
         <DialogTitle>캠페인 세부 정보</DialogTitle>

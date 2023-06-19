@@ -34,6 +34,7 @@ import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 import { MyProfile } from './pages/mypagelist/myprofile'
+import { ProductDetail } from './admin_pages/productdetail/Productdetail'
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -107,6 +108,7 @@ function App() {
             <Route path="/admin_users/:userId" element={<User />} />
             <Route path="/admin_createUser" element={<CreateUser />} />
             <Route path="/admin_products" element={<ProductList />} />
+            <Route path="/admin_product/detail/:productId" element={<ProductDetail />} />
             <Route path="/admin_products/:productId" element={<Product />} />
             <Route path="/admin_createProduct" element={<CreateProduct />} />
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />

@@ -111,8 +111,8 @@ export default function BuyProduct() {
 
     console.log(e.target.elements.receiver_number.value)
     const formData = new FormData();
-    formData.append('zip_code', e.target.elements.zip_code.value);
-    formData.append('address', e.target.elements.address.value);
+    formData.append('zip_code', isComplete ? zipcode : e.target.elements.zip_code.value);
+    formData.append('address', isComplete ? Address : e.target.elements.address.value);
     formData.append('address_detail', e.target.elements.address_detail.value);
     formData.append('address_message', e.target.elements.address_message.value);
     formData.append('receiver_name', e.target.elements.receiver_name.value);

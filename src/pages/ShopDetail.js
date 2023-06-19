@@ -19,9 +19,11 @@ const ShopDetail = () => {
       setStockAlertOpen(true);
     }
   }, [product]);
+
   const handleStockAlertClose = () => {
     setStockAlertOpen(false);
   };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {

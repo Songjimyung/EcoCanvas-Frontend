@@ -33,7 +33,10 @@ export default function CreateProduct() {
     const parsedCategoryId = parseInt(categoryId, 10);
     const token = localStorage.getItem('access');
 
-
+    if (!parsedCategoryId) {
+      alert('카테고리를 선택해주세요.');
+      return;
+    }
     const selectedCategory = categoryList.find(category => category.id === parsedCategoryId);
     if (!selectedCategory) {
       console.error('카테고리가 존재하지 않습니다');
@@ -58,14 +61,24 @@ export default function CreateProduct() {
       },
       body: formData,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((data) => {
+            const errorValues = Object.values(data);
+            throw new Error(errorValues.join('\n'));
+          });
+        }
+      })
       .then((result) => {
         console.log(result);
-        alert("상품 등록 완료!")
+        alert("상품 등록 완료!");
         window.location.reload();
       })
       .catch((error) => {
         console.error(error);
+        alert(error.message);
       });
   };
 
@@ -84,6 +97,7 @@ export default function CreateProduct() {
   return (
     <div className="createProduct">
       <h1>상품 등록</h1>
+      <Toggle />
       <form className="addProductForm" onSubmit={handleFormSubmit}>
         <div className="addProductItem">
           <label>상품 이름</label>
@@ -101,7 +115,6 @@ export default function CreateProduct() {
           <label>상품 설명</label>
           <input type="text" name="product_desc" placeholder="상품 설명" onChange={handleInputChange}></input>
         </div>
-        <Toggle />
         <div className="addProductItem">
           <label>상품 카테고리</label>
           <select className="select-category-dropdown" name="category" onChange={handleInputChange}>
@@ -112,7 +125,6 @@ export default function CreateProduct() {
               </option>
             ))}
           </select>
-
         </div>
         <div className="addProductItem">
           <label>상품 이미지</label>
@@ -120,6 +132,7 @@ export default function CreateProduct() {
         </div>
         <button className="addProductButton">생성하기</button>
       </form>
+
     </div>
   )
 }
