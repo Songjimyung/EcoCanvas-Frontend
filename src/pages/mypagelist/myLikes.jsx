@@ -14,7 +14,7 @@ const MyLikes = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/mypage/like/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/like/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -50,7 +50,7 @@ const MyLikes = () => {
               <div className="card" key={index}>
                 <Link to={`/campaign/${card.id}`}>
                   {card.image ? (
-                    <img src={`http://localhost:8000${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
+                    <img src={`${process.env.REACT_APP_BACKEND_URL}${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
                   ) : (
                     <img src={campaign_default_image} alt="Default Campaign" style={{ width: '200px', height: '200px' }} />
                   )}

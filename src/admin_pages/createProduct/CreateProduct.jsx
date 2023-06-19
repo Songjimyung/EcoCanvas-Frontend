@@ -17,7 +17,7 @@ export default function CreateProduct() {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/shop/categorys/list/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ export default function CreateProduct() {
     formData.append('product_desc', e.target.elements.product_desc.value);
     formData.append('category', selectedCategory.id);
 
-    fetch(`http://127.0.0.1:8000/shop/products/list/${selectedCategory.id}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/list/${selectedCategory.id}/`, {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token}`

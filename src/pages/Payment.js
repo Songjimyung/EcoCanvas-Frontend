@@ -45,10 +45,10 @@ const PaymentButton = ({ product }) => {
       const minutes = today.getMinutes();
       const seconds = today.getSeconds();
       const milliseconds = today.getMilliseconds();
-      const makeMerchantUid =month + date + hours + minutes + seconds + milliseconds;
+      const makeMerchantUid = month + date + hours + minutes + seconds + milliseconds;
       const merchant_uid = 'IMP' + makeMerchantUid
       window.IMP.request_pay({
-        pg: 'nice', 
+        pg: 'nice',
         customer_uid: email,
         pay_method: 'card',
         merchant_uid: merchant_uid,
@@ -64,19 +64,19 @@ const PaymentButton = ({ product }) => {
         console.log(response);
         console.log(response.success);
 
-        
+
         if (response.success === true) {
-          axios.post('http://localhost:8000/payments/receipt/', {merchant_uid: merchant_uid})
+          axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/`, { merchant_uid: merchant_uid })
             .then(response => {
-              console.log(response.data)              
-              
+              console.log(response.data)
+
             })
-         
+
         }
-        
-      }); 
-      
-    } 
+
+      });
+
+    }
   };
 
   return (

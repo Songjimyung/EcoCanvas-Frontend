@@ -52,7 +52,7 @@ export default function BuyProduct() {
       try {
         const token = localStorage.getItem('access');
 
-        const response = await fetch(`http://localhost:8000/shop/products/${productId}/`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -123,7 +123,7 @@ export default function BuyProduct() {
     formData.append('user', userId);
 
 
-    fetch(`http://127.0.0.1:8000/shop/products/order/${productId}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/${productId}/`, {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token}`
@@ -146,7 +146,7 @@ export default function BuyProduct() {
       try {
         const token = localStorage.getItem('access');
         if (token) {
-          const response = await fetch(`http://localhost:8000/users/profile/`, {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/profile/`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`

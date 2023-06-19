@@ -18,7 +18,7 @@ export default function ApplyListCampaign() {
     const fetchData = async () => {
       const token = localStorage.getItem('access');
       try {
-        let url = 'http://localhost:8000/campaigns/admin/campaign_list/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/campaigns/admin/campaign_list/`;
         url += `?page=${currentPage}`;
 
 
@@ -71,7 +71,7 @@ export default function ApplyListCampaign() {
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
-    fetch(`http://127.0.0.1:8000/campaigns/status/${selectedApply.id}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/status/${selectedApply.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export default function ApplyListCampaign() {
 
 
   const getUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
   };
 
   return (

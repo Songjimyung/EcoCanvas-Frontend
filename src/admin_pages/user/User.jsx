@@ -10,7 +10,7 @@ export default function User() {
   const id = location.pathname.split("/")[2];
   const [user, setUser] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/users/" + id + "/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/` + id + "/", {
       method: 'GET',
     }).then(response => response.json())
       .then(result => {

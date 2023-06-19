@@ -44,7 +44,8 @@ function Sidebar() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('access');
-        let response = await fetch(`http://127.0.0.1:8000/users/profile/`, {
+        let response;
+        response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/profile/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

@@ -18,7 +18,7 @@ export default function MyProfile() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('access');
-        const response = await fetch(`http://127.0.0.1:8000/users/profile/`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/profile/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -59,7 +59,7 @@ export default function MyProfile() {
     formData.append('receiver_number', userData.contact);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/users/profile/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/profile/`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${token}`

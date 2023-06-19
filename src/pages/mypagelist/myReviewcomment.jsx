@@ -16,7 +16,7 @@ const MyReviewComment = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/mypage/review/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/review/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -38,7 +38,7 @@ const MyReviewComment = () => {
   //마이페이지 댓글 GET
   useEffect(() => {
     const token = localStorage.getItem('access');
-    fetch("http://127.0.0.1:8000/campaigns/mypage/comment/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/comment/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

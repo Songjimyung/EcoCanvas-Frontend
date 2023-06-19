@@ -18,7 +18,7 @@ export default function ProductList() {
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        let url = 'http://localhost:8000/shop/products/admin/list/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/shop/products/admin/list/`;
         url += `?page=${currentPage}`;
 
         const response = await axios.get(url);
