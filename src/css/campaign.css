@@ -1,0 +1,247 @@
+.campaignContainer {
+    font-family: var(--font-Pretendard-Regular);
+}
+
+.campaignCreateForm {
+    font-family: var(--font-Pretendard-Regular);
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+hr {
+    background:rgb(207, 207, 207);
+    height:1px;
+    border:0;
+    margin-top: 20px;
+}
+
+/* list card */
+.campaignCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px 50px 0 50px;
+    min-width: 750px;
+    justify-content: space-between;
+    /* align-content: space-around; */
+    /* align-items: stretch; */
+}
+
+.campaignCard {
+    margin-bottom: 5%;
+    min-width: 350px;
+    width: 35%;
+    font-family: var(--font-KCC-Ganpan);
+}
+
+/* detail Top */
+.campaignContentDiv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.campaignImage {
+    max-width: 90%;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.campaignStatus {
+    display: inline-block;
+    color: white;
+    background-color: #3eac3e;
+    padding: 5px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.campaignFund {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.campaignFundPercent {
+    color: #3eac3e;
+    font-weight: bolder;
+    font-size: 2rem;
+    margin-right: 10px;
+}
+
+.campaignFundcurrent {
+    padding-top: 15px;
+    color: gray;
+}
+
+.marginBottom10 {
+    margin-bottom: 10px;
+}
+
+.campaignContentBtn {
+    display: flex;
+}
+
+.modalMent {
+    margin-bottom: 20px;
+}
+
+.shareUrlBtn {
+    width: 48px;
+    height: 48px;
+    color: white;
+    border-radius: 24px;
+    border: 0px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #3eac3e;
+    top: 0px;
+}
+
+.shareKakaoBtn {
+    width: 48px;
+    height: 48px;
+    /* border-radius: 24px; */
+    /* border: 0px; */
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .campaignContentDiv {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .campaignContentRight {
+        margin-top: 50px;
+    }
+}
+
+/* detail Bottom(review, comment, info) */
+.campaignBottom {
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.campaignReviewDiv {
+    margin-bottom: 20px;
+}
+
+.campaignNothing {
+    text-align: center;
+    margin: 200px auto 200px auto;
+}
+
+/* comment */
+.campaignCommentDiv {
+    margin-bottom: 20px;
+}
+
+.campaignCommentUser {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+}
+
+.campaignCommentContent {
+    margin-bottom: 5px;
+}
+
+.campaignCommentCreatedAt {
+    color: gray;
+    font-size: 0.8rem;
+}
+
+/* create */
+.campaignCreateBody {
+    display: flex;
+    flex-direction: column;
+    /* text-align: center; */
+    margin: auto;
+    margin-top: 50px;
+    max-width: 50%;
+}
+
+.campaignDate {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.campaignCreateTitle {
+    text-align: left;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.campaignExplain {
+    text-align: right;
+    color: gray;
+    font-size: 0.85rem;
+}
+
+.campaignFundCheck {
+    margin-top: 30px;
+}
+
+.campaignCreateStar {
+    color: rgb(255, 103, 15)
+}
+
+/* list 마감임박 */
+.closeBadge {
+    position:relative;
+    overflow: hidden;
+    padding: 1px;
+}
+.closeBadge:after {
+    position: absolute;
+    z-index: 1;
+    width:100px;
+    height: auto;
+    background: rgb(236, 82, 82);
+    content: "마감 임박";
+    text-align: center;
+    color: #fff;
+    font-family: 'Arial';
+    font-weight: bold;
+    padding: 5px 10px;
+    left: -30px;
+    top: 6px;
+    transform: rotate(-30deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* detail 마감임박 */
+.closeBadgeDetail {
+    position:relative;
+    overflow: hidden;
+    padding: 1px;
+}
+.closeBadgeDetail:after {
+    position: absolute;
+    z-index: 1;
+    width:120px;
+    height: auto;
+    background: rgb(236, 82, 82);
+    content: "마감 임박";
+    text-align: center;
+    color: #fff;
+    font-family: 'Arial';
+    font-weight: bold;
+    padding: 5px 10px;
+    left: -30px;
+    top: 15px;
+    transform: rotate(-35deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
