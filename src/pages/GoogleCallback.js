@@ -8,7 +8,7 @@ const CallbackGoogle = (props) => {
     useEffect(() => {
         const getToken = async () => {
             try {
-                const response = await axios.post(`http://127.0.0.1:8000/users/google/callback/?code=${code}`);
+                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/?code=${code}`);
                 const token_req_json = response.data;
                 console.log(token_req_json)
                 localStorage.setItem('access', token_req_json['access']);
