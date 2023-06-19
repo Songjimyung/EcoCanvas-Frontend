@@ -2,11 +2,19 @@ import React, { useEffect, useState } from "react";
 import "./mypageSidebar.css";
 import { Link, useLocation } from "react-router-dom";
 import SidebarItem from "../SidebarItem/SidebarItem";
+import profile_default_image from '../../img/profile_default_image.png';
 
 function Sidebar() {
   const [userData, setUserData] = useState([])
   const [userId, setUserId] = useState();
 
+
+  const getImageUrl = (imagePath) => {
+    return `http://localhost:8000${imagePath}`;
+  };
+  const onErrorImg = (e) => {
+    e.target.src = profile_default_image;
+  };
 
   // URL의 path값을 받아오기
   const pathName = useLocation().pathname;
@@ -35,28 +43,37 @@ function Sidebar() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-
         const token = localStorage.getItem('access');
-        let response;
-        response = await fetch(`http://127.0.0.1:8000/users/${userId}/`, {
+        let response = await fetch(`http://127.0.0.1:8000/users/profile/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
           }
         });
-        const result = await response.json();
 
-        console.log(result)
-
-        const user_info = {
-          id: result[0]['id'],
-          email: result[0]['email'],
-          username: result[0]['username'],
-        };
-        setUserData([user_info]);
-      }
-      catch (error) {
-        console.log(error);
+        if (response.ok) {
+          const result = await response.json();
+          console.log(result.image)
+          const user_info = {
+            id: result['user']['id'],
+            email: result['user']['email'],
+            username: result['user']['username'],
+            image: result.image
+          };
+          setUserData([user_info]);
+        }
+        else {
+          // 응답이 실패인 경우
+          const defaultUserInfo = {
+            id: null,
+            email: '프로필이 존재하지 않습니다.',
+            username: '프로필이 존재하지 않습니다.',
+            image: profile_default_image
+          };
+          setUserData([defaultUserInfo]);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 
@@ -65,20 +82,28 @@ function Sidebar() {
     }
   }, [userId]);
 
+
   return (
     <>
       <div className="mypage-sidebar-wrap1">
         <div className="mypage-wrap">
           <Link to="/mypage/profile">
             <div className="myprofile">
+              {userData.map((user) => (
+                <img
+                  src={getImageUrl(user.image)}
+                  onError={onErrorImg}
+                  alt="profile_image"
+                />
+              ))}
             </div>
           </Link>
           <div>
             {userData.map((user) => {
               return (
                 <div key={user.id}>
-                  이름:{user.username}
-                  <p>이메일:{user.email}</p>
+                  이름: {user.username}
+                  <p>이메일: {user.email}</p>
                   <button className="details-button">
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
