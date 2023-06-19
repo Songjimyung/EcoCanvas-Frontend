@@ -67,7 +67,7 @@ export default function ApplyListCampaign() {
     let updatedCampaign = { ...selectedApply };
 
     if (action === 'approve') {
-      updatedCampaign = { ...updatedCampaign, status: '2' };
+      updatedCampaign = { ...updatedCampaign, status: '1' };
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
