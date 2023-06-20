@@ -21,10 +21,15 @@ const Shop = () => {
   const [sortBy, setSortBy] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleCategorySelect = (event) => {
     const selectedCategoryId = event.target.value;
     setCategoryId(selectedCategoryId);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   const handleSortBySelect = (event) => {
@@ -43,47 +48,56 @@ const Shop = () => {
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-  useEffect(() => {
-    const fetchProductList = async () => {
-      try {
-        let url = `${process.env.REACT_APP_BACKEND_URL}/shop/products/list/`;
+  const fetchProductList = async () => {
+    try {
+      let url = `${process.env.REACT_APP_BACKEND_URL}/shop/products/list/`;
 
-        if (categoryId) { // 카테고리 선택시 동적으로 요청하도록
-          url += `${categoryId}/`;
-        }
-        if (sortBy === 'hits') {
-          url += '?sort_by=hits';
-        } else if (sortBy === 'latest') {
-          url += '?sort_by=latest';
-        } else if (sortBy === 'highprice') {
-          url += '?sort_by=high_price';
-        } else if (sortBy === 'lowprice') {
-          url += '?sort_by=low_price';
-        }
-
-        url += `&page=${currentPage}`;
-
-        const response = await axios.get(url);
-        setProductList(response.data.results);
-        const totalPages = Math.ceil(response.data.count / 6);
-        setTotalPages(totalPages);
-        console.log(response.data)
-      } catch (error) {
-        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      if (categoryId) { // 카테고리 선택시 동적으로 요청하도록
+        url += `${categoryId}/`;
       }
-    };
-
-    const fetchCategoryList = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
-        setCategoryList(response.data);
-      } catch (error) {
-        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      if (sortBy === 'hits') {
+        url += '?sort_by=hits';
+      } else if (sortBy === 'latest') {
+        url += '?sort_by=latest';
+      } else if (sortBy === 'highprice') {
+        url += '?sort_by=high_price';
+      } else if (sortBy === 'lowprice') {
+        url += '?sort_by=low_price';
       }
-    };
+
+      url += `&page=${currentPage}`;
+
+      if (searchQuery) {
+        url += `&search_query=${encodeURIComponent(searchQuery)}`;
+      }
+
+      const response = await axios.get(url);
+      setProductList(response.data.results);
+      const totalPages = Math.ceil(response.data.count / 6);
+      setTotalPages(totalPages);
+      console.log(response.data)
+    } catch (error) {
+      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+    }
+  };
+
+  const fetchCategoryList = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
+      setCategoryList(response.data);
+    } catch (error) {
+      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+    }
+  };
+
+  const handleSearchButtonClick = () => {
     fetchProductList();
-    fetchCategoryList();
+  };
+
+  useEffect(() => {
+    fetchProductList();
   }, [categoryId, sortBy, currentPage]);
+
 
   return (
     <div>
@@ -104,6 +118,12 @@ const Shop = () => {
             <option value="lowprice">가격낮은순</option>
             <option value="purchases">구매순</option>
           </select>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+          />
+          <button onClick={handleSearchButtonClick}>Search</button>
         </nav>
       </header>
       <main>
