@@ -48,9 +48,12 @@ hr {
     margin-bottom: 30px;
 }
 
+.campaignImageDiv {
+    margin-left: 50px;
+}
+
 .campaignImage {
     max-width: 90%;
-    margin: auto;
     border-radius: 10px;
 }
 
@@ -83,6 +86,10 @@ hr {
 
 .marginBottom10 {
     margin-bottom: 10px;
+}
+
+.marginBottom30 {
+    margin-bottom: 30px;
 }
 
 .campaignContentBtn {
@@ -185,6 +192,7 @@ hr {
 }
 
 .campaignExplain {
+    margin-top: 10px;
     text-align: right;
     color: gray;
     font-size: 0.85rem;
@@ -227,11 +235,12 @@ hr {
     position:relative;
     overflow: hidden;
     padding: 1px;
+    margin-left: 50px;
 }
 .closeBadgeDetail:after {
     position: absolute;
     z-index: 1;
-    width:120px;
+    width: 120px;
     height: auto;
     background: rgb(236, 82, 82);
     content: "마감 임박";
