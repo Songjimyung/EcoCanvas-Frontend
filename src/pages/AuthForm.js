@@ -6,6 +6,7 @@ import '../css/AuthForm.css'
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [check_code, setCheck_code] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [re_password, setPasswordCheck] = useState('');
@@ -15,6 +16,7 @@ const AuthForm = ({ type }) => {
     //요청을 보낼 데이터 객체
     const signUpData = {
       email,
+      check_code,
       username,
       password,
       re_password,
@@ -27,6 +29,19 @@ const AuthForm = ({ type }) => {
       navigate("/login");
     } catch (error) {
       console.error(error.response.data); // 회원가입 실패 시 서버로부터 받은 에러 데이터 출력
+    }
+  };
+  const handleEmailFormSubmit = async (e) => {
+    e.preventDefault();
+    const emailSendData = {
+      email,
+    }
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/email_code/`, emailSendData);
+
+      alert(response.data['message'])
+    } catch (error) {
+      console.error(error.response.data);
     }
   };
   const handleLoginFormSubmit = async (e) => {
@@ -92,6 +107,9 @@ const AuthForm = ({ type }) => {
     );
   };
 
+  const handleResetPasswordEmailFormSubmit = () => {
+    navigate('/reset_pw/email_code')
+  }
 
   return (
     <div>
@@ -107,6 +125,19 @@ const AuthForm = ({ type }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {type === 'signup' && (
+          <button onClick={handleEmailFormSubmit}>
+            인증코드 받기
+          </button>
+        )}
+        {type === 'signup' && (
+          <input
+            type="text"
+            placeholder="인증 코드"
+            value={check_code}
+            onChange={(e) => setCheck_code(e.target.value)}
+          />
+        )}
         {type === 'signup' && (
           <input
             type="text"
@@ -135,6 +166,11 @@ const AuthForm = ({ type }) => {
         </button>
         <SocialKakao />
         <SocialGoogle />
+        {type === 'login' && (
+          <button onClick={handleResetPasswordEmailFormSubmit}>
+            비밀번호 찾기
+          </button>
+        )}
       </div>
     </div >
   );

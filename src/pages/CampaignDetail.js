@@ -324,7 +324,7 @@ const CampaignDetail = () => {
         <>
           <h1>{campaign.title}</h1>
           <div className="campaignContentDiv">
-            <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : ""}>
+            <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : "campaignImageDiv"}>
               <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
             </div>
             <div className="campaignContentRight">
@@ -341,9 +341,8 @@ const CampaignDetail = () => {
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
-                  {/* https://devbirdfeet.tistory.com/238 */}
                   <div className="campaignFundPercent">{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.current}원)</span>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.current.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -416,7 +415,6 @@ const CampaignDetail = () => {
                   <ShareIcon />
                 </Button>
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                  {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
                   <div className="modalMent">캠페인을 공유해보세요.(kakao미구현)</div>
                   <div>
                     <CopyToClipboard text={currentUrl}>

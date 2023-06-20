@@ -34,6 +34,7 @@ const Campaign = () => {
   const [campaignList, setCampaignList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignCount, setCampaignCount] = useState(0);
+  const [campaignId, setCampaignId] = useState('');
   const campaignsPerPage = 6;
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ const Campaign = () => {
       const response = await axios.get(url);
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
-      console.log(response.data);
+      console.log(response.data.results[0].id)
     } catch (error) {
       console.error('Error fetching campaign:', error);
     }
@@ -99,23 +100,21 @@ const Campaign = () => {
   // 좋아요 누른상태인지 상태확인 get함수
   const token = localStorage.getItem('access')
 
-  // const axiosCampaignLikeStatus = async (campaignId) => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {
-  //       headers: {
-  //         "Authorization": `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log(response)
-  //     console.log(response.data.is_liked)
-  //     setIsLiked(response.data.is_liked);
-  //   } catch (error) {
-  //     console.error('좋아요 상태 불러오기 실패:', error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   axiosCampaignLikeStatus();
-  // }, []);
+  const axiosCampaignLikeStatus = async (campaignId) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      setIsLiked(response.data.is_liked);
+    } catch (error) {
+      console.error('좋아요 상태 불러오기 실패:', error);
+    }
+  };
+  useEffect(() => {
+    axiosCampaignLikeStatus();
+  }, []);
 
   // 좋아요 axios
   const axiosLike = async (campaignId) => {
@@ -151,9 +150,8 @@ const Campaign = () => {
     });
   };
   // Share url
-  const currentUrl = window.location.href;
   const generateCampaignUrl = (campaignId) => {
-    return `${currentUrl}/${campaignId}`;
+    return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${campaignId}`;
   };
 
   // 마감임박 Boolean
@@ -264,7 +262,7 @@ const Campaign = () => {
                   <ShareIcon />
                 </IconButton>
                 <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, URL이 이상하게잡히는 오류있음)</div>
+                  <div className="modalMent">캠페인을 공유해보세요.</div>
                   <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
                     <button
                       className="shareUrlBtn"
