@@ -16,7 +16,7 @@ const MyOrder = () => {
     const fetchOrderList = async () => {
       const token = localStorage.getItem('access');
       try {
-        let url = 'http://localhost:8000/shop/mypage/order/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/shop/mypage/order/`;
         url += `?page=${currentPage}`;
 
 

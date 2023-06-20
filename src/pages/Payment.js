@@ -50,7 +50,7 @@ const PaymentButton = ({ product }) => {
       const makeMerchantUid =month + date + hours + minutes + seconds + milliseconds;
       const merchant_uid = 'Merchant' + makeMerchantUid
       window.IMP.request_pay({
-        pg: 'nice', 
+        pg: 'nice',
         customer_uid: email,
         pay_method: 'card',
         merchant_uid: merchant_uid,
@@ -70,19 +70,19 @@ const PaymentButton = ({ product }) => {
         console.log(paid_imp_uid)
         console.log(paid_amount)
 
-        
+
         if (response.success === true) {
           const token = localStorage.getItem('access');
-          axios.post(`http://localhost:8000/payments/receipt/${user_id}`, {merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount, product: product.id},
+          axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`, {merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount, product: product.id},
           {headers: {
             Authorization: `Bearer ${token}`,
           }})
             .then(response => {
-              console.log(response.data)              
-              
+              console.log(response.data)
+
             })
 
-          axios.get(`http://localhost:8000/payments/receipt/${user_id}`,
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
           {headers: {
             Authorization: `Bearer ${token}`,
           }})
@@ -91,10 +91,10 @@ const PaymentButton = ({ product }) => {
             })
          
         }
-        
-      }); 
-      
-    } 
+
+      });
+
+    }
   };
 
   return (

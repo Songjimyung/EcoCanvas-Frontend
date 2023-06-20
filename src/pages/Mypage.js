@@ -19,7 +19,7 @@ const Mypage = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/mypage/attend/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/attend/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -73,7 +73,7 @@ const Mypage = () => {
     for (const pair of formData.entries()) {
       console.log(pair[0] + ':', pair[1]);
     }
-    fetch(`http://127.0.0.1:8000/campaigns/review/${selectedInfo}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${selectedInfo}/`, {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token}`
@@ -116,7 +116,7 @@ const Mypage = () => {
               <div className="card" key={index}>
                 <Link to={`/campaign/${card.id}`}>
                   {card.image ? (
-                    <img src={`http://localhost:8000${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
+                    <img src={`${process.env.REACT_APP_BACKEND_URL}${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
                   ) : (
                     <img src={campaign_default_image} alt="Default Campaign" style={{ width: '200px', height: '200px' }} />
                   )}

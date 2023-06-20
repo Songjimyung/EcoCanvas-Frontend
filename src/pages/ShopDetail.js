@@ -25,7 +25,7 @@ const ShopDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/shop/products/${productId}/`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`);
         console.log(response.data);
         setProduct(response.data);
         setLoading(false);
@@ -48,7 +48,7 @@ const ShopDetail = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <img
-                src={product.images && product.images.length > 0 ? `http://localhost:8000${product.images[0]['image_file']}` : product_default_img}
+                src={product.images && product.images.length > 0 ? `${process.env.REACT_APP_BACKEND_URL}${product.images[0]['image_file']}` : product_default_img}
                 alt={product.name}
                 style={{ height: '100%', objectFit: 'cover', marginTop: '20px' }}
               />

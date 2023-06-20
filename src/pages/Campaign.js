@@ -57,7 +57,7 @@ const Campaign = () => {
   // Campaign GET
   const axiosCampaignList = async (currentPage, end, order) => {
     try {
-      let url = `http://localhost:8000/campaigns/?page=${currentPage}&order=${order}`
+      let url = `${process.env.REACT_APP_BACKEND_URL}/campaigns/?page=${currentPage}&order=${order}`
       if (end) {
         url += `&end=${end}`;
       }
@@ -75,7 +75,7 @@ const Campaign = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
   };
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image;
@@ -101,7 +101,7 @@ const Campaign = () => {
 
   // const axiosCampaignLikeStatus = async (campaignId) => {
   //   try {
-  //     const response = await axios.get(`http://localhost:8000/campaigns/${campaignId}/like/`, {
+  //     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {
   //       headers: {
   //         "Authorization": `Bearer ${token}`,
   //       },
@@ -120,7 +120,7 @@ const Campaign = () => {
   // 좋아요 axios
   const axiosLike = async (campaignId) => {
     try {
-      const response = await axios.post(`http://localhost:8000/campaigns/${campaignId}/like/`, {}, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {}, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -158,12 +158,13 @@ const Campaign = () => {
 
   // 마감임박 Boolean
   const isAboutToClose = (endDate) => {
-    const today = new Date();
+    const today = new Date().getDate();
     const endFormatting = endDate.replace(/년|월|일/g, '-');
-    const end = new Date(endFormatting);
+    const end = new Date(endFormatting).getDate();
 
-    const differenceInDays = today - end
-    return differenceInDays <= 7;
+    const differenceInDays = end - today
+    console.log(differenceInDays)
+    return differenceInDays >= 0 && differenceInDays <= 3;
   };
 
 

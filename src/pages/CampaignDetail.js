@@ -113,7 +113,7 @@ const CampaignDetail = () => {
   // 캠페인 디테일 GET
   const axiosCampaignDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/campaigns/${id}/`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
     } catch (error) {
@@ -128,7 +128,7 @@ const CampaignDetail = () => {
   // 캠페인 댓글 GET
   const axiosCampaignComment = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/campaigns/comment/${id}/`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
     } catch (error) {
       console.log(error)
@@ -143,7 +143,7 @@ const CampaignDetail = () => {
   useEffect(() => {
     const axiosCampaignReview = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/campaigns/review/${id}/`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/`);
         setCampaignReview(response.data);
 
       } catch (error) {
@@ -154,7 +154,7 @@ const CampaignDetail = () => {
   }, [id]);
 
   const getImageUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
   };
 
   const onErrorImg = (e) => {
@@ -167,7 +167,7 @@ const CampaignDetail = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:8000/campaigns/comment/${id}/`, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
         'content': createComment,
       }, {
         headers: {
@@ -259,7 +259,7 @@ const CampaignDetail = () => {
   // 좋아요 누른상태인지 상태확인 get함수
   const axiosCampaignLikeStatus = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/campaigns/${id}/like/`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -277,7 +277,7 @@ const CampaignDetail = () => {
   // 좋아요 axios
   const axiosLike = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/campaigns/${id}/like/`, {}, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {}, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -294,7 +294,7 @@ const CampaignDetail = () => {
   // 캠페인 참여정보 초기값 GET
   const axiosParticipateStatus = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/campaigns/${id}/participation/`, {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -311,7 +311,7 @@ const CampaignDetail = () => {
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/campaigns/${id}/participation/`, {}, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {}, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -329,6 +329,17 @@ const CampaignDetail = () => {
   // Share url
   const currentUrl = window.location.href;
 
+  // 마감임박 Boolean
+  const isAboutToClose = (endDate) => {
+    const today = new Date().getDate();
+    const endFormatting = endDate.replace(/년|월|일/g, '-');
+    const end = new Date(endFormatting).getDate();
+
+    const differenceInDays = end - today
+    console.log(differenceInDays)
+    return differenceInDays >= 0 && differenceInDays <= 3;
+  };
+
 
   return (
     <div className="campaignContainer">
@@ -336,7 +347,9 @@ const CampaignDetail = () => {
         <>
           <h1>{campaign.title}</h1>
           <div className="campaignContentDiv">
-            <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
+            <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : ""}>
+              <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
+            </div>
             <div className="campaignContentRight">
               <div className="campaignStatus">{campaign.status}</div>
               <div className="marginBottom10">{campaign.content}</div>

@@ -16,7 +16,7 @@ export default function ApplyListCampaign() {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch("http://127.0.0.1:8000/campaigns/", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -65,7 +65,7 @@ export default function ApplyListCampaign() {
     } else if (action === 'return') {
       updatedCampaign = { ...updatedCampaign, status: '0' };
     }
-    fetch(`http://127.0.0.1:8000/campaigns/status/${selectedApply.id}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/status/${selectedApply.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export default function ApplyListCampaign() {
 
 
   const getUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
   };
 
   return (

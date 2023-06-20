@@ -62,7 +62,7 @@ const CampaignCreate = () => {
 
 
     try {
-      const response = await axios.post(`http://localhost:8000/campaigns/`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/`, formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
