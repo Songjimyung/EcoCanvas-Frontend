@@ -124,7 +124,7 @@ function App() {
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
-            <Route path="/chat/:chatId" element={<ChatDetail />} />
+            <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
       </div >

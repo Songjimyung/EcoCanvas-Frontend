@@ -53,7 +53,7 @@ export default function ChatList() {
                 return (
                     <div key={chatItem.id}>
                         <h2>{user ? user.email : "Unknown User"}</h2>
-                        <Link to={`/chat/${chatItem.id}`}>
+                        <Link to={`/chat?id=${chatItem.id}`}>
                             <Button style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>채팅</Button>
                         </Link>
                     </div>

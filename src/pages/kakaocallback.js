@@ -10,6 +10,7 @@ const CallbackKakao = (props) => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/oauth/kakao/callback/?code=${code}`);
         const token_req_json = response.data;
+        console.log(token_req_json)
         localStorage.setItem('access', token_req_json['jwt_token']['access']);
         localStorage.setItem("refresh", token_req_json['jwt_token']['refresh']);
         const base64Url = token_req_json['jwt_token']['access'].split('.')[1];
