@@ -38,7 +38,6 @@ const AuthForm = ({ type }) => {
     }
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/email_code/`, emailSendData);
-      console.log(response.data);
 
       alert(response.data['message'])
     } catch (error) {
@@ -108,6 +107,9 @@ const AuthForm = ({ type }) => {
     );
   };
 
+  const handleResetPasswordEmailFormSubmit = () => {
+    navigate('/reset_pw/email_code')
+  }
 
   return (
     <div>
@@ -164,6 +166,11 @@ const AuthForm = ({ type }) => {
         </button>
         <SocialKakao />
         <SocialGoogle />
+        {type === 'login' && (
+          <button onClick={handleResetPasswordEmailFormSubmit}>
+            비밀번호 찾기
+          </button>
+        )}
       </div>
     </div >
   );
