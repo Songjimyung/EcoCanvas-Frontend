@@ -31,10 +31,11 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 
 const Campaign = () => {
+  const token = localStorage.getItem('access')
+
   const [campaignList, setCampaignList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignCount, setCampaignCount] = useState(0);
-  const [campaignId, setCampaignId] = useState('');
   const campaignsPerPage = 6;
   const navigate = useNavigate();
 
@@ -65,7 +66,6 @@ const Campaign = () => {
       const response = await axios.get(url);
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
-      console.log(response.data.results[0].id)
     } catch (error) {
       console.error('Error fetching campaign:', error);
     }
@@ -94,27 +94,14 @@ const Campaign = () => {
 
   // 좋아요
   const handleLikeButton = (campaignId) => {
-    setIsLiked(!isLiked);
-    axiosLike(campaignId);
-  };
-  // 좋아요 누른상태인지 상태확인 get함수
-  const token = localStorage.getItem('access')
-
-  const axiosCampaignLikeStatus = async (campaignId) => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsLiked(response.data.is_liked);
-    } catch (error) {
-      console.error('좋아요 상태 불러오기 실패:', error);
+    if (token) {
+      console.log("hi")
+      setIsLiked(!isLiked);
+      axiosLike(campaignId);
+    } else {
+      alert("로그인이 필요합니다.")
     }
   };
-  useEffect(() => {
-    axiosCampaignLikeStatus();
-  }, []);
 
   // 좋아요 axios
   const axiosLike = async (campaignId) => {
@@ -161,10 +148,18 @@ const Campaign = () => {
     const end = new Date(endFormatting).getDate();
 
     const differenceInDays = end - today
-    console.log(differenceInDays)
     return differenceInDays >= 0 && differenceInDays <= 3;
   };
 
+  // 캠페인 신청 token check
+  const handleCampaignLinkClick = () => {
+    if (token) {
+      console.log("check")
+      navigate(`/campaign/create`);
+    } else {
+      alert("로그인이 필요합니다.");
+    }
+  };
 
   return (
     <div className="campaignContainer">
@@ -194,19 +189,18 @@ const Campaign = () => {
               </select>
             </nav>
           </header>
-          <Link className="campaignBtn" to={'/campaign/create'}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<CampaignIcon />}
-              sx={{
-                height: '50px',
-                fontSize: '1.3rem',
-                color: 'white'
-              }}>
-              캠페인 신청하기
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<CampaignIcon />}
+            onClick={handleCampaignLinkClick}
+            sx={{
+              height: '50px',
+              fontSize: '1.3rem',
+              color: 'white'
+            }}>
+            캠페인 신청하기
+          </Button>
         </Grid>
 
         {campaignList.map((campaign, index) => (
@@ -262,31 +256,41 @@ const Campaign = () => {
                   <ShareIcon />
                 </IconButton>
                 <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <div className="modalMent">캠페인을 공유해보세요.</div>
-                  <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
+                  <div
+                    className="modalMent"
+
+                  >캠페인을 공유해보세요.</div>
+                  <div className='shareBtnContainer'>
+                    <CopyToClipboard
+                      text={generateCampaignUrl(campaign.id)}
+                      style={{
+                        marginRight: "10px"
+                      }}>
+                      <button
+                        className="shareUrlBtn"
+                        onClick={() => alert("복사 완료!")}
+                      >
+                        URL
+                      </button>
+                    </CopyToClipboard>
+                    <FacebookShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
+                      <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                    </FacebookShareButton>
+                    <TwitterShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
+                      <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                    </TwitterShareButton>
                     <button
-                      className="shareUrlBtn"
-                      onClick={() => alert("복사 완료!")}>
-                      URL
+                      className="shareKakaoBtn"
+                      style={{
+                        padding: '0',
+                        backgroundColor: 'transparent'
+                      }}>
+                      <img
+                        src={sharekakao}
+                        alt="kakaoShareButton"
+                        className="shareKakaoBtn" />
                     </button>
-                  </CopyToClipboard>
-                  <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
-                    <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                  </FacebookShareButton>
-                  <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
-                    <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                  </TwitterShareButton>
-                  <button
-                    className="shareKakaoBtn"
-                    style={{
-                      padding: '0',
-                      backgroundColor: 'transparent'
-                    }}>
-                    <img
-                      src={sharekakao}
-                      alt="kakaoShareButton"
-                      className="shareKakaoBtn" />
-                  </button>
+                  </div>
 
                 </Modal>
               </div>
