@@ -35,6 +35,8 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 import { MyProfile } from './pages/mypagelist/myprofile'
 import { ProductDetail } from './admin_pages/productdetail/Productdetail'
+import WebSocketTest from './pages/RestockedNotification'
+
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -113,6 +115,7 @@ function App() {
             <Route path="/admin_createProduct" element={<CreateProduct />} />
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
+            <Route path="/websocket" element={<WebSocketTest />} />
           </Routes>
         </div>
       </div >

@@ -94,6 +94,12 @@ const Shop = () => {
     fetchProductList();
   };
 
+  const handleSearchInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      fetchProductList();
+    }
+  };
+
   useEffect(() => {
     fetchProductList();
   }, [categoryId, sortBy, currentPage]);
@@ -122,6 +128,7 @@ const Shop = () => {
             type="text"
             value={searchQuery}
             onChange={handleSearchInputChange}
+            onKeyDown={handleSearchInputKeyDown}
           />
           <button onClick={handleSearchButtonClick}>Search</button>
         </nav>
