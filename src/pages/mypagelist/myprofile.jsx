@@ -46,7 +46,10 @@ export default function MyProfile() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
-
+    if (!userData.address || !userData.zipcode || !userData.detailAddress || !userData.contact || !userData.deliveryMessage) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
     const formData = new FormData();
     formData.append('image', image);
     formData.append('address', userData.address);
@@ -71,7 +74,6 @@ export default function MyProfile() {
       } else {
         console.log(result);
         alert("등록 완료!");
-        localStorage.setItem('deliveryInfoExists', 'true');
         window.location.reload();
       }
     } catch (error) {

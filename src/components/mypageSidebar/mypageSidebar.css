@@ -22,14 +22,20 @@
 }
 
 .myprofile {
-  width: 70%;
+  width: 80%;
   height: 150px;
   display: flex;
   margin: auto;
   margin-top: 20px;
   margin-bottom: 30px;
   border-radius: 100px;
-  background-color: rgb(188, 210, 251);
+  background-color: rgb(228, 245, 248);
+}
+
+.myprofile img {
+  margin: auto;
+  width: 90%;
+  height: 90%;
 }
 
 .mypage-block {

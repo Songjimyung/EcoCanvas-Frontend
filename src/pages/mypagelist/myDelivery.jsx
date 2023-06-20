@@ -61,7 +61,7 @@ const DeliveryTracking = () => {
   return (
     <div className="mypage-block">
       <Sidebar />
-      <Paper sx={{ padding: 2, margin: 'auto' }}>
+      <Paper sx={{ padding: 2, margin: 'auto', marginLeft: '500px' }}>
         <Typography variant="h6" sx={{ marginBottom: 2 }}>
           배송 조회
         </Typography>
