@@ -28,6 +28,7 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { handleKakaoButton } from '../campaign/Kakaohooks';
 
 
 const Campaign = () => {
@@ -161,6 +162,7 @@ const Campaign = () => {
     }
   };
 
+
   return (
     <div className="campaignContainer">
       <h1>캠페인 둘러보기</h1>
@@ -229,7 +231,7 @@ const Campaign = () => {
                   >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <>{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성<br /></>
+                      <>{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성<br /></>
                     ) : (
                       <div>펀딩이 없는 캠페인입니다.</div>
                     )}
@@ -284,7 +286,9 @@ const Campaign = () => {
                       style={{
                         padding: '0',
                         backgroundColor: 'transparent'
-                      }}>
+                      }}
+                      onClick={() => handleKakaoButton(campaign.id)}
+                    >
                       <img
                         src={sharekakao}
                         alt="kakaoShareButton"

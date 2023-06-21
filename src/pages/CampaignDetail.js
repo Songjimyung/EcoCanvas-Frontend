@@ -30,6 +30,7 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { handleKakaoButton } from '../campaign/Kakaohooks';
 
 // Mui Tab
 function TabPanel(props) {
@@ -352,8 +353,8 @@ const CampaignDetail = () => {
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
-                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.current.toLocaleString()}원)</span>
+                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -427,7 +428,7 @@ const CampaignDetail = () => {
                   <ShareIcon />
                 </Button>
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현)</div>
+                  <div className="modalMent">캠페인을 공유해보세요.</div>
                   <div className='shareBtnContainer'>
                     <CopyToClipboard text={currentUrl}>
                       <button
@@ -447,7 +448,9 @@ const CampaignDetail = () => {
                       style={{
                         padding: '0',
                         backgroundColor: 'transparent'
-                      }}>
+                      }}
+                      onClick={() => handleKakaoButton(campaign.id)}
+                    >
                       <img
                         src={sharekakao}
                         alt="kakaoShareButton"
