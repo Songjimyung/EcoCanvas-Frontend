@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Topbar from './components/topbar/Topbar'
 import Sidebar from './components/sidebar/Sidebar';
+import Footer from './components/footer/Footer';
 import AdminSidebar from './admin_conponents/Adminsidebar/AdminSidebar';
 import AdminTopbar from './admin_conponents/Admintopbar/AdminTopbar';
 import './css/App.css'
 import { Home } from './pages/Home';
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
+import { ResetPasswordEmail } from "./pages/ResetPasswordEmail";
+import { ReadPasswordEmail } from "./pages/ReadPasswordEmail";
+import { ResetPassword } from "./pages/ResetPassword";
+import { UpdatePassword } from "./pages/UpdatePassword";
 import { Campaign } from "./pages/Campaign";
 import { CampaignDetail } from "./pages/CampaignDetail";
 import { CampaignCreate } from "./pages/CampaignCreate";
+import { KakaoInit } from "./campaign/Kakaohooks";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
@@ -79,7 +85,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div id='wrapper'>
+        <KakaoInit />
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
@@ -89,6 +96,10 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/reset_pw/email_code" element={<ResetPasswordEmail />}></Route>
+            <Route path="/reset_pw/reset_params" element={<ReadPasswordEmail />}></Route>
+            <Route path="/reset_pw" element={<ResetPassword />}></Route>
+            <Route path="/update_pw" element={<UpdatePassword />}></Route>
             <Route path="/campaign" element={<Campaign />}></Route>
             <Route path="/campaign/:id" element={<CampaignDetail />} />
             <Route path="/campaign/create" element={<CampaignCreate />} />
@@ -116,9 +127,10 @@ function App() {
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
-            <Route path="/chat/:chatId" element={<ChatDetail />} />
+            <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
+        <Footer />
       </div >
     </ThemeProvider>
   );
