@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Topbar from './components/topbar/Topbar'
-import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
 import AdminSidebar from './admin_conponents/Adminsidebar/AdminSidebar';
 import AdminTopbar from './admin_conponents/Admintopbar/AdminTopbar';
@@ -90,7 +89,7 @@ function App() {
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
-          {!isAdmin ? <Sidebar /> : (isMypage ? null : <AdminSidebar />)}
+          {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
           {/* <AdminSidebar /> */}
           <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -130,8 +129,9 @@ function App() {
             <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
-        <Footer />
+
       </div >
+      <Footer />
     </ThemeProvider>
   );
 }
