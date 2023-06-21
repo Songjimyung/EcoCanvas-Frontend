@@ -3,6 +3,10 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import './topbar.css';
 import { Link } from 'react-router-dom';
 
+import Button from '@mui/material/Button';
+import Modal from "../modal/Modal"
+import ChatDetail from '../../admin_pages/chatDetail/ChatDetail';
+
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,6 +18,7 @@ export default function Topbar() {
       setIsLoggedIn(true);
     }
   }, []);
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
@@ -21,6 +26,14 @@ export default function Topbar() {
     setIsLoggedIn(false);
     alert("로그아웃 되었습니다.")
   };
+  // Chat modal
+  const [chatModalOpen, setChatModalOpen] = useState(false);
+  const openChatModal = () => {
+    setChatModalOpen(true);
+  };
+  const closeChatModal = () => {
+    setChatModalOpen(false);
+  }
 
   return (
     <div className='_topbar'>
