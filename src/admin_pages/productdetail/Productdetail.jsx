@@ -18,6 +18,7 @@ export default function ProductDetail() {
     product_price: "",
     product_stock: ""
   });
+  const [isSoldOut, setIsSoldOut] = useState(false); // 품절 여부
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,6 +43,13 @@ export default function ProductDetail() {
           product_stock: result.product_stock
         };
         setProduct(product_info);
+
+        if (product_info.product_price === 0) {
+          setIsSoldOut(true);
+        } else {
+          setIsSoldOut(false);
+        }
+
       } catch (error) {
         console.log(error);
       }
@@ -157,7 +165,7 @@ export default function ProductDetail() {
                   onChange={(e) => setProduct({ ...product, category_name: e.target.value })}
                   fullWidth
                 />
-                <Typography variant="body1" paragraph>
+                <Typography variant="subtitle1" >
                   상품설명
                 </Typography>
                 <TextField
@@ -165,8 +173,10 @@ export default function ProductDetail() {
                   value={product.product_desc}
                   onChange={(e) => setProduct({ ...product, product_desc: e.target.value })}
                   fullWidth
+                  multiline
+                  rows={4}
                 />
-                <Typography variant="body1" paragraph>
+                <Typography variant="subtitle1" >
                   재고 : {product.product_stock}
                 </Typography>
                 <TextField
@@ -175,8 +185,8 @@ export default function ProductDetail() {
                   onChange={(e) => setProduct({ ...product, product_stock: e.target.value })}
                   fullWidth
                 />
-                <Typography variant="body1" paragraph>
-                  {product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A'}
+                <Typography variant="subtitle1" >
+                  {isSoldOut ? '품절' : (product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A')}
                 </Typography>
                 <TextField
                   name="product_price"
@@ -185,7 +195,7 @@ export default function ProductDetail() {
                   fullWidth
                 />
                 <Grid item xs={12}>
-                  <Typography variant="body1">이미지 업로드</Typography>
+                  <Typography variant="subtitle1">이미지 업로드</Typography>
                   <input
                     type="file"
                     id="file"
