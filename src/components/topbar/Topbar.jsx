@@ -96,20 +96,19 @@ export default function Topbar() {
             <span className="_topIconBadge">1</span>
           </div>
         </div>
-      </div>
-
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ color: "white", marginLeft: "25px" }}
-          onClick={openChatModal}
-        >
-          상담
-        </Button>
-        <Modal open={chatModalOpen} close={closeChatModal} header="상담">
-          <ChatDetail />
-        </Modal>
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ color: "white", marginLeft: "25px" }}
+            onClick={openChatModal}
+          >
+            상담
+          </Button>
+          <Modal open={chatModalOpen} close={closeChatModal} header="상담">
+            <ChatDetail />
+          </Modal>
+        </div>
       </div>
     </div>
   );
