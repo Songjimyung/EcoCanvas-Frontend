@@ -62,7 +62,7 @@ export default function ChatDetail() {
     }, [roomId]);
 
     function connect() {
-        chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
+        chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/chat/${roomId}/?token=${token}`);
 
         chatSocket.current.onopen = function (e) {
             console.log("Successfully connected to the WebSocket.");
