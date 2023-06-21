@@ -185,7 +185,7 @@ const Campaign = () => {
               >
                 <option value="recent">최신순</option>
                 <option value="closing">마감임박순</option>
-                <option value="count">조회순</option>
+                <option value="popular">인기순</option>
                 <option value="like">좋아요순</option>
                 <option value="amount">모금금액순</option>
               </select>

@@ -306,6 +306,7 @@ const CampaignDetail = () => {
         });
         setIsParticipated(response.data.is_participated);
         isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
+        axiosCampaignDetail();
       } catch (error) {
         console.log(error)
         alert("캠페인 참여에 실패했습니다.")
