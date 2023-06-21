@@ -154,9 +154,15 @@ const CampaignDetail = () => {
     axiosCampaignReview();
   }, [id]);
 
+  // 이미지처리
   const getImageUrl = (imagePath) => {
-    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    if (process.env.NODE_ENV === 'production') {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    } else {
+      return `/${imagePath}`;
+    }
   };
+
 
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image
