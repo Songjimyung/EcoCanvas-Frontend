@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0b2ee68c.css",
+    "main.js": "/static/js/main.1115972a.js",
+    "static/js/787.76056b95.chunk.js": "/static/js/787.76056b95.chunk.js",
+    "static/media/campaign_default_image.jpg": "/static/media/campaign_default_image.f78793920aafd2c542c9.jpg",
+    "static/media/sample_product.png": "/static/media/sample_product.24b286dae98b5d1ea19e.png",
+    "static/media/sharekakao.webp": "/static/media/sharekakao.8eacf66f4191f055177c.webp",
+    "index.html": "/index.html",
+    "main.0b2ee68c.css.map": "/static/css/main.0b2ee68c.css.map",
+    "main.1115972a.js.map": "/static/js/main.1115972a.js.map",
+    "787.76056b95.chunk.js.map": "/static/js/787.76056b95.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0b2ee68c.css",
+    "static/js/main.1115972a.js"
+  ]
+}
