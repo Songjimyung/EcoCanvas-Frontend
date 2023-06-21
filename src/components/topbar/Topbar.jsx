@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import './topbar.css';
 import { Link } from 'react-router-dom';
-
+import NotificationReceiver from '../RestockedNotification';
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,11 +38,11 @@ export default function Topbar() {
         <div className='_topRight'>
           {isLoggedIn ? (
             <span>
-              <Link onClick={handleLogout} className='_signBtn'>로그아웃</Link>
+              <Link onClick={handleLogout} className="_signBtn">로그아웃</Link>
             </span>
           ) : (
             <span>
-              <Link to='/login' className='_signBtn'>로그인</Link>
+              <Link to="/login" className="_signBtn">로그인</Link>
             </span>
           )}
           |
@@ -61,6 +61,7 @@ export default function Topbar() {
           </div>
         </div>
       </div>
+      <NotificationReceiver />
     </div>
   );
 }

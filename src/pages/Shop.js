@@ -49,6 +49,8 @@ const Shop = () => {
     setCurrentPage(page);
   };
   const fetchProductList = async () => {
+    const token = localStorage.getItem('access');
+
     try {
       let url = `${process.env.REACT_APP_BACKEND_URL}/shop/products/list/`;
 
@@ -71,7 +73,11 @@ const Shop = () => {
         url += `&search_query=${encodeURIComponent(searchQuery)}`;
       }
 
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setProductList(response.data.results);
       const totalPages = Math.ceil(response.data.count / 6);
       setTotalPages(totalPages);
@@ -104,6 +110,9 @@ const Shop = () => {
     fetchProductList();
   }, [categoryId, sortBy, currentPage]);
 
+  useEffect(() => {
+    fetchCategoryList();
+  }, []);
 
   return (
     <div>
