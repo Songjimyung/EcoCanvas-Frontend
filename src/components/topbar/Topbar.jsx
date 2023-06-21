@@ -62,6 +62,18 @@ export default function Topbar() {
         </div>
       </div>
       <NotificationReceiver />
+      <div>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ color: 'white', marginLeft: '25px', }}
+          onClick={openChatModal}
+        >상담
+        </Button>
+        <Modal open={chatModalOpen} close={closeChatModal} header="상담">
+          <ChatDetail />
+        </Modal>
+      </div>
     </div>
   );
 }

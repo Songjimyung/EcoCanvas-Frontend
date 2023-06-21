@@ -100,6 +100,11 @@ hr {
     margin-bottom: 20px;
 }
 
+.shareBtnContainer {
+    display: flex;
+    flex-direction: row;
+}
+
 .shareUrlBtn {
     width: 48px;
     height: 48px;
@@ -111,6 +116,11 @@ hr {
     cursor: pointer;
     background-color: #3eac3e;
     top: 0px;
+    margin-right: 10px;
+}
+
+.shareBtn {
+    margin-right: 10px;
 }
 
 .shareKakaoBtn {
