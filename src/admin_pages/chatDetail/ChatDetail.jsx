@@ -1,6 +1,8 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import './chatDetail.css'
-
+import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 export default function ChatDetail() {
     const chatLogRef = useRef(null);
@@ -9,40 +11,58 @@ export default function ChatDetail() {
     let chatSocket = useRef(null);
     let payload = localStorage.getItem('payload');
     payload = JSON.parse(payload)
-    const userName = payload.email
     const userId = payload.user_id
-    const roomName = window.location.pathname.split('/')[2];
+    const token = localStorage.getItem('access')
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get('id');
+    const [roomId, setRoomId] = useState('');
 
     useEffect(() => {
-        console.log("Sanity check from room.js.");
+        async function getRoomId() {
+            if (id) {
+                setRoomId(id)
+            }
+            else {
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/chat/room/`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                })
+                setRoomId(response.data.id)
+            }
+        }
+        getRoomId()
 
         chatMessageInputRef.current.focus();
 
         chatMessageInputRef.current.onkeyup = function (e) {
-        if (e.keyCode === 13) { 
-            chatMessageSendRef.current.click();
-        }
+            if (e.keyCode === 13) {
+                chatMessageSendRef.current.click();
+            }
         };
 
         chatMessageSendRef.current.onclick = function () {
             if (chatMessageInputRef.current.value.length === 0) return;
             chatSocket.current.send(JSON.stringify({
                 "message": chatMessageInputRef.current.value,
-                'user': userName,
                 'user_id': userId,
                 'command': 'new_message'
             }));
             chatMessageInputRef.current.value = "";
         };
 
-        connect();
+    }, []);
 
+    useEffect(() => {
+        connect();
         return () => {
             chatSocket.current.close();
         };
-    }, []);
+    }, [roomId]);
+
     function connect() {
-        chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomName}/?token=${localStorage.getItem("access")}`);
+        chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
 
         chatSocket.current.onopen = function (e) {
             console.log("Successfully connected to the WebSocket.");
@@ -75,7 +95,6 @@ export default function ChatDetail() {
         };
     }
     function createMessage(data) {
-        console.log(data);
         const author = data['author'];
         chatLogRef.current.value += (author + ': ' + data.content + '\n');
     }

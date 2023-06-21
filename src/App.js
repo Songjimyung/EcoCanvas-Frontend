@@ -11,6 +11,7 @@ import { SignUp } from "./pages/SignUp";
 import { ResetPasswordEmail } from "./pages/ResetPasswordEmail";
 import { ReadPasswordEmail } from "./pages/ReadPasswordEmail";
 import { ResetPassword } from "./pages/ResetPassword";
+import { UpdatePassword } from "./pages/UpdatePassword";
 import { Campaign } from "./pages/Campaign";
 import { CampaignDetail } from "./pages/CampaignDetail";
 import { CampaignCreate } from "./pages/CampaignCreate";
@@ -98,6 +99,7 @@ function App() {
             <Route path="/reset_pw/email_code" element={<ResetPasswordEmail />}></Route>
             <Route path="/reset_pw/reset_params" element={<ReadPasswordEmail />}></Route>
             <Route path="/reset_pw" element={<ResetPassword />}></Route>
+            <Route path="/update_pw" element={<UpdatePassword />}></Route>
             <Route path="/campaign" element={<Campaign />}></Route>
             <Route path="/campaign/:id" element={<CampaignDetail />} />
             <Route path="/campaign/create" element={<CampaignCreate />} />
@@ -125,7 +127,7 @@ function App() {
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
-            <Route path="/chat/:chatId" element={<ChatDetail />} />
+            <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
         <Footer />
