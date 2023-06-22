@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Modal from "../modal/Modal";
 import ChatDetail from "../../admin_pages/chatDetail/ChatDetail";
+import Fab from '@mui/material/Fab';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -97,14 +99,13 @@ export default function Topbar() {
           </div>
         </div>
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ color: "white", marginLeft: "25px" }}
-            onClick={openChatModal}
-          >
-            상담
-          </Button>
+          <Fab 
+          color="primary" 
+          sx={{ mr: 1,
+            color: "white" }}
+          onClick={openChatModal}>
+            <SupportAgentIcon fontSize="large"/>
+          </Fab>
           <Modal open={chatModalOpen} close={closeChatModal} header="상담">
             <ChatDetail />
           </Modal>
