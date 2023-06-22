@@ -79,11 +79,7 @@ const Campaign = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    if (process.env.NODE_ENV === 'production') {
-      return `${imagePath}`;
-    } else {
-      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
-    }
+    return `${imagePath}`;
   };
 
   const onErrorImg = (e) => {
