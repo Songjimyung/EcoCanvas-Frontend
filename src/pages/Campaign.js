@@ -221,11 +221,7 @@ const Campaign = () => {
                   <CardMedia
                     component="img"
                     height="250"
-                    image={
-                      process.env.NODE_ENV === 'production'
-                        ? <AwsS3Image key={campaign.image} />
-                        : getImageUrl(campaign.image)
-                    }
+                    image={getImageUrl(campaign.image)}
                     alt="campaign_image"
                     onError={onErrorImg}
                   />
