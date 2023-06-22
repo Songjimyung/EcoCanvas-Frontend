@@ -1,31 +1,51 @@
+.log-div {
+  padding-top: 50px;
+}
+
 .inputList {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
+  color: rgb(40, 84, 48);
+  margin-bottom: 30px;
 }
 
 .inputList>input {
-  margin: 15px 0px 15px 0px;
-  padding: 15px;
-  border-radius: 25px;
-  font-size: 1.5rem;
-  width: 20%;
+  margin-top: 10px 0px;
+  padding: 13px 15px;
+  border-radius: 5px;
+  font-size: 1.0rem;
+  width: 25%;
+  outline-style: none;
+  border: 1.5px solid rgb(40, 84, 48);
 }
 
 .inputList>button {
-  padding: 5px;
-  border-radius: 6px;
-  margin-bottom: 5px;
+  padding: 13px 15px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
   color: #e7e5e5;
-  font-size: 1.5rem;
-  width: 20%;
-  background-color: #3b375c;
+  font-size: 1.0rem;
+  width: 25%;
+  background-color: rgb(40, 84, 48);
 }
 
 .inputList>button.active,
 .inputList>button:hover {
-  padding: 6px;
-  border: 3px solid rgb(248, 248, 248);
+  background-color: rgb(95, 141, 78);
+  cursor: pointer;
+}
+
+.find-pw-btn {
+  color: rgb(95, 141, 78);
+  font-size: 0.85rem;
+  margin-bottom: 30px;
+}
+
+.find-pw-btn:hover {
+  color: rgb(40, 84, 48);
+  cursor: pointer;
 }

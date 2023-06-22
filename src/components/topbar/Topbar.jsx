@@ -16,7 +16,7 @@ export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [socket, setSocket] = useState(null);
   const [open, setOpen] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
 
   const handleClose = () => {
@@ -31,32 +31,30 @@ export default function Topbar() {
     setNotificationMessage(message);
     setOpen(true);
     setNotificationCount((prevCount) => prevCount + 1);
-    console.log(message)
+    console.log(message);
   };
   useEffect(() => {
-
-    const newSocket = new WebSocket('ws://localhost:8000/ws/restock/');  // WebSocket 연결 URL
+    const newSocket = new WebSocket("ws://localhost:8000/ws/restock/"); // WebSocket 연결 URL
     setSocket(newSocket);
 
-
     newSocket.onopen = () => {
-      console.log('연결 성공');
+      console.log("연결 성공");
 
       // notification_group 그룹 구독 요청
-      newSocket.send(JSON.stringify({
-        command: 'subscribe',
-        group: 'notification_group'
-      }));
-
+      newSocket.send(
+        JSON.stringify({
+          command: "subscribe",
+          group: "notification_group",
+        })
+      );
     };
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const message = data.message;
       handleSnackbarOpen(message);
-
     };
     newSocket.onclose = () => {
-      console.log('WebSocket 연결 종료');
+      console.log("WebSocket 연결 종료");
     };
 
     return () => {
@@ -80,14 +78,6 @@ export default function Topbar() {
     socket.close();
     alert("로그아웃 되었습니다.");
   };
-  // Chat modal
-  const [chatModalOpen, setChatModalOpen] = useState(false);
-  const openChatModal = () => {
-    setChatModalOpen(true);
-  };
-  const closeChatModal = () => {
-    setChatModalOpen(false);
-  };
 
   return (
     <div className="_topbar">
@@ -104,7 +94,7 @@ export default function Topbar() {
             </Link>
           </h3>
           <h3 className="_topbarTitle">
-            <Link to="/campaign" className="_topbarTitle">
+            <Link to="/campaign" className="_topbarMainTitle">
               지구의 날
             </Link>
           </h3>
@@ -131,7 +121,7 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          |
+          <span className="_signBtn">|</span>
           {isLoggedIn ? (
             <span>
               <Link to="/mypage" className="_signBtn">
@@ -153,16 +143,14 @@ export default function Topbar() {
               )}
             </div>
           </Link>
-
         </div>
         <div>
           <Button
             variant="contained"
             color="primary"
-            sx={{ color: "white", marginLeft: "25px" }}
+            sx={{ color: 'white', marginLeft: '25px', }}
             onClick={openChatModal}
-          >
-            상담
+          >상담
           </Button>
           <Modal open={chatModalOpen} close={closeChatModal} header="상담">
             <ChatDetail />
@@ -185,9 +173,9 @@ export default function Topbar() {
               </IconButton>
             }
             sx={{
-              '& .MuiSnackbarContent-root': {
-                backgroundColor: 'midnightblue',
-                color: 'white',
+              "& .MuiSnackbarContent-root": {
+                backgroundColor: "midnightblue",
+                color: "white",
               },
             }}
           />

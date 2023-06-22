@@ -13,10 +13,11 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: (theme) => theme.palette.grey[100],
+        // backgroundColor: (theme) => theme.palette.grey[100],
+        backgroundColor: "rgb(247, 225, 174)",
+        color: "rgb(40, 84, 48)",
         p: 4,
         bottom: 0,
-        marginTop: "2rem",
       }}
     >
       <Container maxWidth="lg">
@@ -47,17 +48,17 @@ export default function Footer() {
             <Typography variant="h6" color="text.primary" gutterBottom>
               Follow Us
             </Typography>
-            <Link href="https://www.facebook.com/" color="inherit">
+            <Link href="https://www.facebook.com/mevpr" color="inherit">
               <Facebook />
             </Link>
             <Link
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/ministry_environment/"
               color="inherit"
               sx={{ pl: 1, pr: 1 }}
             >
               <Instagram />
             </Link>
-            <Link href="https://www.twitter.com/" color="inherit">
+            <Link href="https://twitter.com/mevpr" color="inherit">
               <Twitter />
             </Link>
           </Grid>

@@ -157,9 +157,9 @@ const CampaignDetail = () => {
   // 이미지처리
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === 'production') {
-      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
-    } else {
       return `/${imagePath}`;
+    } else {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }
   };
 
@@ -341,27 +341,35 @@ const CampaignDetail = () => {
     <div className="campaignContainer">
       {campaign ? (
         <>
-          <h1>{campaign.title}</h1>
+          <h1 style={{ margin: "50px 0 50px 0" }}>{campaign.title}</h1>
           <div className="campaignContentDiv">
             <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : "campaignImageDiv"}>
               <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
             </div>
             <div className="campaignContentRight">
               <div className="campaignStatus">{campaign.status}</div>
-              <div className="marginBottom10">{campaign.content}</div>
-              <div className="marginBottom10">주최 : {campaign.user}</div>
-              <div className="marginBottom10">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
-              <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
-              <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
+              <div className="campaignContent">
+                {campaign.content.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+              <hr style={{ marginBottom: "10px" }} />
+              <div className="campaignContentBottom">주최 : {campaign.user}</div>
+              <div className="campaignContentBottom">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
+              <div className="campaignContentBottom">캠페인 신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
+              <div className="campaignContentBottom">캠페인 신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
-                <div className="marginBottom10">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+                <div className="campaignContentBottom">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
               ) : (
-                <div className="marginBottom10">활동이 없는 캠페인입니다.</div>
+                <div className="campaignContentBottom">활동이 없는 캠페인입니다.</div>
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
                   <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원 달성)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -399,7 +407,7 @@ const CampaignDetail = () => {
                   </Modal>
                 </div>
               ) : (
-                <div className="marginBottom10">펀딩을 진행하지 않는 캠페인입니다.</div>
+                <div className="campaignContentBottom">펀딩을 진행하지 않는 캠페인입니다.</div>
               )}
               <div className="campaignContentBtn">
                 <Button
@@ -478,7 +486,7 @@ const CampaignDetail = () => {
                   disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={axiosParticipate}
                 >
-                  캠페인 참여하기
+                  {isParticipated ? "캠페인 참여취소" : "캠페인 참여하기"}
                 </Button>
               </div>
             </div>
