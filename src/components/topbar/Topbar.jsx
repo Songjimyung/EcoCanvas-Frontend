@@ -3,10 +3,9 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LocalGroceryStoreRoundedIcon from "@mui/icons-material/LocalGroceryStoreRounded";
 import "./topbar.css";
 import { Link } from "react-router-dom";
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 import Button from "@mui/material/Button";
 import Modal from "../modal/Modal";
@@ -16,7 +15,7 @@ export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [socket, setSocket] = useState(null);
   const [open, setOpen] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
 
   const handleClose = () => {
@@ -28,32 +27,30 @@ export default function Topbar() {
     setNotificationMessage(message);
     setOpen(true);
     setNotificationCount((prevCount) => prevCount + 1);
-    console.log(message)
+    console.log(message);
   };
   useEffect(() => {
-
-    const newSocket = new WebSocket('ws://localhost:8000/ws/restock/');  // WebSocket 연결 URL
+    const newSocket = new WebSocket("ws://localhost:8000/ws/restock/"); // WebSocket 연결 URL
     setSocket(newSocket);
 
-
     newSocket.onopen = () => {
-      console.log('연결 성공');
+      console.log("연결 성공");
 
       // notification_group 그룹 구독 요청
-      newSocket.send(JSON.stringify({
-        command: 'subscribe',
-        group: 'notification_group'
-      }));
-
+      newSocket.send(
+        JSON.stringify({
+          command: "subscribe",
+          group: "notification_group",
+        })
+      );
     };
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const message = data.message;
       handleSnackbarOpen(message);
-
     };
     newSocket.onclose = () => {
-      console.log('WebSocket 연결 종료');
+      console.log("WebSocket 연결 종료");
     };
 
     return () => {
@@ -165,6 +162,30 @@ export default function Topbar() {
           <Modal open={chatModalOpen} close={closeChatModal} header="상담">
             <ChatDetail />
           </Modal>
+        </div>
+        <div>
+          <Snackbar
+            open={open}
+            autoHideDuration={9000}
+            onClose={handleClose}
+            message={notificationMessage}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+            sx={{
+              "& .MuiSnackbarContent-root": {
+                backgroundColor: "midnightblue",
+                color: "white",
+              },
+            }}
+          />
         </div>
       </div>
     </div>
