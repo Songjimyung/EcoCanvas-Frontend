@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 
-const CallbackKakao = (props) => {
-  let code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
+const CallbackKakao = ({ code }) => {
 
   useEffect(() => {
     const getToken = async () => {
