@@ -38,7 +38,10 @@ const Shop = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    if (process.env.NODE_ENV === 'development') {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
+    return `${imagePath}`;
   };
 
   const onErrorImg = (e) => {
@@ -85,7 +88,7 @@ const Shop = () => {
     } catch (error) {
       console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
     }
-  },[categoryId, sortBy, currentPage, searchQuery]);
+  }, [categoryId, sortBy, currentPage, searchQuery]);
 
   const fetchCategoryList = async () => {
     try {
