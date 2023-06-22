@@ -3,9 +3,56 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LocalGroceryStoreRoundedIcon from "@mui/icons-material/LocalGroceryStoreRounded";
 import "./topbar.css";
 import { Link } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  const handleClose = () => {
+    setOpen(false);
+    setNotificationCount(0);
+  };
+
+  const handleSnackbarOpen = (message) => {
+    setNotificationMessage(message);
+    setOpen(true);
+    setNotificationCount((prevCount) => prevCount + 1);
+    console.log(message);
+  };
+  useEffect(() => {
+    const newSocket = new WebSocket("ws://localhost:8000/ws/restock/"); // WebSocket 연결 URL
+    setSocket(newSocket);
+
+    newSocket.onopen = () => {
+      console.log("연결 성공");
+
+      // notification_group 그룹 구독 요청
+      newSocket.send(
+        JSON.stringify({
+          command: "subscribe",
+          group: "notification_group",
+        })
+      );
+    };
+    newSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const message = data.message;
+      handleSnackbarOpen(message);
+    };
+    newSocket.onclose = () => {
+      console.log("WebSocket 연결 종료");
+    };
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
   useEffect(() => {
     // 로그인 상태를 localstorage에서 확인
@@ -20,6 +67,7 @@ export default function Topbar() {
     localStorage.removeItem("refresh");
     localStorage.removeItem("payload");
     setIsLoggedIn(false);
+    socket.close();
     alert("로그아웃 되었습니다.");
   };
 
@@ -38,7 +86,7 @@ export default function Topbar() {
             </Link>
           </h3>
           <h3 className="_topbarTitle">
-            <Link to="/campaign" className="_topbarTitle">
+            <Link to="/campaign" className="_topbarMainTitle">
               지구의 날
             </Link>
           </h3>
@@ -65,7 +113,7 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          |
+          <span className="_signBtn">|</span>
           {isLoggedIn ? (
             <span>
               <Link to="/mypage" className="_signBtn">
@@ -81,8 +129,34 @@ export default function Topbar() {
           )}
           <div className="_topbarIconContainer">
             <NotificationsNoneIcon />
-            <span className="_topIconBadge">1</span>
+            {notificationCount > 0 && (
+              <span className="_topIconBadge">{notificationCount}</span>
+            )}
           </div>
+        </div>
+        <div>
+          <Snackbar
+            open={open}
+            autoHideDuration={9000}
+            onClose={handleClose}
+            message={notificationMessage}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+            sx={{
+              "& .MuiSnackbarContent-root": {
+                backgroundColor: "midnightblue",
+                color: "white",
+              },
+            }}
+          />
         </div>
       </div>
     </div>

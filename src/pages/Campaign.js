@@ -207,7 +207,8 @@ const Campaign = () => {
             sx={{
               height: '50px',
               fontSize: '1.3rem',
-              color: 'white'
+              color: 'white',
+              backgroundColor: "rgb(40, 84, 48)"
             }}>
             캠페인 신청하기
           </Button>

@@ -94,7 +94,7 @@ const Mypage = () => {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        alert("상품 등록 완료!")
+        alert("리뷰 등록 완료!")
         window.location.reload();
       })
       .catch((error) => {

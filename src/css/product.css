@@ -14,21 +14,22 @@
 .category-dropdown {
   width: 150px;
   height: 30px;
-  border: 1px solid #857d7d;
-  border-radius: 4px;
+  border: 1px solid rgb(40, 84, 48);
+  border-radius: 5px;
   padding: 5px;
   font-size: 14px;
-  margin-right: 10px
+  margin-right: 10px;
 }
 
-.category-dropdown option {
+.category-dropdown>option {
   font-size: 14px;
   color: #555;
 }
 
 select option:checked {
-  background-color: #ddeecd;
+  background-color: rgb(40, 84, 48);
   font-weight: bold;
+  color: rgb(229, 217, 182);
 }
 
 
@@ -83,6 +84,10 @@ select option:checked {
 .product-detail-info {
   margin: auto;
   margin-top: 20px;
+}
+
+h1 {
+  font-size: 50px;
 }
 
 .createOrder {
