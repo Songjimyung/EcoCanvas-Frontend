@@ -101,7 +101,7 @@ export default function Topbar() {
             </Link>
           </h3>
           <h3 className="_topbarTitle">
-            <Link to="/campaign" className="_topbarTitle">
+            <Link to="/campaign" className="_topbarMainTitle">
               지구의 날
             </Link>
           </h3>
@@ -128,7 +128,7 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          |
+          <span className="_signBtn">|</span>
           {isLoggedIn ? (
             <span>
               <Link to="/mypage" className="_signBtn">
@@ -153,7 +153,11 @@ export default function Topbar() {
           <Button
             variant="contained"
             color="primary"
-            sx={{ color: "white", marginLeft: "25px" }}
+            sx={{
+              backgroundColor: "rgb(40, 84, 48)",
+              color: "white",
+              marginLeft: "25px",
+            }}
             onClick={openChatModal}
           >
             상담

@@ -9,7 +9,7 @@
 #slide-ul {
     position: relative;
     width: 100%;
-    height: 700px;
+    min-height: 100vh;
     overflow: hidden;
 }
 

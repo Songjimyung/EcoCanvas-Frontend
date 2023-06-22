@@ -1,5 +1,6 @@
 .campaignContainer {
     font-family: var(--font-Pretendard-Regular);
+    padding-top: 50px;
 }
 
 .campaignCreateForm {
@@ -8,6 +9,7 @@
 
 h1 {
     text-align: center;
+    color: rgb(95, 141, 78);
 }
 
 a {
@@ -16,9 +18,9 @@ a {
 }
 
 hr {
-    background:rgb(207, 207, 207);
-    height:1px;
-    border:0;
+    background: rgb(207, 207, 207);
+    height: 1px;
+    border: 0;
     margin-top: 20px;
 }
 
@@ -138,6 +140,7 @@ hr {
         margin-top: 30px;
         margin-bottom: 30px;
     }
+
     .campaignContentRight {
         margin-top: 50px;
     }
@@ -218,14 +221,15 @@ hr {
 
 /* list 마감임박 */
 .closeBadge {
-    position:relative;
+    position: relative;
     overflow: hidden;
     padding: 1px;
 }
+
 .closeBadge:after {
     position: absolute;
     z-index: 1;
-    width:100px;
+    width: 100px;
     height: auto;
     background: rgb(236, 82, 82);
     content: "마감 임박";
@@ -242,11 +246,12 @@ hr {
 
 /* detail 마감임박 */
 .closeBadgeDetail {
-    position:relative;
+    position: relative;
     overflow: hidden;
     padding: 1px;
     margin-left: 50px;
 }
+
 .closeBadgeDetail:after {
     position: absolute;
     z-index: 1;
@@ -263,4 +268,8 @@ hr {
     top: 15px;
     transform: rotate(-35deg);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.category-dropdown {
+    outline-style: none;
 }
