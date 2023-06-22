@@ -18,6 +18,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import EditMenu from "../components/editmenu/EditMenu";
 
 // modal
 import Modal from "../components/modal/Modal"
@@ -320,7 +321,6 @@ const CampaignDetail = () => {
     };
   }
 
-
   // Share url
   const currentUrl = window.location.href;
 
@@ -334,6 +334,51 @@ const CampaignDetail = () => {
     return differenceInDays >= 0 && differenceInDays <= 3;
   };
 
+  // 캠페인 수정삭제
+  const campaignOptions = [
+    { id: "edit", label: "수정하기" },
+    { id: "delete", label: "삭제하기" },
+  ];
+  const handleCampaignEdit = async () => {
+    console.log(1 + 2)
+  }
+
+  // 댓글 수정삭제
+  const commentOptions = [
+    { id: "edit", label: "수정하기" },
+    { id: "delete", label: "삭제하기" },
+  ];
+  const axiosCommentDelete = async (commentId) => {
+    if (token) {
+      try {
+        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        console.log(response)
+        alert("삭제되었습니다.");
+        axiosCampaignComment();
+      } catch (error) {
+        console.log(error)
+        alert("댓글 삭제에 실패했습니다.")
+      }
+    } else {
+      alert("로그인이 필요합니다.")
+    };
+  }
+  const handleCommentEdit = (optionId, commentId) => {
+    if (optionId === "edit") {
+      console.log("edit")
+    } else if (optionId === "delete") {
+      const onRemove = () => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+          axiosCommentDelete(commentId);
+        }
+      };
+      onRemove();
+    }
+  }
 
   return (
     <div className="campaignContainer">
@@ -345,7 +390,10 @@ const CampaignDetail = () => {
               <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
             </div>
             <div className="campaignContentRight">
-              <div className="campaignStatus">{campaign.status}</div>
+              <div className="campaignTopSetting">
+                <div className="campaignStatus">{campaign.status}</div>
+                <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
+              </div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
                   <React.Fragment key={index}>
@@ -522,6 +570,10 @@ const CampaignDetail = () => {
                 <div className="campaignCommentDiv" key={campaignComment.id}>
                   <div className="campaignCommentUser">
                     {campaignComment.user}
+                    {campaignComment.user ? <EditMenu
+                      options={commentOptions}
+                      onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
+                    /> : ""}
                   </div>
                   <div className="campaignCommentContent">
                     {campaignComment.content}

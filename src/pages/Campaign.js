@@ -212,7 +212,7 @@ const Campaign = () => {
         </Grid>
 
         {campaignList.map((campaign, index) => (
-          <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
+          <Card sx={{ maxWidth: 500 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
                 <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
@@ -234,12 +234,12 @@ const Campaign = () => {
                     component={'span'}
                   >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
+                    참여인원 : {campaign.participant_count} / {campaign.members}<br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <>{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성<br /></>
+                      <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}</span>% 달성</>
                     ) : (
                       <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                     )}
-                    참여인원 : {campaign.participant_count} / {campaign.members}
                   </Typography>
                 </CardContent>
               </CardActionArea>

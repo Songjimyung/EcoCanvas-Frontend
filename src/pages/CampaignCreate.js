@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/campaign.css'
+import ImageHeader from '../components/imageheader/ImageHeader';
 
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -16,7 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 // Stepper
-import HorizontalLinearStepper from '../campaign/CampaignStepper'
+import VerticalLinearStepper from '../campaign/CampaignStepper'
 
 // Checkbox
 const label = { inputProps: { 'aria-label': 'Funding Checkbox' } };
@@ -152,8 +153,8 @@ const CampaignCreate = () => {
 
   return (
     <div className='campaignCreateForm'>
-      <h1>캠페인 신청하기</h1>
-      <HorizontalLinearStepper />
+      <ImageHeader text="캠페인 신청하기" />
+      <VerticalLinearStepper />
       <div className='campaignCreateBody'>
         <div className='marginBottom10'>
           <div className='campaignCreateTitle'>캠페인 제목<span className='campaignCreateStar'>*</span></div>
