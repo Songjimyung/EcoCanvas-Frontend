@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
-
 import Button from "@mui/material/Button";
 import Modal from "../modal/Modal";
 import ChatDetail from "../../admin_pages/chatDetail/ChatDetail";
+
+
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -142,12 +142,15 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          <div className="_topbarIconContainer">
-            <NotificationsNoneIcon />
-            {notificationCount > 0 && (
-              <span className="_topIconBadge">{notificationCount}</span>
-            )}
-          </div>
+          <Link to="/notification" className="_signBtn">
+            <div>
+              <NotificationsNoneIcon className="_topbarIconContainer" />
+              {notificationCount > 0 && (
+                <span className="_topIconBadge">{notificationCount}</span>
+              )}
+            </div>
+          </Link>
+
         </div>
         <div>
           <Button
@@ -161,6 +164,30 @@ export default function Topbar() {
           <Modal open={chatModalOpen} close={closeChatModal} header="상담">
             <ChatDetail />
           </Modal>
+        </div>
+        <div>
+          <Snackbar
+            open={open}
+            autoHideDuration={9000}
+            onClose={handleClose}
+            message={notificationMessage}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+            sx={{
+              '& .MuiSnackbarContent-root': {
+                backgroundColor: 'midnightblue',
+                color: 'white',
+              },
+            }}
+          />
         </div>
       </div>
     </div>

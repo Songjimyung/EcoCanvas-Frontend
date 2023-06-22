@@ -110,3 +110,11 @@
   color: rgb(44, 143, 44);
   ;
 }
+
+._topbarIconContainer.active,
+._topbarIconContainer:hover {
+  color: rgb(251, 100, 30);
+  text-decoration: none;
+  width: 30px;
+  height: 30px;
+}
