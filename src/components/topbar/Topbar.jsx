@@ -4,12 +4,6 @@ import LocalGroceryStoreRoundedIcon from "@mui/icons-material/LocalGroceryStoreR
 import "./topbar.css";
 import { Link } from "react-router-dom";
 
-import Button from "@mui/material/Button";
-import Modal from "../modal/Modal";
-import ChatDetail from "../../admin_pages/chatDetail/ChatDetail";
-import Fab from '@mui/material/Fab';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -27,14 +21,6 @@ export default function Topbar() {
     localStorage.removeItem("payload");
     setIsLoggedIn(false);
     alert("로그아웃 되었습니다.");
-  };
-  // Chat modal
-  const [chatModalOpen, setChatModalOpen] = useState(false);
-  const openChatModal = () => {
-    setChatModalOpen(true);
-  };
-  const closeChatModal = () => {
-    setChatModalOpen(false);
   };
 
   return (
@@ -97,18 +83,6 @@ export default function Topbar() {
             <NotificationsNoneIcon />
             <span className="_topIconBadge">1</span>
           </div>
-        </div>
-        <div>
-          <Fab 
-          color="primary" 
-          sx={{ mr: 1,
-            color: "white" }}
-          onClick={openChatModal}>
-            <SupportAgentIcon fontSize="large"/>
-          </Fab>
-          <Modal open={chatModalOpen} close={closeChatModal} header="상담">
-            <ChatDetail />
-          </Modal>
         </div>
       </div>
     </div>
