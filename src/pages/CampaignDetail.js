@@ -157,7 +157,7 @@ const CampaignDetail = () => {
   // 이미지처리
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === 'production') {
-      return `/${imagePath}`;
+      return `${process.env.REACT_APP_S3_URL}${imagePath}`;
     } else {
       return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }

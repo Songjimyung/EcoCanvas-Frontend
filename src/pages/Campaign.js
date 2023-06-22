@@ -81,7 +81,7 @@ const Campaign = () => {
   // 이미지처리
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === 'production') {
-      return `/${imagePath}`;
+      return `${process.env.REACT_APP_S3_URL}${imagePath}`;
     } else {
       return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }
@@ -208,7 +208,6 @@ const Campaign = () => {
               height: '50px',
               fontSize: '1.3rem',
               color: 'white',
-              backgroundColor: "rgb(40, 84, 48)"
             }}>
             캠페인 신청하기
           </Button>
