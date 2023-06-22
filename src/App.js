@@ -37,6 +37,8 @@ import { MyProfile } from './pages/mypagelist/myprofile'
 import { ProductDetail } from './admin_pages/productdetail/Productdetail'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
+import { RegisterPayment } from './pages/mypagelist/myPayment';
+import { ReceiptList} from './pages/mypagelist/mySchedule';
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -117,6 +119,8 @@ function App() {
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
             <Route path="/chat/:chatId" element={<ChatDetail />} />
+            <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
+            <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
           </Routes>
         </div>
       </div >

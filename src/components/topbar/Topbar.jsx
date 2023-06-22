@@ -3,7 +3,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import './topbar.css';
 import { Link } from 'react-router-dom';
 
-
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

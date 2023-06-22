@@ -75,22 +75,16 @@ const PaymentButton = ({ product }) => {
           const token = localStorage.getItem('access');
           axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`, {merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount, product: product.id},
           {headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           }})
             .then(response => {
               console.log(response.data)
-
-            })
-
-          axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
-          {headers: {
-            Authorization: `Bearer ${token}`,
-          }})
-            .then(response => {
-              console.log(response.data)
-            })
-         
-        }
+              alert("결제 성공!")
+            });
+          }else{
+            console.log(response.data)
+            alert(response.error_msg)
+          }
 
       });
 
