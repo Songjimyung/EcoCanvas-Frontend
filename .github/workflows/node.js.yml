@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   react:
+    name: react build & deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code.
@@ -17,6 +18,7 @@ jobs:
       # 리액트 빌드
       - name: build react
         run: npm run build
+        
       # aws user 연결
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
