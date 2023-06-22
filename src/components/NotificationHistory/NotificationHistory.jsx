@@ -8,17 +8,13 @@ import Grid from '@mui/material/Grid';
 
 const NotificationHistory = () => {
   const [notifications, setNotifications] = useState([]);
-  const [restockNotifications, setRestockNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-  const mergedNotifications = [...notifications, ...restockNotifications];
-  mergedNotifications.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-
 
   useEffect(() => {
     const NotifiCationList = async () => {
