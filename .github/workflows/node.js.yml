@@ -29,8 +29,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       # npm 패키지 설치
-      - name: install npm dependencies
-        run: npm ci
+      - name: install yatn
+        run: npm install yarn
+      - name: install yarn dependencies
+        run: yarn install
       # 리액트 빌드
       - name: build react
         run: npm run build
