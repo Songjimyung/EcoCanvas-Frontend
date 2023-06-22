@@ -6,31 +6,17 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: read
 jobs:
   react:
     name: react build & deploy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code.
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      
       # npm 패키지 설치
-      - name: install npm 
-        run: npm install
+      - name: install npm dependencies
+        run: yarn install
       # 리액트 빌드
       - name: build react
         run: npm run build
