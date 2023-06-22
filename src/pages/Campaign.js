@@ -5,6 +5,7 @@ import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
+import AwsS3Image from '../features/Awsconfig';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -216,13 +217,15 @@ const Campaign = () => {
           <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
-                <div
-                  className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}
-                >
+                <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
                   <CardMedia
                     component="img"
                     height="250"
-                    image={getImageUrl(campaign.image)}
+                    image={
+                      process.env.NODE_ENV === 'production'
+                        ? <AwsS3Image key={campaign.image} />
+                        : getImageUrl(campaign.image)
+                    }
                     alt="campaign_image"
                     onError={onErrorImg}
                   />
