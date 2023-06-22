@@ -3,9 +3,12 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LocalGroceryStoreRoundedIcon from "@mui/icons-material/LocalGroceryStoreRounded";
 import "./topbar.css";
 import { Link } from "react-router-dom";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from "@mui/material/Button";
+
+
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,6 +19,9 @@ export default function Topbar() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleNotificationCount = () => {
     setNotificationCount(0);
   };
 
@@ -127,12 +133,14 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          <div className="_topbarIconContainer">
-            <NotificationsNoneIcon />
-            {notificationCount > 0 && (
-              <span className="_topIconBadge">{notificationCount}</span>
-            )}
-          </div>
+          <Link to="/notification" className="_signBtn" onClick={handleNotificationCount}>
+            <div className="alinBox">
+              <NotificationsNoneIcon className="_topbarIconContainer" />
+              {notificationCount > 0 && (
+                <span className="_topIconBadge">{notificationCount}</span>
+              )}
+            </div>
+          </Link>
         </div>
         <div>
           <Snackbar
