@@ -13,14 +13,18 @@ const ResetPasswordEmail = () => {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/reset_pw/email_code/`, emailSendData);
             alert(response.data['message'])
         } catch (error) {
-            console.error(error.response.data);
+            if (error.response.data['email']) {
+                alert(error.response.data['email']);
+            }
         }
     };
     return (
-        <div>
+        <div className="log-div">
             <div>
                 <h3 className='inputList'>
-                    비밀번호 찾기 / 회원님의 계정 이메일을 입력해주세요.
+                    회원님 계정의 이메일을 입력하시고
+                    <br />
+                    비밀번호 재설정 링크를 받아보세요!
                 </h3>
             </div>
             <div className='inputList'>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Topbar from './components/topbar/Topbar'
-import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
 import AdminSidebar from './admin_conponents/Adminsidebar/AdminSidebar';
 import AdminTopbar from './admin_conponents/Admintopbar/AdminTopbar';
@@ -43,6 +42,7 @@ import { MyProfile } from './pages/mypagelist/myprofile'
 import { ProductDetail } from './admin_pages/productdetail/Productdetail'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
+import ChatButton from './components/chatbutton/ChatButton';
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -87,10 +87,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <div id='wrapper'>
         <KakaoInit />
+        <ChatButton />
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
-          {!isAdmin ? <Sidebar /> : (isMypage ? null : <AdminSidebar />)}
+          {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
           {/* <AdminSidebar /> */}
           <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -130,8 +131,9 @@ function App() {
             <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
-        <Footer />
+
       </div >
+      <Footer />
     </ThemeProvider>
   );
 }

@@ -1,0 +1,33 @@
+{
+  "files": {
+<<<<<<< HEAD
+    "main.css": "/static/css/main.d15e2e0f.css",
+    "main.js": "/static/js/main.c1f99460.js",
+=======
+    "main.css": "/static/css/main.0b2ee68c.css",
+    "main.js": "/static/js/main.1115972a.js",
+>>>>>>> 3f238d819c00e4fcaa743e843d1ce434e43daeb4
+    "static/js/787.76056b95.chunk.js": "/static/js/787.76056b95.chunk.js",
+    "static/media/campaign_default_image.jpg": "/static/media/campaign_default_image.f78793920aafd2c542c9.jpg",
+    "static/media/sample_product.png": "/static/media/sample_product.24b286dae98b5d1ea19e.png",
+    "static/media/sharekakao.webp": "/static/media/sharekakao.8eacf66f4191f055177c.webp",
+    "index.html": "/index.html",
+<<<<<<< HEAD
+    "main.d15e2e0f.css.map": "/static/css/main.d15e2e0f.css.map",
+    "main.c1f99460.js.map": "/static/js/main.c1f99460.js.map",
+    "787.76056b95.chunk.js.map": "/static/js/787.76056b95.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d15e2e0f.css",
+    "static/js/main.c1f99460.js"
+=======
+    "main.0b2ee68c.css.map": "/static/css/main.0b2ee68c.css.map",
+    "main.1115972a.js.map": "/static/js/main.1115972a.js.map",
+    "787.76056b95.chunk.js.map": "/static/js/787.76056b95.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0b2ee68c.css",
+    "static/js/main.1115972a.js"
+>>>>>>> 3f238d819c00e4fcaa743e843d1ce434e43daeb4
+  ]
+}

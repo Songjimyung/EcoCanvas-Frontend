@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from "react-router-dom";
 import '../css/product.css';
 import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
 import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+
+
 
 export default function BuyProduct() {
+  const [phonenum, setPhoneNum] = useState('');
+  const phoneRef = useRef();
+  const navigate = useNavigate();
   let { productId } = useParams();
   const [Product, setProduct] = useState(null);
   const [num, setNumber] = useState(0);
@@ -62,7 +68,7 @@ export default function BuyProduct() {
         console.log(result);
         setProduct(result);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('상품 불러오기 실패:', error);
       }
     };
     fetchProduct();
@@ -82,7 +88,7 @@ export default function BuyProduct() {
           setUserId(userId);
         }
       } catch (error) {
-        console.error('Error fetching user ID:', error);
+        console.error('불러오기 실패', error);
       }
     };
     fetchUserId();
@@ -116,7 +122,7 @@ export default function BuyProduct() {
     formData.append('address_detail', e.target.elements.address_detail.value);
     formData.append('address_message', e.target.elements.address_message.value);
     formData.append('receiver_name', e.target.elements.receiver_name.value);
-    formData.append('receiver_number', e.target.elements.receiver_number.value);
+    formData.append('receiver_number', phonenum);
     formData.append('order_quantity', num);
     formData.append('order_totalprice', productPrice);
     formData.append('product', productId);
@@ -130,14 +136,25 @@ export default function BuyProduct() {
       },
       body: formData,
     })
-      .then((response) => response.json())
+
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((data) => {
+            const errorValues = Object.values(data);
+            throw new Error(errorValues.join('\n'));
+          });
+        }
+      })
       .then((result) => {
         console.log(result);
-        alert("상품 주문 완료!")
-        window.location.reload();
+        alert("상품 주문 완료");
+        navigate('/mypage/myorders');
       })
       .catch((error) => {
         console.error(error);
+        alert(error.message);
       });
   };
 
@@ -184,6 +201,37 @@ export default function BuyProduct() {
       [name]: value,
     }));
   };
+
+  const handlePhone = (e) => {
+    const value = phoneRef.current.value.replace(/\D+/g, "");
+    const numberLength = 11;
+
+    let result;
+    result = "";
+
+    for (let i = 0; i < value.length && i < numberLength; i++) {
+      switch (i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    phoneRef.current.value = result;
+
+    setPhoneNum(e.target.value);
+  };
+
+
+
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 120 },
@@ -249,7 +297,14 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>휴대전화</label>
-                    <input type="tel" name="receiver_number" value={formData.receiver_number} onChange={handleInputChange} maxLength="13" />
+                    <input
+                      type="tel"
+                      name="receiver_number"
+                      ref={phoneRef}
+                      value={phonenum}
+                      onChange={handlePhone}
+                      maxLength="13"
+                    />
                   </div>
                   <div className="addOrderItem">
                     <label>주소</label>
