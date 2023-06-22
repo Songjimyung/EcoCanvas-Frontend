@@ -19,7 +19,6 @@ const MyOrder = () => {
         let url = `${process.env.REACT_APP_BACKEND_URL}/shop/mypage/order/`;
         url += `?page=${currentPage}`;
 
-
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,

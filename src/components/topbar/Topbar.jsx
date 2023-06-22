@@ -7,8 +7,6 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from "@mui/material/Button";
-import Modal from "../modal/Modal";
-import ChatDetail from "../../admin_pages/chatDetail/ChatDetail";
 
 
 
@@ -143,18 +141,6 @@ export default function Topbar() {
               )}
             </div>
           </Link>
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ color: 'white', marginLeft: '25px', }}
-            onClick={openChatModal}
-          >상담
-          </Button>
-          <Modal open={chatModalOpen} close={closeChatModal} header="상담">
-            <ChatDetail />
-          </Modal>
         </div>
         <div>
           <Snackbar
