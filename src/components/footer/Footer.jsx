@@ -48,17 +48,17 @@ export default function Footer() {
             <Typography variant="h6" color="text.primary" gutterBottom>
               Follow Us
             </Typography>
-            <Link href="https://www.facebook.com/" color="inherit">
+            <Link href="https://www.facebook.com/mevpr" color="inherit">
               <Facebook />
             </Link>
             <Link
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/ministry_environment/"
               color="inherit"
               sx={{ pl: 1, pr: 1 }}
             >
               <Instagram />
             </Link>
-            <Link href="https://www.twitter.com/" color="inherit">
+            <Link href="https://twitter.com/mevpr" color="inherit">
               <Twitter />
             </Link>
           </Grid>

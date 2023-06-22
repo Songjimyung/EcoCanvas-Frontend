@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
+import ImageHeader from '../components/imageheader/ImageHeader';
+import AwsS3Image from '../features/Awsconfig';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -65,6 +67,7 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
+      console.log(response)
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
     } catch (error) {
@@ -78,9 +81,9 @@ const Campaign = () => {
   // 이미지처리
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === 'production') {
-      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
-    } else {
       return `/${imagePath}`;
+    } else {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }
   };
 
@@ -170,7 +173,7 @@ const Campaign = () => {
 
   return (
     <div className="campaignContainer">
-      <h1>캠페인 둘러보기</h1>
+      <ImageHeader text="캠페인 둘러보기" />
 
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" marginBottom={'25px'}>
@@ -215,13 +218,15 @@ const Campaign = () => {
           <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
-                <div
-                  className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}
-                >
+                <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
                   <CardMedia
                     component="img"
                     height="250"
-                    image={getImageUrl(campaign.image)}
+                    image={
+                      process.env.NODE_ENV === 'production'
+                        ? <AwsS3Image key={campaign.image} />
+                        : getImageUrl(campaign.image)
+                    }
                     alt="campaign_image"
                     onError={onErrorImg}
                   />
@@ -239,7 +244,7 @@ const Campaign = () => {
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
                       <>{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성<br /></>
                     ) : (
-                      <div>펀딩이 없는 캠페인입니다.</div>
+                      <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                     )}
                     참여인원 : {campaign.participant_count} / {campaign.members}
                   </Typography>
