@@ -5,7 +5,7 @@ import '../css/product.css'
 import { Card, Grid, Typography, Button, IconButton, CircularProgress, Snackbar } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 import product_default_img from '../img/sample_product.png';
-
+import NotificationAddRoundedIcon from '@mui/icons-material/NotificationAddRounded';
 
 const ShopDetail = () => {
   let { productId } = useParams();
@@ -15,10 +15,45 @@ const ShopDetail = () => {
 
   useEffect(() => {
     // 재고 알람 체크
-    if (product.product_stock && product.product_stock < 10) {
+    if (product.product_stock && product.product_stock < 10 && product.product_stock > 0) {
       setStockAlertOpen(true);
     }
   }, [product]);
+
+
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('access');
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/restock/${productId}/`, {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((data) => {
+            const errorValues = Object.values(data);
+            throw new Error(errorValues.join('\n'));
+          });
+        }
+      })
+      .then((result) => {
+        console.log(result);
+        console.log("재입고 알림 신청 완료!");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+        alert(error.message);
+      });
+  };
+
 
   const handleStockAlertClose = () => {
     setStockAlertOpen(false);
@@ -27,14 +62,26 @@ const ShopDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`);
-        console.log(response.data);
-        setProduct(response.data);
-        setLoading(false);
+
+        const token = localStorage.getItem('access');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`,
+          { headers }
+        );
+        if (response.status === 200) {
+          console.log(response.data)
+          setProduct(response.data);
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('상품 불러오기 실패:', error);
         setLoading(false);
       }
+
     };
     fetchProduct();
   }, [productId]);
@@ -67,17 +114,34 @@ const ShopDetail = () => {
                   {product.product_desc}
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  재고 : {product.product_stock}
+                  재고: {product.sold_out ? '매진' : product.product_stock}
                 </Typography>
                 <Typography variant="body1" paragraph>
                   {product && product.product_price ? `${product.product_price.toLocaleString()}원` : 'N/A'}
                 </Typography>
-                <Link to={`/product/buy/${product.id}`}>
-                  <Button variant="contained" className='buyBtn'>구매하기</Button>
-                </Link>
-                <IconButton>
-                  <ShoppingCart />
-                </IconButton>
+                {product.sold_out ? (
+                  <Typography variant="body1" paragraph style={{ color: 'red' }}>
+                    품절되었습니다.
+                  </Typography>
+                ) : (
+                  <>
+                    <Link to={`/product/buy/${product.id}`}>
+                      <Button variant="contained" className='buyBtn'>구매하기</Button>
+                    </Link>
+                    <IconButton>
+                      <ShoppingCart />
+                    </IconButton>
+                  </>
+                )}
+                {product.sold_out && (
+                  <Button variant="contained" className='buyBtn' onClick={handleFormSubmit}>
+                    재입고 알림신청
+                    <IconButton>
+                      <NotificationAddRoundedIcon />
+                    </IconButton></Button>
+                )}
+
+
               </div>
             </Grid>
           </Grid>
