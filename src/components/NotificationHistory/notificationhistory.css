@@ -1,0 +1,29 @@
+.notification-card {
+  background-color: #fffffe;
+  width: 90%;
+  margin: auto;
+}
+
+.notification-cardWrapper {
+  margin-top: 50px;
+  position: relative;
+}
+
+
+.notification-cardContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-all-button {
+  top: 10px;
+  right: 10px;
+}
+
+.deleteBtnWrapper {
+  width: 95%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+}

@@ -44,6 +44,7 @@ import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
 import ChatButton from './components/chatbutton/ChatButton';
 
+import NotificationHistory from './components/NotificationHistory/NotificationHistory'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
   typography: {
@@ -129,6 +130,7 @@ function App() {
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
             <Route path="/chat" element={<ChatDetail />} />
+            <Route path="/notification" element={<NotificationHistory />} />
           </Routes>
         </div>
 

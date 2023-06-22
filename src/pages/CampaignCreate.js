@@ -103,7 +103,9 @@ const CampaignCreate = () => {
   };
   // 참가인원
   const handleCampaignMembers = (event) => {
-    setCampaignMembers(event.target.value);
+    const value = event.target.value;
+    const numericValue = Number(value.replace(/[^0-9.-]+/g, ''));
+    setCampaignMembers(numericValue);
   };
   // 캠페인 시작일
   const handleCampaignStartDate = (date) => {

@@ -156,13 +156,11 @@ const CampaignDetail = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    if (process.env.NODE_ENV === 'production') {
-      return `${imagePath}`;
-    } else {
+    if (process.env.NODE_ENV === 'development') {
       return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }
+    return `${imagePath}`;
   };
-
 
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image
@@ -388,8 +386,9 @@ const CampaignDetail = () => {
                         startAdornment={<InputAdornment position="start">￦</InputAdornment>}
                         label="금액"
                         inputProps={{ min: 0 }}
-                      // value={}
-                      // onChange={}
+                        // useState앞에 값 (100000000)지우고 넣어주세요
+                        value={(100000000).toLocaleString()}
+                      // onChange={ }
                       />
                     </FormControl>
                     <Button

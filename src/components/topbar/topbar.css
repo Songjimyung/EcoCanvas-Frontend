@@ -66,14 +66,13 @@
 
 ._topbarIconContainer {
   position: relative;
-  margin-right: 15px;
-  color: rgb(95, 141, 78);
+  color: #555;
+  display: flex;
+  align-items: center;
 }
 
 ._topIconBadge {
   position: absolute;
-  top: -5px;
-  right: 5px;
 
   background-color: rgb(233, 40, 40);
   border-radius: 50%;
@@ -92,4 +91,28 @@
   color: rgb(95, 141, 78);
   text-decoration: none;
   font-size: 1.3rem;
+}
+
+._topbarIconContainer.active,
+._topbarIconContainer:hover {
+  color: rgb(251, 100, 30);
+  text-decoration: none;
+  width: 30px;
+  height: 30px;
+}
+
+.alinBox {
+  display: flex;
+}
+
+._topbarIconContainer.active,
+._topbarIconContainer:hover {
+  color: rgb(251, 100, 30);
+  text-decoration: none;
+  width: 30px;
+  height: 30px;
+}
+
+.alinBox {
+  display: flex;
 }
