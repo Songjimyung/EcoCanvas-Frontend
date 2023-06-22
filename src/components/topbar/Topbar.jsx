@@ -21,6 +21,9 @@ export default function Topbar() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleNotificationCount = () => {
     setNotificationCount(0);
   };
 
@@ -142,8 +145,8 @@ export default function Topbar() {
               </Link>
             </span>
           )}
-          <Link to="/notification" className="_signBtn">
-            <div>
+          <Link to="/notification" className="_signBtn" onClick={handleNotificationCount}>
+            <div className="alinBox">
               <NotificationsNoneIcon className="_topbarIconContainer" />
               {notificationCount > 0 && (
                 <span className="_topIconBadge">{notificationCount}</span>
