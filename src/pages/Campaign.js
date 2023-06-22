@@ -5,7 +5,6 @@ import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
-import AwsS3Image from '../features/Awsconfig';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
