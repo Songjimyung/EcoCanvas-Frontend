@@ -52,52 +52,52 @@ export default function ChatDetail() {
             chatMessageInputRef.current.value = "";
         };
 
-    }, []);
+    }, [id, token, userId]);
 
     useEffect(() => {
+        function connect() {
+            chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
+
+            chatSocket.current.onopen = function (e) {
+                console.log("Successfully connected to the WebSocket.");
+                chatSocket.current.send(JSON.stringify({
+                    'command': 'fetch_messages',
+                    'user_id': userId,
+                }));
+            };
+                
+            chatSocket.current.onclose = function (e) {
+                console.error("WebSocket connection closed unexpectedly.");
+            };
+            chatSocket.current.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                console.log(e);
+                if (data['command'] === 'messages') {
+                    for (let i = 0; i < data['messages'].length; i++) {
+                        createMessage(data['messages'][i]);
+                    }
+                } else if (data['command'] === 'new_message') {
+                    createMessage(data['message']);
+                }
+
+                chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
+            };
+
+            chatSocket.current.onerror = function (err) {
+                console.log("WebSocket encountered an error: " + err.message);
+                chatSocket.current.onclose();
+            };
+        }
+        function createMessage(data) {
+            const author = data['author'];
+            chatLogRef.current.value += (author + ': ' + data.content + '\n');
+        }
         connect();
         return () => {
             chatSocket.current.close();
         };
-    }, [roomId]);
+    }, [roomId, token, userId]);
 
-    function connect() {
-        chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
-
-        chatSocket.current.onopen = function (e) {
-            console.log("Successfully connected to the WebSocket.");
-            chatSocket.current.send(JSON.stringify({
-                'command': 'fetch_messages',
-                'user_id': userId,
-            }));
-        };
-            
-        chatSocket.current.onclose = function (e) {
-            console.error("WebSocket connection closed unexpectedly.");
-        };
-        chatSocket.current.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(e);
-            if (data['command'] === 'messages') {
-                for (let i = 0; i < data['messages'].length; i++) {
-                    createMessage(data['messages'][i]);
-                }
-            } else if (data['command'] === 'new_message') {
-                createMessage(data['message']);
-            }
-
-            chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
-        };
-
-        chatSocket.current.onerror = function (err) {
-            console.log("WebSocket encountered an error: " + err.message);
-            chatSocket.current.onclose();
-        };
-    }
-    function createMessage(data) {
-        const author = data['author'];
-        chatLogRef.current.value += (author + ': ' + data.content + '\n');
-    }
     return (
         <div>
             <textarea id="chatLog" ref={chatLogRef} readOnly></textarea>

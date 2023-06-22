@@ -16,7 +16,7 @@ export default function User() {
       .then(result => {
         setUser(result[0])
       })
-  }, []);
+  }, [id]);
   return (
     <div className="user">
       <div className="userTitleContainer">
