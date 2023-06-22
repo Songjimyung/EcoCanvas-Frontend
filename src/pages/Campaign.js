@@ -5,7 +5,6 @@ import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
-import AwsS3Image from '../features/Awsconfig';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -80,11 +79,7 @@ const Campaign = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    if (process.env.NODE_ENV === 'production') {
-      return `/${imagePath}`;
-    } else {
-      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
-    }
+    return `${imagePath}`;
   };
 
   const onErrorImg = (e) => {
@@ -208,7 +203,6 @@ const Campaign = () => {
               height: '50px',
               fontSize: '1.3rem',
               color: 'white',
-              backgroundColor: "rgb(40, 84, 48)"
             }}>
             캠페인 신청하기
           </Button>
@@ -222,11 +216,7 @@ const Campaign = () => {
                   <CardMedia
                     component="img"
                     height="250"
-                    image={
-                      process.env.NODE_ENV === 'production'
-                        ? <AwsS3Image key={campaign.image} />
-                        : getImageUrl(campaign.image)
-                    }
+                    image={getImageUrl(campaign.image)}
                     alt="campaign_image"
                     onError={onErrorImg}
                   />
