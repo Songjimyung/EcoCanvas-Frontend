@@ -13,6 +13,14 @@ body {
     background-color: rgb(255, 248, 214);
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    -ms-overflow-style: none;
+}
+
 .contents-body {
     height: 100%;
 }
