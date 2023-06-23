@@ -26,7 +26,7 @@ export default function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const token = localStorage.getItem('access');
-        const response = await fetch(`http://localhost:8000/shop/products/${productId}/`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -80,7 +80,7 @@ export default function ProductDetail() {
     formData.append('product_stock', product.product_stock);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/shop/products/${productId}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${token}`
@@ -106,7 +106,7 @@ export default function ProductDetail() {
   const handleDelete = async () => {
     const token = localStorage.getItem('access');
     try {
-      const response = await fetch(`http://127.0.0.1:8000/shop/products/${productId}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -150,7 +150,7 @@ export default function ProductDetail() {
         <div className="productTopRight">
           <div className="productInfoTop">
             <img
-              src={image ? image : (product.images ? `http://127.0.0.1:8000${product.images}` : product_default_img)}
+              src={image ? image : (product.images ? `${process.env.REACT_APP_BACKEND_URL}${product.images}` : product_default_img)}
               alt={product.name}
               style={{ height: '30%', width: '30%' }}
             />
@@ -230,7 +230,7 @@ export default function ProductDetail() {
           <div className="productFormRight">
             <div className="productUpload">
               <img
-                src={image ? image : (product.images ? `http://127.0.0.1:8000${product.images}` : product_default_img)}
+                src={image ? image : (product.images ? `${process.env.REACT_APP_BACKEND_URL}${product.images}` : product_default_img)}
                 alt={product.name}
                 style={{ height: '300px', width: '300px' }}
               />
