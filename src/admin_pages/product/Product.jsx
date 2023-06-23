@@ -116,8 +116,6 @@ export default function ProductDetail() {
         alert("삭제 완료!");
         navigate("/admin_products");
       } else {
-        const result = await response.json();
-        
         alert("삭제 실패!");
       }
     } catch (error) {

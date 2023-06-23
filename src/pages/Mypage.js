@@ -81,9 +81,6 @@ const Mypage = () => {
     formData.append('title', e.target.elements.title.value);
     formData.append('content', e.target.elements.content.value);
 
-    for (const pair of formData.entries()) {
-      
-    }
     fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${selectedInfo}/`, {
       method: "POST",
       headers: {

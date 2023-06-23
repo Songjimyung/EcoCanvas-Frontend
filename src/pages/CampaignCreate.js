@@ -69,7 +69,7 @@ const CampaignCreate = () => {
 
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/`, formData, {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/`, formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -85,10 +85,6 @@ const CampaignCreate = () => {
       
     } catch (error) {
       alert("캠페인 신청에 실패했습니다.");
-      
-      for (const value of formData.values()) {
-        
-      }
     }
   };
 
