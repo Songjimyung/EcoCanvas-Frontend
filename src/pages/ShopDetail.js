@@ -86,6 +86,13 @@ const ShopDetail = () => {
     fetchProduct();
   }, [productId]);
 
+  const getImageUrl = (imagePath) => {
+    if (process.env.NODE_ENV === 'development') {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
+    return `${imagePath}`;
+  };
+
   return (
     <div className="product-detail-wrap" >
       <Card style={{ height: '800px' }}>
@@ -97,7 +104,7 @@ const ShopDetail = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <img
-                src={product.images && product.images.length > 0 ? `${process.env.REACT_APP_BACKEND_URL}${product.images[0]['image_file']}` : product_default_img}
+                src={product.images && product.images.length > 0 ? getImageUrl(product.images[0]['image_file']) : product_default_img}
                 alt={product.name}
                 style={{ height: '100%', objectFit: 'cover', marginTop: '20px' }}
               />

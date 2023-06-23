@@ -76,7 +76,7 @@ function SelectCard({ setSelectedCard }) {
       .then((response) => {
         console.log(response.data);
         alert('카드 등록 완료')
-        selectCard();
+        selectedCard();
         closePaymentModal();
       })
       .catch((error) => {
@@ -96,6 +96,7 @@ function SelectCard({ setSelectedCard }) {
       .then((response) => {
         alert(response.data.message)
         setRegisterPayments(registerPayments.filter((payment) => payment.id !== id));
+        selectedCard();
         console.log(response.data.message);
       })
       .catch((error) => {

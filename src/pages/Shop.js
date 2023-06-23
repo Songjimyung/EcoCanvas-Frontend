@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../css/product.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -38,7 +38,10 @@ const Shop = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    if (process.env.NODE_ENV === 'development') {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
+    return `${imagePath}`;
   };
 
   const onErrorImg = (e) => {
@@ -48,7 +51,7 @@ const Shop = () => {
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-  const fetchProductList = async () => {
+  const fetchProductList = useCallback(async () => {
     const token = localStorage.getItem('access');
 
     try {
@@ -85,7 +88,7 @@ const Shop = () => {
     } catch (error) {
       console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
     }
-  };
+  }, [categoryId, sortBy, currentPage, searchQuery]);
 
   const fetchCategoryList = async () => {
     try {
@@ -108,7 +111,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProductList();
-  }, [categoryId, sortBy, currentPage]);
+  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
 
   useEffect(() => {
     fetchCategoryList();

@@ -46,6 +46,7 @@ import { RegisterPayment } from './pages/mypagelist/myPayment';
 import { ReceiptList} from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 
+import NotificationHistory from './components/NotificationHistory/NotificationHistory'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
   typography: {
@@ -133,6 +134,7 @@ function App() {
             <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
             <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
             <Route path="/chat" element={<ChatDetail />} />
+            <Route path="/notification" element={<NotificationHistory />} />
           </Routes>
         </div>
 
