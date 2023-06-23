@@ -106,7 +106,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProductList();
-  }, [categoryId, sortBy, currentPage, searchQuery]);
+  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
 
   useEffect(() => {
     fetchCategoryList();
