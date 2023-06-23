@@ -66,7 +66,6 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
-      console.log(response)
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
     } catch (error) {
@@ -99,10 +98,9 @@ const Campaign = () => {
   // 좋아요
   const [isLiked, setIsLiked] = useState(false);
 
-  // 좋아요
+  // 좋아요 버튼
   const handleLikeButton = (campaignId) => {
     if (token) {
-      console.log("hi")
       setIsLiked(!isLiked);
       axiosLike(campaignId);
     } else {
@@ -119,7 +117,6 @@ const Campaign = () => {
         },
       });
       setIsLiked(response.data.is_liked);
-      console.log(response)
     } catch (error) {
       console.log(error);
     }
@@ -236,7 +233,7 @@ const Campaign = () => {
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
                     참여인원 : {campaign.participant_count} / {campaign.members}<br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}</span>% 달성</>
+                      <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>
                     ) : (
                       <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                     )}
@@ -307,7 +304,7 @@ const Campaign = () => {
         ))}
       </div >
 
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" sx={{ marginBottom: "30px" }}>
         <Pagination
           count={Math.ceil(campaignCount / campaignsPerPage)}
           page={currentPage}

@@ -12,8 +12,6 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import SendIcon from '@mui/icons-material/Send';
 import ShareIcon from '@mui/icons-material/Share';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -109,9 +107,6 @@ const CampaignDetail = () => {
   const payloadObject = JSON.parse(payload);
   const userId = payloadObject['user_id'];
 
-  // comment POST
-  const [createComment, setCreateComment] = useState('');
-
   // Tab 
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -137,7 +132,6 @@ const CampaignDetail = () => {
   const axiosCampaignComment = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
-      console.log(response)
       setCampaignComment(response.data);
     } catch (error) {
       console.log(error)
@@ -154,7 +148,6 @@ const CampaignDetail = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/`);
         setCampaignReview(response.data);
-
       } catch (error) {
         console.log(error)
       }
@@ -175,19 +168,19 @@ const CampaignDetail = () => {
   }
 
   // 댓글 POST
-  const axiosCommentCreate = async (e) => {
-    e.preventDefault();
+  // eslint-disable-next-line
+  const [createComment, setCreateComment] = useState('');
 
+  const axiosCommentCreate = async (createComment) => {
     if (token) {
       try {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
           'content': createComment,
         }, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response);
         axiosCampaignComment();
       } catch (error) {
         console.log(error)
@@ -196,11 +189,10 @@ const CampaignDetail = () => {
     } else {
       alert("로그인이 필요합니다.")
     }
-
   };
-
-  const handleCommentCreate = (event) => {
-    setCreateComment(event.target.value);
+  const handleCreateSubmit = (createComment) => {
+    setCreateComment(createComment);
+    axiosCommentCreate(createComment);
   };
 
   // Fund Modal
@@ -341,8 +333,14 @@ const CampaignDetail = () => {
     { id: "edit", label: "수정하기" },
     { id: "delete", label: "삭제하기" },
   ];
-  const handleCampaignEdit = async () => {
-    console.log(1 + 2)
+  const handleCampaignEdit = async (optionId) => {
+    if (optionId === "update") {
+      console.log("수정페이지로 이동")
+    } else if (optionId === "delete") {
+      if (window.confirm("정말 삭제하시겠습니까?")) {
+        axiosCommentDelete(commentId);
+      }
+    }
   }
 
   // 댓글 수정삭제
@@ -353,12 +351,11 @@ const CampaignDetail = () => {
   const axiosCommentDelete = async (commentId) => {
     if (token) {
       try {
-        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
+        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response);
         alert("삭제되었습니다.");
         axiosCampaignComment();
       } catch (error) {
@@ -369,27 +366,26 @@ const CampaignDetail = () => {
       alert("로그인이 필요합니다.")
     };
   }
+  // eslint-disable-next-line
   const [updateComment, setUpdateComment] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [commentId, setCommentId] = useState(null);
 
   const handleUpdateSubmit = (commentId, updateComment) => {
     setUpdateComment(updateComment);
-    console.log("작성한 댓글:", updateComment);
     axiosCommentUpdate(commentId, updateComment);
   };
 
   const axiosCommentUpdate = async (commentId, updateComment) => {
     if (token) {
       try {
-        const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
+        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
           'content': updateComment,
         }, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response)
         setIsEditing(false);
         axiosCampaignComment();
         alert("수정되었습니다.");
@@ -424,7 +420,10 @@ const CampaignDetail = () => {
             <div className="campaignContentRight">
               <div className="campaignTopSetting">
                 <div className="campaignStatus">{campaign.status}</div>
-                <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
+                {userId === campaign.user_id ?
+                  <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
+                  : <div></div>
+                }
               </div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
@@ -436,7 +435,7 @@ const CampaignDetail = () => {
               </div>
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
-              <div className="campaignContentBottom">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
+              <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>
               <div className="campaignContentBottom">캠페인 신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
               <div className="campaignContentBottom">캠페인 신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
@@ -447,7 +446,7 @@ const CampaignDetail = () => {
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
                   <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원 달성)</span>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -569,7 +568,6 @@ const CampaignDetail = () => {
                 </Button>
               </div>
             </div>
-
           </div>
         </>
       ) : (
@@ -609,7 +607,7 @@ const CampaignDetail = () => {
                       /> : <div style={{ height: "40px" }}></div>}
                   </div>
                   {isEditing && commentId === campaignComment.id ? (
-                    <CommentForm comment={campaignComment.content} onSubmit={(submittedComment) => handleUpdateSubmit(campaignComment.id, submittedComment)} />
+                    <CommentForm comment={campaignComment.content} onSubmit={(updateComment) => handleUpdateSubmit(campaignComment.id, updateComment)} />
                   ) : <div className="campaignCommentContent">{campaignComment.content}</div>
                   }
                   <div className="campaignCommentCreatedAt">
@@ -623,31 +621,7 @@ const CampaignDetail = () => {
                 <h2>작성된 댓글이 없습니다.</h2>
               </div>
             )}
-            <TextField
-              id="filled-multiline-flexible"
-              label="댓글을 작성해주세요."
-              multiline
-              maxRows={3}
-              variant="filled"
-              sx={{
-                width: '70%',
-                marginRight: '20px',
-              }}
-              value={createComment}
-              onChange={handleCommentCreate}
-            />
-            <Button
-              variant="contained"
-              endIcon={<SendIcon />}
-              sx={{
-                color: 'white',
-                fontSize: '0.8rem',
-                marginTop: '10px',
-              }}
-              onClick={axiosCommentCreate}
-            >
-              작성하기
-            </Button>
+            <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {campaignReviews.length > 0 ? (
@@ -688,6 +662,7 @@ const CampaignDetail = () => {
             ) : (
               <div className="campaignNothing">
                 <h2>작성된 후기가 없습니다.</h2>
+                <p style={{ marginTop: "10px", fontSize: "0.9rem", color: "gray" }}>후기는 캠페인이 끝난 후, 마이페이지에서 작성할 수 있습니다.</p>
               </div>
             )}
           </TabPanel>
