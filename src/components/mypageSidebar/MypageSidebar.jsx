@@ -148,7 +148,7 @@ function Sidebar() {
             })}
           </div>
           <div className="mypage-sidebar">
-            <h3>나의 결제</h3>
+            <span>나의 결제</span>
             {menus2.map((menu, index) => {
               return (
                 <Link to={menu.path} key={index}>
