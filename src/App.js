@@ -39,6 +39,7 @@ import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 import { MyProfile } from './pages/mypagelist/myprofile'
+import { UserWithdrawal } from './pages/UserWithdrawal'
 import { ProductDetail } from './admin_pages/productdetail/Productdetail'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
@@ -112,6 +113,7 @@ function App() {
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/mypage/profile" element={<MyProfile />}></Route>
+            <Route path="/mypage/profile/withdrawal" element={<UserWithdrawal />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
