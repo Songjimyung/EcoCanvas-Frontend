@@ -12,6 +12,8 @@ import { CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import product_default_img from '../img/sample_product.png';
+import ImageHeader from '../components/imageheader/ImageHeader';
+import zerowaste from '../img/zerowaste.jpg';
 
 
 const Shop = () => {
@@ -119,6 +121,11 @@ const Shop = () => {
 
   return (
     <div>
+      <ImageHeader
+        h1Text="EcoCanvas Shop"
+        pText="지속 가능한 소비, 그 이상의 가치"
+        imageUrl={zerowaste}
+      />
       <header>
         <nav>
           <select className="category-dropdown" onChange={handleCategorySelect}>

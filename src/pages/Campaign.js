@@ -5,6 +5,7 @@ import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
+import campaign_family from '../img/campaign_family.jpg'
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -68,8 +69,8 @@ const Campaign = () => {
       const response = await axios.get(url);
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
-    } catch (error) {
-      console.error('Error fetching campaign:', error);
+    } catch (e) {
+      console.error(e);
     }
   };
   useEffect(() => {
@@ -117,8 +118,8 @@ const Campaign = () => {
         },
       });
       setIsLiked(response.data.is_liked);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -158,7 +159,6 @@ const Campaign = () => {
   // 캠페인 신청 token check
   const handleCampaignLinkClick = () => {
     if (token) {
-      console.log("check")
       navigate(`/campaign/create`);
     } else {
       alert("로그인이 필요합니다.");
@@ -168,7 +168,11 @@ const Campaign = () => {
 
   return (
     <div className="campaignContainer">
-      <ImageHeader text="캠페인 둘러보기" />
+      <ImageHeader
+        h1Text="캠페인 둘러보기"
+        pText="EcoCanvas Campaigns"
+        imageUrl={campaign_family}
+      />
 
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" marginBottom={'25px'}>

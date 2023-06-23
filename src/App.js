@@ -14,6 +14,7 @@ import { UpdatePassword } from "./pages/UpdatePassword";
 import { Campaign } from "./pages/Campaign";
 import { CampaignDetail } from "./pages/CampaignDetail";
 import { CampaignCreate } from "./pages/CampaignCreate";
+import { CampaignUpdate } from "./pages/CampaignUpdate";
 import { KakaoInit } from "./campaign/Kakaohooks";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
@@ -101,9 +102,9 @@ function App() {
             <Route path="/reset-pw" element={<ResetPassword />}></Route>
             <Route path="/update-pw" element={<UpdatePassword />}></Route>
             <Route path="/campaign" element={<Campaign />}></Route>
-            <Route path="/campaign/:id" element={<CampaignDetail />} />
-            <Route path="/campaign/:id/udpate" element={<CampaignDetail />} />
-            <Route path="/campaign/create" element={<CampaignCreate />} />
+            <Route path="/campaign/:id" element={<CampaignDetail />}></Route>
+            <Route path="/campaign/:id/modify" element={<CampaignUpdate />}></Route>
+            <Route path="/campaign/create" element={<CampaignCreate />}></Route>
             <Route path="/shop" element={<Shop />}></Route>
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>

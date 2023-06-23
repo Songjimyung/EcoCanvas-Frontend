@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
@@ -104,8 +104,13 @@ const CampaignDetail = () => {
   // token
   const token = localStorage.getItem('access');
   const payload = localStorage.getItem('payload');
-  const payloadObject = JSON.parse(payload);
-  const userId = payloadObject['user_id'];
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (payload) {
+      const payloadObject = JSON.parse(payload);
+      setUserId(payloadObject['user_id']);
+    }
+  }, [payload]);
 
   // Tab 
   const [value, setValue] = useState(0);
@@ -119,8 +124,8 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      console.error(e)
     }
   };
   useEffect(() => {
@@ -133,8 +138,8 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      console.error(e)
     }
   };
   useEffect(() => {
@@ -148,8 +153,8 @@ const CampaignDetail = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/`);
         setCampaignReview(response.data);
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
       }
     };
     axiosCampaignReview();
@@ -182,8 +187,8 @@ const CampaignDetail = () => {
           },
         });
         axiosCampaignComment();
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
         alert("댓글 작성에 실패했습니다.");
       }
     } else {
@@ -254,8 +259,8 @@ const CampaignDetail = () => {
           },
         });
         setIsLiked(response.data.is_liked);
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
       }
     };
     axiosCampaignLikeStatus();
@@ -271,8 +276,8 @@ const CampaignDetail = () => {
       });
       setIsLiked(response.data.is_liked);
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      console.error(e)
     }
   };
   // 캠페인 참여
@@ -288,8 +293,8 @@ const CampaignDetail = () => {
           },
         });
         setIsParticipated(response.data.is_participated);
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
       }
     };
     axiosParticipateStatus();
@@ -306,8 +311,8 @@ const CampaignDetail = () => {
         setIsParticipated(response.data.is_participated);
         isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
         axiosCampaignDetail();
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
         alert("캠페인 참여에 실패했습니다.")
       }
     } else {
@@ -331,11 +336,11 @@ const CampaignDetail = () => {
   // 캠페인 수정삭제
   const campaignOptions = [
     { id: "update", label: "수정하기" },
-    { id: "delete", label: "삭제는 문의 부탁드립니다" },
   ];
+  const navigate = useNavigate();
   const handleCampaignEdit = async (optionId) => {
     if (optionId === "update") {
-
+      navigate(`modify`);
     }
   }
 
@@ -354,8 +359,8 @@ const CampaignDetail = () => {
         });
         alert("삭제되었습니다.");
         axiosCampaignComment();
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
         alert("댓글 삭제에 실패했습니다.")
       }
     } else {
@@ -385,8 +390,8 @@ const CampaignDetail = () => {
         setIsEditing(false);
         axiosCampaignComment();
         alert("수정되었습니다.");
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.error(e)
         alert("댓글 수정에 실패했습니다.")
       }
     } else {
