@@ -53,7 +53,9 @@ export default function ChatList() {
     return (
     <div>
         <h1>Chat List</h1>
+        {console.log(userList)}
         {userList.map((user, index) => (
+            {console.log(user)}
             <div key={index}>
                 <h2>{user[0].email}</h2>
                 <Link to={`/chat?id=${chatList[index].id}`}>
