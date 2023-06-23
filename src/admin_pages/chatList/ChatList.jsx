@@ -40,24 +40,25 @@ export default function ChatList() {
                 
             }
         };
-
-        if (chatList.length > 0) {
-            getUserData();
-        }
+        getUserData();
     }, [chatList]);
-    return (
+   return (
         <div>
             <h1>Chat List</h1>
             {chatList.map((chatItem) => {
-                const user = userList.find(user => user.id === chatItem.advisee);
-                return (
-                    <div key={chatItem.id}>
-                        <h2>{user ? user.email : "Unknown User"}</h2>
-                        <Link to={`/chat?id=${chatItem.id}`}>
-                            <Button style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>채팅</Button>
-                        </Link>
-                    </div>
-                );
+            const user = userList.find((user) => user.id === chatItem.advisee);
+            const userName = user ? user.email : "Unknown User";
+
+            return (
+                <div key={chatItem.id}>
+                <h2>{userName}</h2>
+                <Link to={`/chat?id=${chatItem.id}`}>
+                    <Button style={{ fontSize: "20px", color: "red", margin: "auto" }}>
+                    채팅
+                    </Button>
+                </Link>
+                </div>
+            );
             })}
         </div>
     );
