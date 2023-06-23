@@ -60,7 +60,7 @@ function Sidebar() {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result.image);
+          
           const user_info = {
             id: result["user"]["id"],
             email: result["user"]["email"],
@@ -79,7 +79,7 @@ function Sidebar() {
           setUserData([defaultUserInfo]);
         }
       } catch (error) {
-        console.error(error);
+        
       }
     };
 

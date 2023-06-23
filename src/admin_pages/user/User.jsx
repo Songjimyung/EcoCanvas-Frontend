@@ -27,7 +27,7 @@ export default function User() {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
+          
           const user_info = {
             id: result["id"],
             email: result["email"],
@@ -39,7 +39,7 @@ export default function User() {
           setUser([user_info]);
         }
       } catch (error) {
-        console.error(error);
+        
       }
     };
 
@@ -64,7 +64,7 @@ export default function User() {
         window.location.reload();
       })
       .catch(error => {
-        console.error(error);
+        
       });
   };
 

@@ -24,7 +24,7 @@ export default function CreateProduct() {
       }
     }).then(response => response.json())
       .then(result => {
-        console.log(result)
+        
         setCategoryList(result);
       })
   }, []);
@@ -39,7 +39,7 @@ export default function CreateProduct() {
     }
     const selectedCategory = categoryList.find(category => category.id === parsedCategoryId);
     if (!selectedCategory) {
-      console.error('카테고리가 존재하지 않습니다');
+      
       return;
     }
 
@@ -72,12 +72,12 @@ export default function CreateProduct() {
         }
       })
       .then((result) => {
-        console.log(result);
+        
         alert("상품 등록 완료!");
         window.location.reload();
       })
       .catch((error) => {
-        console.error(error);
+        
         alert(error.message);
       });
   };

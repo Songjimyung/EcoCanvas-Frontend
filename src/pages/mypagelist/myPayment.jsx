@@ -45,13 +45,13 @@ function RegisterPayment() {
         'Authorization': `Bearer ${token}`,
       }})
       .then((response) => {
-        console.log(response.data);
+        
         alert('카드 등록 완료')
         fetchRegisterPayments();
         closePaymentModal();
       })
       .catch((error) => {
-        console.error(error.response.data);
+        
         alert(error.response.data);
       });
   };
@@ -66,7 +66,7 @@ function RegisterPayment() {
         setRegisterPayments(response.data);
       })
       .catch((error) => {
-        console.error(error.response.data);
+        
         alert('카드 정보를 가져오는데 실패했습니다.');
       });
   };
@@ -82,11 +82,11 @@ function RegisterPayment() {
       .then((response) => {
         alert(response.data.message)
         setRegisterPayments(registerPayments.filter((payment) => payment.id !== id));
-        console.log(response.data.message);
+        
       })
       .catch((error) => {
         
-        console.error(error);
+        
       });
   };
 

@@ -34,7 +34,7 @@ export default function ProductDetail() {
         });
 
         const result = await response.json();
-        console.log(result)
+        
         const product_info = {
           id: result.id,
           category_name: result.category_name,
@@ -54,7 +54,7 @@ export default function ProductDetail() {
         }
 
       } catch (error) {
-        console.log(error);
+        
       }
     };
     fetchProduct();
@@ -89,7 +89,7 @@ export default function ProductDetail() {
       });
 
       if (response.ok) {
-        console.log("수정 완료!");
+        
         alert("수정 완료!");
         window.location.reload();
       } else {
@@ -98,7 +98,7 @@ export default function ProductDetail() {
         throw new Error(errorValues.join('\n'));
       }
     } catch (error) {
-      console.error(error);
+      
       alert(error.message);
     }
   };
@@ -117,11 +117,11 @@ export default function ProductDetail() {
         navigate("/admin_products");
       } else {
         const result = await response.json();
-        console.log(result);
+        
         alert("삭제 실패!");
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
   const handleImageUpload = (event) => {

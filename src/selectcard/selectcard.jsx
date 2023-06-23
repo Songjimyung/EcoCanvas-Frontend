@@ -43,7 +43,7 @@ function SelectCard({ setSelectedCard }) {
           setSelectCard(response.data);
         })
         .catch((error) => {
-          console.error(error.response.data);
+          
           alert('카드 정보를 가져오는데 실패했습니다.');
         });
     };
@@ -51,7 +51,7 @@ function SelectCard({ setSelectedCard }) {
 
   const handleCardSelect = (cardId, cardNumber) => {
     setSelectedCard({cardId, cardNumber });
-    console.log(cardId)
+    
     closeSelectCardModal();
   };
 
@@ -74,13 +74,13 @@ function SelectCard({ setSelectedCard }) {
         'Authorization': `Bearer ${token}`,
       }})
       .then((response) => {
-        console.log(response.data);
+        
         alert('카드 등록 완료')
         selectedCard();
         closePaymentModal();
       })
       .catch((error) => {
-        console.error(error.response.data);
+        
         alert(error.response.data);
       });
   };
@@ -97,11 +97,11 @@ function SelectCard({ setSelectedCard }) {
         alert(response.data.message)
         setRegisterPayments(registerPayments.filter((payment) => payment.id !== id));
         selectedCard();
-        console.log(response.data.message);
+        
       })
       .catch((error) => {
         
-        console.error(error);
+        
       });
   };
 

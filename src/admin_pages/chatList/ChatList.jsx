@@ -37,7 +37,7 @@ export default function ChatList() {
                 const result = await response.json();
                 setUserList(result);
             } catch (error) {
-                console.error(error);
+                
             }
         };
 
