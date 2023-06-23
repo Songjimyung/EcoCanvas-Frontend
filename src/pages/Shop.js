@@ -83,7 +83,7 @@ const Shop = () => {
     } catch (error) {
       
     }
-  }, [categoryId, sortBy, currentPage, searchQuery]);
+  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
 
   const fetchCategoryList = async () => {
     try {
