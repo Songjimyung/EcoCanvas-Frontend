@@ -42,6 +42,8 @@ import { MyProfile } from './pages/mypagelist/myprofile'
 import { ProductDetail } from './admin_pages/productdetail/Productdetail'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
+import { RegisterPayment } from './pages/mypagelist/myPayment';
+import { ReceiptList} from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 
 import NotificationHistory from './components/NotificationHistory/NotificationHistory'
@@ -129,6 +131,8 @@ function App() {
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
+            <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
+            <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
             <Route path="/chat" element={<ChatDetail />} />
             <Route path="/notification" element={<NotificationHistory />} />
           </Routes>

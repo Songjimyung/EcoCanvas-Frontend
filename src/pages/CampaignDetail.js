@@ -4,6 +4,7 @@ import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 import sharekakao from "../img/sharekakao.webp"
+import SelectCard from "../selectcard/selectcard";
 
 // MUI
 import PropTypes from 'prop-types';
@@ -200,12 +201,38 @@ const CampaignDetail = () => {
 
   // Fund Modal
   const [fundModalOpen, setFundModalOpen] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const openFundModal = () => {
     setFundModalOpen(true);
   };
   const closeFundModal = () => {
     setFundModalOpen(false);
+  };
+
+  const handleAmountSubmit = (event) => {
+    const value = event.target.value;
+    const numericValue = Number(value.replace(/[^0-9.-]+/g, ''));
+    setAmount(numericValue);
+  };
+
+  const handleFundSubmit = async () => {
+    
+    const requestData = {
+      amount: amount,
+      campaign: id,
+      selected_card : selectedCard.cardId
+    };
+    try {
+        await axios.post(`http://localhost:8000/payments/schedule/`, requestData, 
+        {headers: {
+          "Authorization": `Bearer ${token}`}})
+          alert("후원 감사합니다!")
+          setFundModalOpen(false)
+      } catch(error) {
+        alert("후원 실패")
+      }
   };
   // Share Modal
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -377,8 +404,15 @@ const CampaignDetail = () => {
                   >펀딩 참여하기
                   </Button>
                   <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
+                    <SelectCard setSelectedCard={setSelectedCard}/>
+                    {selectedCard && (
+                      <div>
+                        <h2>선택한 카드:</h2>
+                        <p>{selectedCard.cardNumber}</p>
+                      </div>
+                    )}
                     {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
-                    <div className="modalMent">펀딩 금액을 입력해주세요.</div>
+                    <div className="modalMent">카드를 선택하고 펀딩 금액을 입력해주세요.</div>
                     <FormControl sx={{ width: '100%', }}>
                       <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
                       <OutlinedInput
@@ -387,8 +421,8 @@ const CampaignDetail = () => {
                         label="금액"
                         inputProps={{ min: 0 }}
                         // useState앞에 값 (100000000)지우고 넣어주세요
-                        value={(100000000).toLocaleString()}
-                      // onChange={ }
+                        value={amount.toLocaleString()}
+                        onChange={ handleAmountSubmit }
                       />
                     </FormControl>
                     <Button
@@ -399,7 +433,7 @@ const CampaignDetail = () => {
                         marginTop: '20px',
                         marginLeft: '385px',
                       }}
-                    // onClick={}
+                       onClick={handleFundSubmit}
                     >
                       펀딩하기
                     </Button>

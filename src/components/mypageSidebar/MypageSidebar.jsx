@@ -31,6 +31,10 @@ function Sidebar() {
     { name: "배송조회", path: "/mypage/mydelivery" },
     { name: "환불/취소 접수", path: "/mypage/myrefund" }
   ];
+  const menus2 = [
+    { name: "카드정보", path: "/mypage/mypayments"},
+    { name: "예약결제확인", path: "/mypage/myschedule"}
+  ]
 
   // payload에서 user_id 가져와서 GET요청 
   useEffect(() => {
@@ -131,6 +135,19 @@ function Sidebar() {
           <div className="mypage-sidebar">
             <h3>나의 쇼핑</h3>
             {menus1.map((menu, index) => {
+              return (
+                <Link to={menu.path} key={index}>
+                  <SidebarItem
+                    menu={menu}
+                    isActive={pathName === menu.path ? true : false}	// 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
+                  />
+                </Link>
+              );
+            })}
+          </div>
+          <div className="mypage-sidebar">
+            <h3>나의 결제</h3>
+            {menus2.map((menu, index) => {
               return (
                 <Link to={menu.path} key={index}>
                   <SidebarItem
