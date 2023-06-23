@@ -71,7 +71,7 @@ export default function ProductList() {
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell>
-                    <Link to={`/admin_product/detail/${product.id}`}>
+                    <Link to={`/admin_products/${product.id}`}>
                       <Button variant="contained" color="primary" className="productListEdit">
                         수정
                       </Button>
