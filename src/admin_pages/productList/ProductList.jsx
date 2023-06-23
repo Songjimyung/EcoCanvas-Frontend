@@ -36,7 +36,7 @@ export default function ProductList() {
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
       } catch (error) {
-        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+        
       }
     };
 

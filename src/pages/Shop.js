@@ -79,18 +79,18 @@ const Shop = () => {
       setProductList(response.data.results);
       const totalPages = Math.ceil(response.data.count / 6);
       setTotalPages(totalPages);
-      console.log(response.data)
+      
     } catch (error) {
-      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      
     }
-  }, [categoryId, sortBy, currentPage, searchQuery]);
+  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
 
   const fetchCategoryList = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
       setCategoryList(response.data);
     } catch (error) {
-      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      
     }
   };
 
@@ -106,7 +106,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProductList();
-  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
+  }, [categoryId, sortBy, currentPage, searchQuery]);
 
   useEffect(() => {
     fetchCategoryList();

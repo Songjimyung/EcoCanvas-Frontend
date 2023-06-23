@@ -20,7 +20,7 @@ const CallbackGoogle = (props) => {
                 alert("구글 로그인 성공!")
                 window.location.replace("/")
             } catch (error) {
-                console.error(error);
+                
             }
         };
 

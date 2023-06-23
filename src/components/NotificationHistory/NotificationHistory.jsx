@@ -32,9 +32,9 @@ const NotificationHistory = () => {
         setNotifications(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        console.log(response.data)
+        
       } catch (error) {
-        console.error('알림 목록을 불러오는 중 오류가 발생했습니다:', error);
+        
       }
     };
 
@@ -51,13 +51,13 @@ const NotificationHistory = () => {
       }
     })
       .then(() => {
-        console.log("알림 삭제");
+        
         alert("알림 삭제 완료")
         window.location.reload();
       })
       .catch((error) => {
 
-        console.error("알림 삭제 실패", error);
+        
       });
   };
 
@@ -70,12 +70,12 @@ const NotificationHistory = () => {
       }
     })
       .then(() => {
-        console.log("알림 일괄 삭제");
+        
         alert("알림 일괄 삭제 완료");
         setNotifications([]);
       })
       .catch((error) => {
-        console.error("알림 일괄 삭제 실패", error);
+        
       });
   };
 

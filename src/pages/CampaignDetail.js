@@ -119,7 +119,7 @@ const CampaignDetail = () => {
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
     } catch (error) {
-      console.log(error)
+      
     }
   };
   useEffect(() => {
@@ -133,7 +133,7 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
     } catch (error) {
-      console.log(error)
+      
     }
   };
   useEffect(() => {
@@ -149,7 +149,7 @@ const CampaignDetail = () => {
         setCampaignReview(response.data);
 
       } catch (error) {
-        console.log(error)
+        
       }
     };
     axiosCampaignReview();
@@ -181,12 +181,12 @@ const CampaignDetail = () => {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response)
+        
         alert("댓글 작성 성공!");
         // 작성 후 바로 댓글 재렌더링시키기
         axiosCampaignComment();
       } catch (error) {
-        console.log(error)
+        
         alert("댓글 작성에 실패했습니다.");
       }
     } else {
@@ -284,7 +284,7 @@ const CampaignDetail = () => {
       });
       setIsLiked(response.data.is_liked);
     } catch (error) {
-      console.log(error)
+      
     }
   };
   useEffect(() => {
@@ -303,7 +303,7 @@ const CampaignDetail = () => {
       setIsLiked(response.data.is_liked);
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     } catch (error) {
-      console.log(error)
+      
     }
   };
   // 캠페인 참여
@@ -319,7 +319,7 @@ const CampaignDetail = () => {
       });
       setIsParticipated(response.data.is_participated);
     } catch (error) {
-      console.log(error)
+      
     }
   };
   useEffect(() => {
@@ -339,7 +339,7 @@ const CampaignDetail = () => {
         isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
         axiosCampaignDetail();
       } catch (error) {
-        console.log(error)
+        
         alert("캠페인 참여에 실패했습니다.")
       }
     } else {

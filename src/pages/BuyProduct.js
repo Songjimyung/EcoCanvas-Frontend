@@ -38,7 +38,7 @@ export default function BuyProduct() {
     setIsOpen((prev) => !prev);
   };
   const handleComplete = (data) => {
-    console.log(data);
+    
     setAddress(data.address);
     setZipcode(data.zonecode);
     setIsComplete(true);
@@ -65,10 +65,10 @@ export default function BuyProduct() {
           }
         });
         const result = await response.json();
-        console.log(result);
+        
         setProduct(result);
       } catch (error) {
-        console.error('상품 불러오기 실패:', error);
+        
       }
     };
     fetchProduct();
@@ -84,11 +84,11 @@ export default function BuyProduct() {
         if (token) {
           const payload = jwtDecode(token);
           const userId = payload.user_id;
-          console.log(userId);
+          
           setUserId(userId);
         }
       } catch (error) {
-        console.error('불러오기 실패', error);
+        
       }
     };
     fetchUserId();
@@ -115,7 +115,7 @@ export default function BuyProduct() {
     e.preventDefault();
     const token = localStorage.getItem('access');
 
-    console.log(e.target.elements.receiver_number.value)
+    
     const formData = new FormData();
     formData.append('zip_code', isComplete ? zipcode : e.target.elements.zip_code.value);
     formData.append('address', isComplete ? Address : e.target.elements.address.value);
@@ -148,12 +148,12 @@ export default function BuyProduct() {
         }
       })
       .then((result) => {
-        console.log(result);
+        
         alert("상품 주문 완료");
         navigate('/mypage/myorders');
       })
       .catch((error) => {
-        console.error(error);
+        
         alert(error.message);
       });
   };
@@ -170,7 +170,7 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-          console.log(result);
+          
           const addressInfo = {
             receiver_name: result.receiver_name,
             receiver_number: result.receiver_number,
@@ -185,7 +185,7 @@ export default function BuyProduct() {
           }));
         }
       } catch (error) {
-        console.error('오류', error);
+        
       }
     };
 
