@@ -47,10 +47,9 @@ export default function ChatList() {
             <h1>Chat List</h1>
             {chatList.map((chatItem) => {
             const user = chatList.length > 0 ? userList.find(user => user.id === chatItem.advisee) : null;
-
             return (
                 <div key={chatItem.id}>
-                <h2>TestChat</h2>
+                <h2>{user ? user.email : "Unknown User"}</h2>
                 <Link to={`/chat?id=${chatItem.id}`}>
                     <Button style={{ fontSize: "20px", color: "red", margin: "auto" }}>
                     채팅
