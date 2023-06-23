@@ -57,7 +57,7 @@ export default function ChatList() {
         {userList.map((user, index) => (
             <div key={index}>
                 {console.log(user)}
-                <h2>{user[0].email}</h2>
+                <h2>{user.email}</h2>
                 <Link to={`/chat?id=${chatList[index].id}`}>
                 <Button style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>채팅</Button>
                 </Link>
