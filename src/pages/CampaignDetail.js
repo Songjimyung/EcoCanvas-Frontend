@@ -224,16 +224,13 @@ const CampaignDetail = () => {
       campaign: id,
       selected_card : selectedCard.cardId
     };
-    console.log(requestData);
     try {
-        const response = await axios.post(`http://localhost:8000/payments/schedule/`, requestData, 
+        await axios.post(`http://localhost:8000/payments/schedule/`, requestData, 
         {headers: {
           "Authorization": `Bearer ${token}`}})
-          console.log(response.data);
           alert("후원 감사합니다!")
           setFundModalOpen(false)
       } catch(error) {
-        console.error("후원 실패", error);
         alert("후원 실패")
       }
   };
