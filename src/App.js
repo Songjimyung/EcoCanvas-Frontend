@@ -96,12 +96,13 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/reset_pw/email_code" element={<ResetPasswordEmail />}></Route>
-            <Route path="/reset_pw/reset_params" element={<ReadPasswordEmail />}></Route>
-            <Route path="/reset_pw" element={<ResetPassword />}></Route>
-            <Route path="/update_pw" element={<UpdatePassword />}></Route>
+            <Route path="/reset-pw/email-code" element={<ResetPasswordEmail />}></Route>
+            <Route path="/reset-pw/reset-params" element={<ReadPasswordEmail />}></Route>
+            <Route path="/reset-pw" element={<ResetPassword />}></Route>
+            <Route path="/update-pw" element={<UpdatePassword />}></Route>
             <Route path="/campaign" element={<Campaign />}></Route>
             <Route path="/campaign/:id" element={<CampaignDetail />} />
+            <Route path="/campaign/:id/udpate" element={<CampaignDetail />} />
             <Route path="/campaign/create" element={<CampaignCreate />} />
             <Route path="/shop" element={<Shop />}></Route>
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
@@ -114,16 +115,16 @@ function App() {
             <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
             <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
-            <Route path="/admin_home" element={<AdminHome />}></Route>
-            <Route path="/admin_orderlist" element={<AdminOrderList />}></Route>
-            <Route path="/admin_users" element={<UserList />} />
-            <Route path="/admin_campaign" element={<ApplyListCampaign />} />
-            <Route path="/admin_users/:userId" element={<User />} />
-            <Route path="/admin_createUser" element={<CreateUser />} />
-            <Route path="/admin_products" element={<ProductList />} />
-            <Route path="/admin_product/detail/:productId" element={<ProductDetail />} />
-            <Route path="/admin_products/:productId" element={<Product />} />
-            <Route path="/admin_createProduct" element={<CreateProduct />} />
+            <Route path="/admin-home" element={<AdminHome />}></Route>
+            <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>
+            <Route path="/admin-users" element={<UserList />} />
+            <Route path="/admin-campaign" element={<ApplyListCampaign />} />
+            <Route path="/admin-users/:userId" element={<User />} />
+            <Route path="/admin-createUser" element={<CreateUser />} />
+            <Route path="/admin-products" element={<ProductList />} />
+            <Route path="/admin-product/detail/:productId" element={<ProductDetail />} />
+            <Route path="/admin-products/:productId" element={<Product />} />
+            <Route path="/admin-createProduct" element={<CreateProduct />} />
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />

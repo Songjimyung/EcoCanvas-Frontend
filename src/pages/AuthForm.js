@@ -79,7 +79,7 @@ const AuthForm = ({ type }) => {
       const payloadObject = JSON.parse(payload);
       console.log(payloadObject.is_admin);
       if (payloadObject.is_admin) {
-        navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
+        navigate('/admin-home'); // is_admin이 true인 경우 admin-home으로 이동
         window.location.reload();
       } else {
         window.location.replace("/")
@@ -118,7 +118,7 @@ const AuthForm = ({ type }) => {
   };
 
   const handleResetPasswordEmailFormSubmit = () => {
-    navigate('/reset_pw/email_code')
+    navigate('/reset-pw/email-code')
   }
 
   return (

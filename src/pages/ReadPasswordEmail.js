@@ -16,7 +16,7 @@ const ReadPasswordEmail = (props) => {
 
                 if (response_status === 200) { alert("비밀번호 변경을 진행해 주세요!"); }
 
-                navigate(`/reset_pw/?uidb64=${response_data['uidb64']}&token=${response_data['token']}`);
+                navigate(`/reset-pw/?uidb64=${response_data['uidb64']}&token=${response_data['token']}`);
 
             } catch (error) {
                 console.error(error);

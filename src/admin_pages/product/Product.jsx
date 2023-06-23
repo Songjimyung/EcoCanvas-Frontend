@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from "react";
-import './product.css';
+import "./product.css";
 import { Link } from "react-router-dom";
 import Chart from "../../admin_conponents/chart/Chart";
 import { productData } from "../../dummyData";
 import { Publish } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
-import  PaymentButton  from "../../pages/Payment";
+import PaymentButton from "../../pages/Payment";
 
 function UpdateProduct() {
-  console.log("Update!")
+  console.log("Update!");
 }
-
 
 export default function Product() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState([]);
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/` + id + "/", {
-      method: 'GET',
-    }).then(response => response.json())
-      .then(result => {
-        console.log(result)
-        setProduct(result)
-      })
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setProduct(result);
+      });
   }, [id]);
 
   return (
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">상품</h1>
-        <Link to="/admin_createProduct">
+        <Link to="/admin-createProduct">
           <button className="productAddButton">생성하기</button>
         </Link>
-        {product &&<PaymentButton product={product}/>}
+        {product && <PaymentButton product={product} />}
       </div>
       <div className="productTop">
         <div className="productTopLeft">
@@ -89,10 +89,12 @@ export default function Product() {
               </label>
               <input type="file" id="file" style={{ display: "none" }} />
             </div>
-            <button className="productButton" onClick={UpdateProduct}>수정하기</button>
+            <button className="productButton" onClick={UpdateProduct}>
+              수정하기
+            </button>
           </div>
         </form>
       </div>
     </div>
-  )
-};
+  );
+}

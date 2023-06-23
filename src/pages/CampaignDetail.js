@@ -330,16 +330,12 @@ const CampaignDetail = () => {
 
   // 캠페인 수정삭제
   const campaignOptions = [
-    { id: "edit", label: "수정하기" },
-    { id: "delete", label: "삭제하기" },
+    { id: "update", label: "수정하기" },
+    { id: "delete", label: "삭제는 문의 부탁드립니다" },
   ];
   const handleCampaignEdit = async (optionId) => {
     if (optionId === "update") {
-      console.log("수정페이지로 이동")
-    } else if (optionId === "delete") {
-      if (window.confirm("정말 삭제하시겠습니까?")) {
-        axiosCommentDelete(commentId);
-      }
+
     }
   }
 

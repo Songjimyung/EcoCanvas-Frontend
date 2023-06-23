@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./mypageSidebar.css";
 import { Link, useLocation } from "react-router-dom";
 import SidebarItem from "../SidebarItem/SidebarItem";
-import profile_default_image from '../../img/profile_default_image.png';
+import profile_default_image from "../../img/profile_default_image.png";
 
 function Sidebar() {
-  const [userData, setUserData] = useState([])
+  const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState();
-
 
   const getImageUrl = (imagePath) => {
     return `http://localhost:8000${imagePath}`;
@@ -29,12 +28,12 @@ function Sidebar() {
   const menus1 = [
     { name: "주문내역", path: "/mypage/myorders" },
     { name: "배송조회", path: "/mypage/mydelivery" },
-    { name: "환불/취소 접수", path: "/mypage/myrefund" }
+    { name: "환불/취소 접수", path: "/mypage/myrefund" },
   ];
 
-  // payload에서 user_id 가져와서 GET요청 
+  // payload에서 user_id 가져와서 GET요청
   useEffect(() => {
-    const payload = localStorage.getItem('payload');
+    const payload = localStorage.getItem("payload");
     if (payload) {
       const payloadObject = JSON.parse(payload);
       setUserId(payloadObject.user_id);
@@ -43,33 +42,35 @@ function Sidebar() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('access');
+        const token = localStorage.getItem("access");
         let response;
-        response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/profile/`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
+        response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result.image)
+          console.log(result.image);
           const user_info = {
-            id: result['user']['id'],
-            email: result['user']['email'],
-            username: result['user']['username'],
-            image: result.image
+            id: result["user"]["id"],
+            email: result["user"]["email"],
+            username: result["user"]["username"],
+            image: result.image,
           };
           setUserData([user_info]);
-        }
-        else {
+        } else {
           // 응답이 실패인 경우
           const defaultUserInfo = {
             id: null,
-            email: '프로필이 존재하지 않습니다.',
-            username: '프로필이 존재하지 않습니다.',
-            image: profile_default_image
+            email: "프로필이 존재하지 않습니다.",
+            username: "프로필이 존재하지 않습니다.",
+            image: profile_default_image,
           };
           setUserData([defaultUserInfo]);
         }
@@ -82,7 +83,6 @@ function Sidebar() {
       fetchUserData();
     }
   }, [userId]);
-
 
   return (
     <>
@@ -109,7 +109,7 @@ function Sidebar() {
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
                   <button className="details-button">
-                    <Link to="/update_pw">비밀번호 변경</Link>
+                    <Link to="/update-pw">비밀번호 변경</Link>
                   </button>
                 </div>
               );
@@ -122,7 +122,7 @@ function Sidebar() {
                 <Link to={menu.path} key={index}>
                   <SidebarItem
                     menu={menu}
-                    isActive={pathName === menu.path ? true : false}	// 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
+                    isActive={pathName === menu.path ? true : false} // 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
                   />
                 </Link>
               );
@@ -135,7 +135,7 @@ function Sidebar() {
                 <Link to={menu.path} key={index}>
                   <SidebarItem
                     menu={menu}
-                    isActive={pathName === menu.path ? true : false}	// 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
+                    isActive={pathName === menu.path ? true : false} // 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
                   />
                 </Link>
               );
@@ -143,7 +143,6 @@ function Sidebar() {
           </div>
         </div>
       </div>
-
     </>
   );
 }

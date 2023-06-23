@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from "react";
-import './productList.css';
-import { Link } from 'react-router-dom';
-import { Pagination, Grid, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Button, Container } from '@mui/material';
-import axios from 'axios';
+import "./productList.css";
+import { Link } from "react-router-dom";
+import {
+  Pagination,
+  Grid,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableBody,
+  Button,
+  Container,
+} from "@mui/material";
+import axios from "axios";
 
 export default function ProductList() {
   const [productList, setProductList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-
 
   useEffect(() => {
     const fetchProductList = async () => {
@@ -29,20 +38,19 @@ export default function ProductList() {
           name: product.product_name,
           price: product.product_price,
           stock: product.product_stock,
-          img: product.product_image
+          img: product.product_image,
         }));
 
         setProductList(products);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
       } catch (error) {
-        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+        console.error("상품 목록을 불러오는 중 오류가 발생했습니다:", error);
       }
     };
 
     fetchProductList();
   }, [currentPage]);
-
 
   return (
     <div className="productList">
@@ -64,15 +72,23 @@ export default function ProductList() {
                   <TableCell>{product.id}</TableCell>
                   <TableCell>
                     <div className="productListItem">
-                      <img className="productListImg" src={product.img} alt="" />
+                      <img
+                        className="productListImg"
+                        src={product.img}
+                        alt=""
+                      />
                       {product.name}
                     </div>
                   </TableCell>
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell>
-                    <Link to={`/admin_product/detail/${product.id}`}>
-                      <Button variant="contained" color="primary" className="productListEdit">
+                    <Link to={`/admin-product/detail/${product.id}`}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className="productListEdit"
+                      >
                         수정
                       </Button>
                     </Link>
