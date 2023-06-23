@@ -3,15 +3,17 @@ import React, { useEffect, useState, useRef } from "react";
 import './chatDetail.css'
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
+import Messages from "./messages/messages";
 
 export default function ChatDetail() {
-    const chatLogRef = useRef(null);
+    const [messages, setMessages] = useState([])
     const chatMessageInputRef = useRef(null);
     const chatMessageSendRef = useRef(null);
     let chatSocket = useRef(null);
     let payload = localStorage.getItem('payload');
     payload = JSON.parse(payload)
     const userId = payload.user_id
+    const email = payload.email
     const token = localStorage.getItem('access')
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -58,7 +60,6 @@ export default function ChatDetail() {
         function connect() {
             chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
 
-
             chatSocket.current.onopen = function (e) {
                 
                 chatSocket.current.send(JSON.stringify({
@@ -68,30 +69,23 @@ export default function ChatDetail() {
             };
                 
             chatSocket.current.onclose = function (e) {
-                
+                console.log("Close Socket")
             };
             chatSocket.current.onmessage = function (e) {
                 const data = JSON.parse(e.data);
                 
                 if (data['command'] === 'messages') {
                     for (let i = 0; i < data['messages'].length; i++) {
-                        createMessage(data['messages'][i]);
+                        setMessages((messages) => [...messages, data['messages'][i]])
                     }
                 } else if (data['command'] === 'new_message') {
-                    createMessage(data['message']);
+                    setMessages((messages) => [...messages, data['message']])
                 }
-
-                chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
             };
 
             chatSocket.current.onerror = function (err) {
-                
                 chatSocket.current.onclose();
             };
-        }
-        function createMessage(data) {
-            const author = data['author'];
-            chatLogRef.current.value += (author + ': ' + data.content + '\n');
         }
         connect();
         return () => {
@@ -100,10 +94,12 @@ export default function ChatDetail() {
     }, [roomId, token, userId]);
 
     return (
-        <div>
-            <textarea id="chatLog" ref={chatLogRef} readOnly></textarea>
-            <input type="text" id="chatMessageInput" ref={chatMessageInputRef} />
-            <button id="chatMessageSend" ref={chatMessageSendRef}>Send</button>
+        <div className="chatContainer">
+            <div className='container'>
+                <Messages messages={messages} name={email} />
+                <input className="input" type="text" id="chatMessageInput" ref={chatMessageInputRef} placeholder="전송하려는 메시지를 입력하세요."/>
+                <button className="sendButton" id="chatMessageSend" ref={chatMessageSendRef}>Send</button>
+            </div>
         </div>
     );
 }
