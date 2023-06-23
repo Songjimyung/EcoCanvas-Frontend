@@ -26,10 +26,10 @@ function ReceiptList() {
          }})
          .then((response) => {
             setReceipts(response.data);
-            console.log(response.data)
+            
          })
          .catch((error) => {
-            console.error(error);
+            
          });
       }, [user_id, token]);
 
@@ -41,14 +41,14 @@ function ReceiptList() {
         }})
         .then((response) => {
           // 취소 요청 성공 시 처리
-          console.log(response.data);
+          
           alert(response.data.message);
           fetchReceipts();
           
         })
         .catch((error) => {
           // 취소 요청 실패 시 처리
-          console.error(error);
+          
           alert(error)
         });
     };

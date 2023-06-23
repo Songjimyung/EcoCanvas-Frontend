@@ -28,7 +28,7 @@ export default function MyProfile() {
           }
         );
         const result = await response.json();
-        console.log(result);
+        
 
         const user_info = {
           address: result.address,
@@ -39,7 +39,7 @@ export default function MyProfile() {
         };
         setUserData(user_info);
       } catch (error) {
-        console.log(error);
+        
       }
     };
 
@@ -81,15 +81,15 @@ export default function MyProfile() {
       const result = await response.json();
 
       if (result.errors) {
-        console.log(result.errors.user);
+        
         alert(result.errors.user[0]);
       } else {
-        console.log(result);
+        
         alert("등록 완료!");
         window.location.reload();
       }
     } catch (error) {
-      console.error(error);
+      
     }
   };
 

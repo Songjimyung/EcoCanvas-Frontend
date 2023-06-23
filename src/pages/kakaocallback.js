@@ -14,7 +14,7 @@ const CallbackKakao = ({ code }) => {
 
         const { data, status } = response;
         if (status === 200) {
-          console.log(data);
+          
           const token_req_json = data;
           localStorage.setItem('access', token_req_json['jwt_token']['access']);
           localStorage.setItem("refresh", token_req_json['jwt_token']['refresh']);
@@ -30,10 +30,10 @@ const CallbackKakao = ({ code }) => {
           alert("카카오 회원가입 성공!");
           window.location.replace("/");
         } else {
-          console.error(data.err_msg);
+          
         }
       } catch (error) {
-        console.error(error);
+        
       }
     };
 

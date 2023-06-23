@@ -60,7 +60,7 @@ export default function ChatDetail() {
 
 
             chatSocket.current.onopen = function (e) {
-                console.log("Successfully connected to the WebSocket.");
+                
                 chatSocket.current.send(JSON.stringify({
                     'command': 'fetch_messages',
                     'user_id': userId,
@@ -68,11 +68,11 @@ export default function ChatDetail() {
             };
                 
             chatSocket.current.onclose = function (e) {
-                console.error("WebSocket connection closed unexpectedly.");
+                
             };
             chatSocket.current.onmessage = function (e) {
                 const data = JSON.parse(e.data);
-                console.log(e);
+                
                 if (data['command'] === 'messages') {
                     for (let i = 0; i < data['messages'].length; i++) {
                         createMessage(data['messages'][i]);
@@ -85,7 +85,7 @@ export default function ChatDetail() {
             };
 
             chatSocket.current.onerror = function (err) {
-                console.log("WebSocket encountered an error: " + err.message);
+                
                 chatSocket.current.onclose();
             };
         }

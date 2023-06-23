@@ -19,7 +19,7 @@ const ReadPasswordEmail = (props) => {
                 navigate(`/reset_pw/?uidb64=${response_data['uidb64']}&token=${response_data['token']}`);
 
             } catch (error) {
-                console.error(error);
+                
             }
         };
 

@@ -66,11 +66,11 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
-      console.log(response)
+      
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
     } catch (error) {
-      console.error('Error fetching campaign:', error);
+      
     }
   };
   useEffect(() => {
@@ -102,7 +102,7 @@ const Campaign = () => {
   // 좋아요
   const handleLikeButton = (campaignId) => {
     if (token) {
-      console.log("hi")
+      
       setIsLiked(!isLiked);
       axiosLike(campaignId);
     } else {
@@ -119,9 +119,9 @@ const Campaign = () => {
         },
       });
       setIsLiked(response.data.is_liked);
-      console.log(response)
+      
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -161,7 +161,7 @@ const Campaign = () => {
   // 캠페인 신청 token check
   const handleCampaignLinkClick = () => {
     if (token) {
-      console.log("check")
+      
       navigate(`/campaign/create`);
     } else {
       alert("로그인이 필요합니다.");

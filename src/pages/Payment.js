@@ -13,8 +13,8 @@ const getEmailFromLocalStorage = () => {
 };
 
 const {email, user_id} = getEmailFromLocalStorage();
-console.log(email);
-console.log(user_id)
+
+
 
 const PaymentButton = ({ product }) => {
   useEffect(() => {
@@ -62,13 +62,13 @@ const PaymentButton = ({ product }) => {
         buyer_addr: '서울특별시 강남구 삼성동',
         buyer_postcode: '123-456',
       }, (response) => {
-        console.log(merchant_uid);
-        console.log(response);
-        console.log(response.success);
+        
+        
+        
         const paid_imp_uid = response.imp_uid
         const paid_amount =response.paid_amount
-        console.log(paid_imp_uid)
-        console.log(paid_amount)
+        
+        
 
 
         if (response.success === true) {
@@ -78,11 +78,11 @@ const PaymentButton = ({ product }) => {
             'Authorization': `Bearer ${token}`,
           }})
             .then(response => {
-              console.log(response.data)
+              
               alert("결제 성공!")
             });
           }else{
-            console.log(response.data)
+            
             alert(response.error_msg)
           }
 

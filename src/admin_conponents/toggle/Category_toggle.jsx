@@ -17,12 +17,12 @@ function Toggle({ content }) {
     })
 
       .then((response) => {
-        console.log(response)
+        
         alert("카테고리 등록 완료!")
         window.location.reload();
       })
       .catch((error) => {
-        console.log(error)
+        
       });
   };
 

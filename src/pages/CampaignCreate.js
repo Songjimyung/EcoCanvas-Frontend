@@ -82,12 +82,12 @@ const CampaignCreate = () => {
       });
       alert("캠페인 신청 성공!");
       navigate("/campaign");
-      console.log(response)
+      
     } catch (error) {
       alert("캠페인 신청에 실패했습니다.");
-      console.log(error);
+      
       for (const value of formData.values()) {
-        console.log(value);
+        
       }
     }
   };
@@ -138,14 +138,14 @@ const CampaignCreate = () => {
   // 이미지 업로드
   const handleImageUpload = (event) => {
     const image = event.target.files[0];
-    console.log('첨부 이미지:', image);
+    
     setSelectedImageName(image.name);
     setCampaignImage(event.target.files[0]);
   };
   // 파일 업로드
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    console.log('첨부 파일:', file);
+    
     setSelectedFileName(file.name);
     setCampaignApproveFile(event.target.files[0]);
   };

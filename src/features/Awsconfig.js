@@ -29,7 +29,7 @@ const AwsS3Image = ({ key }) => {
           setImageUrl(imageDataUrl);
         }
       } catch (error) {
-        console.error('Error fetching image:', error);
+        
       }
     };
 
