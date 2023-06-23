@@ -4,7 +4,6 @@ import HouseSharpIcon from '@mui/icons-material/HouseSharp';
 import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
 import LeaderboardSharpIcon from '@mui/icons-material/LeaderboardSharp';
 import GroupSharpIcon from '@mui/icons-material/GroupSharp';
-import StorefrontSharpIcon from '@mui/icons-material/StorefrontSharp';
 import PermPhoneMsgSharpIcon from '@mui/icons-material/PermPhoneMsgSharp';
 import { Link } from "react-router-dom";
 
@@ -66,18 +65,6 @@ export default function Adminsidebar() {
               <li className="sidebarListItem">
                 <GroupSharpIcon className="sidebarIcon" />
                 유저목록
-              </li>
-            </Link>
-            <Link to="/admin_users/:userId" className="link">
-              <li className="sidebarListItem">
-                <StorefrontSharpIcon className="sidebarIcon" />
-                유저정보
-              </li>
-            </Link>
-            <Link to="/admin_createUser" className="link">
-              <li className="sidebarListItem">
-                <StorefrontSharpIcon className="sidebarIcon" />
-                유저등록
               </li>
             </Link>
             <Link to="/chats" className="link">

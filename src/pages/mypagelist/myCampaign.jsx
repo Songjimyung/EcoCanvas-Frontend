@@ -13,7 +13,7 @@ const MyPostCampaign = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participart/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participant/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

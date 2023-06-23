@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../css/mypage.css";
 import { Button, Grid, Typography, TextField } from "@mui/material";
@@ -171,22 +172,25 @@ export default function MyProfile() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            sx={{
-              width: "150px",
-              backgroundColor: "rgb(129, 178, 20)",
-              fontSize: "20px",
-              color: "white",
-              margin: "0px auto",
-              transition: "0.2s",
-              ":hover": {
-                backgroundColor: "rgb(32, 106, 93)",
-              },
-            }}
-          >
-            Save
-          </Button>
+          <div className="button-box">
+            <Button
+              type="submit"
+              sx={{
+                width: "150px",
+                backgroundColor: "rgb(129, 178, 20)",
+                fontSize: "20px",
+                color: "white",
+                margin: "0px auto",
+                transition: "0.2s",
+                ":hover": {
+                  backgroundColor: "rgb(32, 106, 93)",
+                },
+              }}
+            >
+              Save
+            </Button>
+            <Link to="/mypage/profile/withdrawal">회원탈퇴를 원하시나요?</Link>
+          </div>
         </form>
       </div>
     </div>

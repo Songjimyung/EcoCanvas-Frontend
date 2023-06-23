@@ -31,7 +31,7 @@ export default function Topbar() {
     console.log(message);
   };
   useEffect(() => {
-    const newSocket = new WebSocket("ws://localhost:8000/ws/restock/"); // WebSocket 연결 URL
+    const newSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/restock/`); // WebSocket 연결 URL
     setSocket(newSocket);
 
     newSocket.onopen = () => {

@@ -24,7 +24,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
 import User from "./admin_pages/user/User"
 import { AdminOrderList } from "./admin_pages/orderList/OrderList"
-import CreateUser from "./admin_pages/createUser/CreateUser"
 import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
@@ -39,11 +38,11 @@ import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 import { MyProfile } from './pages/mypagelist/myprofile'
-import { ProductDetail } from './admin_pages/productdetail/Productdetail'
+import { UserWithdrawal } from './pages/UserWithdrawal'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
 import { RegisterPayment } from './pages/mypagelist/myPayment';
-import { ReceiptList} from './pages/mypagelist/mySchedule';
+import { ReceiptList } from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 
 import NotificationHistory from './components/NotificationHistory/NotificationHistory'
@@ -112,6 +111,7 @@ function App() {
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/mypage/profile" element={<MyProfile />}></Route>
+            <Route path="/mypage/profile/withdrawal" element={<UserWithdrawal />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
@@ -123,9 +123,7 @@ function App() {
             <Route path="/admin_users" element={<UserList />} />
             <Route path="/admin_campaign" element={<ApplyListCampaign />} />
             <Route path="/admin_users/:userId" element={<User />} />
-            <Route path="/admin_createUser" element={<CreateUser />} />
             <Route path="/admin_products" element={<ProductList />} />
-            <Route path="/admin_product/detail/:productId" element={<ProductDetail />} />
             <Route path="/admin_products/:productId" element={<Product />} />
             <Route path="/admin_createProduct" element={<CreateProduct />} />
             <Route path="/users/oauth/kakao/callback/" element={<KakaoRedirect />} />
