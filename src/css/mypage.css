@@ -184,3 +184,21 @@ tbody>h2 {
   justify-content: center;
   margin-bottom: 50px;
 }
+
+.button-box {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.button-box > a{
+  margin-top: 7px;
+  font-size: 0.8rem;
+}
+
+.button-box>a:hover {
+  color: rgb(55, 146, 55);
+  font-size: 0.825rem;
+}
