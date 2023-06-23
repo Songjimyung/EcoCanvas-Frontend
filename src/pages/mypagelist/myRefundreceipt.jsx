@@ -1,6 +1,6 @@
-import Sidebar from "../../components/mypageSidebar/MypageSidebar"
-import "../../components/mypageSidebar/mypageSidebar.css"
-import React, { useState } from 'react';
+import Sidebar from "../../components/mypageSidebar/MypageSidebar";
+import "../../components/mypageSidebar/mypageSidebar.css";
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
@@ -10,10 +10,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-} from '@mui/material';
+} from "@mui/material";
 
 const MyRefundreceipt = () => {
-  const [refundReason, setRefundReason] = useState('');
+  const [refundReason, setRefundReason] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -22,7 +22,7 @@ const MyRefundreceipt = () => {
   };
 
   const handleRefundSubmit = () => {
-    // 환불 신청 제출 
+    // 환불 신청 제출
     setOpenDialog(true);
   };
 
@@ -38,7 +38,7 @@ const MyRefundreceipt = () => {
     <div className="mypage-block">
       <Sidebar />
 
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ margin: "50px auto 0px" }}>
         환불 신청 페이지
       </Typography>
       <TextField
@@ -46,8 +46,18 @@ const MyRefundreceipt = () => {
         fullWidth
         value={refundReason}
         onChange={handleRefundReasonChange}
+        sx={{ width: "700px", margin: "30px auto 30px" }}
       />
-      <Button variant="contained" onClick={handleRefundSubmit}>
+      <Button
+        variant="contained"
+        onClick={handleRefundSubmit}
+        sx={{
+          width: "150px",
+          height: "40px",
+          margin: "0px auto",
+          color: "white",
+        }}
+      >
         신청 제출
       </Button>
 
