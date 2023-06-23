@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
+import ImageHeader from '../components/imageheader/ImageHeader';
+import AwsS3Image from '../features/Awsconfig';
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -28,9 +30,12 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { handleKakaoButton } from '../campaign/Kakaohooks';
 
 
 const Campaign = () => {
+  const token = localStorage.getItem('access')
+
   const [campaignList, setCampaignList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignCount, setCampaignCount] = useState(0);
@@ -62,9 +67,9 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
+      console.log(response)
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching campaign:', error);
     }
@@ -75,8 +80,13 @@ const Campaign = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    if (process.env.NODE_ENV === 'production') {
+      return `/${imagePath}`;
+    } else {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
   };
+
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image;
   };
@@ -93,29 +103,14 @@ const Campaign = () => {
 
   // 좋아요
   const handleLikeButton = (campaignId) => {
-    setIsLiked(!isLiked);
-    axiosLike(campaignId);
+    if (token) {
+      console.log("hi")
+      setIsLiked(!isLiked);
+      axiosLike(campaignId);
+    } else {
+      alert("로그인이 필요합니다.")
+    }
   };
-  // 좋아요 누른상태인지 상태확인 get함수
-  const token = localStorage.getItem('access')
-
-  // const axiosCampaignLikeStatus = async (campaignId) => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {
-  //       headers: {
-  //         "Authorization": `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log(response)
-  //     console.log(response.data.is_liked)
-  //     setIsLiked(response.data.is_liked);
-  //   } catch (error) {
-  //     console.error('좋아요 상태 불러오기 실패:', error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   axiosCampaignLikeStatus();
-  // }, []);
 
   // 좋아요 axios
   const axiosLike = async (campaignId) => {
@@ -151,9 +146,8 @@ const Campaign = () => {
     });
   };
   // Share url
-  const currentUrl = window.location.href;
   const generateCampaignUrl = (campaignId) => {
-    return `${currentUrl}/${campaignId}`;
+    return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${campaignId}`;
   };
 
   // 마감임박 Boolean
@@ -163,14 +157,23 @@ const Campaign = () => {
     const end = new Date(endFormatting).getDate();
 
     const differenceInDays = end - today
-    console.log(differenceInDays)
     return differenceInDays >= 0 && differenceInDays <= 3;
+  };
+
+  // 캠페인 신청 token check
+  const handleCampaignLinkClick = () => {
+    if (token) {
+      console.log("check")
+      navigate(`/campaign/create`);
+    } else {
+      alert("로그인이 필요합니다.");
+    }
   };
 
 
   return (
     <div className="campaignContainer">
-      <h1>캠페인 둘러보기</h1>
+      <ImageHeader text="캠페인 둘러보기" />
 
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" marginBottom={'25px'}>
@@ -190,38 +193,40 @@ const Campaign = () => {
               >
                 <option value="recent">최신순</option>
                 <option value="closing">마감임박순</option>
-                <option value="count">조회순</option>
+                <option value="popular">인기순</option>
                 <option value="like">좋아요순</option>
                 <option value="amount">모금금액순</option>
               </select>
             </nav>
           </header>
-          <Link className="campaignBtn" to={'/campaign/create'}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<CampaignIcon />}
-              sx={{
-                height: '50px',
-                fontSize: '1.3rem',
-                color: 'white'
-              }}>
-              캠페인 신청하기
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<CampaignIcon />}
+            onClick={handleCampaignLinkClick}
+            sx={{
+              height: '50px',
+              fontSize: '1.3rem',
+              color: 'white',
+              backgroundColor: "rgb(40, 84, 48)"
+            }}>
+            캠페인 신청하기
+          </Button>
         </Grid>
 
         {campaignList.map((campaign, index) => (
           <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
-                <div
-                  className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}
-                >
+                <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
                   <CardMedia
                     component="img"
                     height="250"
-                    image={getImageUrl(campaign.image)}
+                    image={
+                      process.env.NODE_ENV === 'production'
+                        ? <AwsS3Image key={campaign.image} />
+                        : getImageUrl(campaign.image)
+                    }
                     alt="campaign_image"
                     onError={onErrorImg}
                   />
@@ -237,9 +242,9 @@ const Campaign = () => {
                   >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <>{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성<br /></>
+                      <>{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성<br /></>
                     ) : (
-                      <div>펀딩이 없는 캠페인입니다.</div>
+                      <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                     )}
                     참여인원 : {campaign.participant_count} / {campaign.members}
                   </Typography>
@@ -264,31 +269,43 @@ const Campaign = () => {
                   <ShareIcon />
                 </IconButton>
                 <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현, URL이 이상하게잡히는 오류있음)</div>
-                  <CopyToClipboard text={generateCampaignUrl(campaign.id)}>
+                  <div
+                    className="modalMent"
+
+                  >캠페인을 공유해보세요.</div>
+                  <div className='shareBtnContainer'>
+                    <CopyToClipboard
+                      text={generateCampaignUrl(campaign.id)}
+                      style={{
+                        marginRight: "10px"
+                      }}>
+                      <button
+                        className="shareUrlBtn"
+                        onClick={() => alert("복사 완료!")}
+                      >
+                        URL
+                      </button>
+                    </CopyToClipboard>
+                    <FacebookShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
+                      <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                    </FacebookShareButton>
+                    <TwitterShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
+                      <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                    </TwitterShareButton>
                     <button
-                      className="shareUrlBtn"
-                      onClick={() => alert("복사 완료!")}>
-                      URL
+                      className="shareKakaoBtn"
+                      style={{
+                        padding: '0',
+                        backgroundColor: 'transparent'
+                      }}
+                      onClick={() => handleKakaoButton(campaign.id)}
+                    >
+                      <img
+                        src={sharekakao}
+                        alt="kakaoShareButton"
+                        className="shareKakaoBtn" />
                     </button>
-                  </CopyToClipboard>
-                  <FacebookShareButton url={generateCampaignUrl(campaign.id)}>
-                    <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                  </FacebookShareButton>
-                  <TwitterShareButton url={generateCampaignUrl(campaign.id)}>
-                    <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                  </TwitterShareButton>
-                  <button
-                    className="shareKakaoBtn"
-                    style={{
-                      padding: '0',
-                      backgroundColor: 'transparent'
-                    }}>
-                    <img
-                      src={sharekakao}
-                      alt="kakaoShareButton"
-                      className="shareKakaoBtn" />
-                  </button>
+                  </div>
 
                 </Modal>
               </div>

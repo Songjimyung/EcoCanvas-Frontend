@@ -15,8 +15,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-
-// Datepickers
+// Stepper
+import HorizontalLinearStepper from '../campaign/CampaignStepper'
 
 // Checkbox
 const label = { inputProps: { 'aria-label': 'Funding Checkbox' } };
@@ -32,8 +32,8 @@ const CampaignCreate = () => {
   const [campaignImage, setCampaignImage] = useState('');
   const [campaignStartDate, setCampaignStartDate] = useState('');
   const [campaignEndDate, setCampaignEndDate] = useState('');
-  const [activityStartDate, setActivityStartDate] = useState('');
-  const [activityEndDate, setActivityEndDate] = useState('');
+  const [activityStartDate, setActivityStartDate] = useState(null);
+  const [activityEndDate, setActivityEndDate] = useState(null);
   const [isFundChecked, setIsFundChecked] = useState(false);
   const [campaignFundGoal, setCampaignFundGoal] = useState(0);
   const [campaignApproveFile, setCampaignApproveFile] = useState('');
@@ -52,13 +52,20 @@ const CampaignCreate = () => {
     formData.append('image', campaignImage);
     formData.append('campaign_start_date', campaignStartDate);
     formData.append('campaign_end_date', campaignEndDate);
-    formData.append('activity_start_date', activityStartDate);
-    formData.append('activity_end_date', activityEndDate);
-    formData.append('status', 1);
+    if (activityStartDate !== null) {
+      formData.append('activity_start_date', activityStartDate);
+    }
+    if (activityEndDate !== null) {
+      formData.append('activity_end_date', activityEndDate);
+    }
+    formData.append('status', 0);
     formData.append('is_funding', isFundChecked);
-    formData.append('goal', campaignFundGoal);
-    formData.append('current', 0);
-    formData.append('approve_file', campaignApproveFile);
+
+    if (isFundChecked && campaignFundGoal !== 0) {
+      formData.append('goal', campaignFundGoal);
+      formData.append('current', 0);
+      formData.append('approve_file', campaignApproveFile);
+    }
 
 
     try {
@@ -114,15 +121,17 @@ const CampaignCreate = () => {
   const handleActivityEndDate = (date) => {
     setActivityEndDate(date.toISOString());
   };
-
   // 펀딩 체크박스
   const handleFundCheck = (event) => {
     setIsFundChecked(event.target.checked);
   };
   // 펀딩 목표금액
   const handleCampaignFundGoal = (event) => {
-    setCampaignFundGoal(event.target.value);
+    const value = event.target.value;
+    const numericValue = Number(value.replace(/[^0-9.-]+/g, ''));
+    setCampaignFundGoal(numericValue);
   };
+
 
   // 이미지 업로드
   const handleImageUpload = (event) => {
@@ -142,6 +151,7 @@ const CampaignCreate = () => {
   return (
     <div className='campaignCreateForm'>
       <h1>캠페인 신청하기</h1>
+      <HorizontalLinearStepper />
       <div className='campaignCreateBody'>
         <div className='marginBottom10'>
           <div className='campaignCreateTitle'>캠페인 제목<span className='campaignCreateStar'>*</span></div>
@@ -170,7 +180,7 @@ const CampaignCreate = () => {
           />
         </div>
 
-        <div className='marginBottom10'>
+        <div className='marginBottom30'>
           <div className='campaignCreateTitle'>캠페인 참가정원<span className='campaignCreateStar'>*</span></div>
           <TextField
             id="outlined-number"
@@ -187,15 +197,16 @@ const CampaignCreate = () => {
           />
         </div>
 
-        <div className='marginBottom10'>
+        <div className='marginBottom30'>
           <div className='campaignCreateTitle'>캠페인 첨부 이미지<span className='campaignCreateStar'>*</span></div>
           <TextField
             value={selectedImageName}
             label="첨부 이미지"
-            id="standard-size-small"
             size="small"
             variant="standard"
             readOnly={true}
+            disabled
+            sx={{ width: "70%" }}
           />
           <label htmlFor="image-upload">
             <input
@@ -205,7 +216,12 @@ const CampaignCreate = () => {
               accept='image/jpg,impge/png,image/jpeg,image/gif'
               onChange={handleImageUpload}
             />
-            <Button variant="outlined" color="gray" component="div">
+            <Button
+              variant="outlined"
+              color="gray"
+              component="div"
+              sx={{ marginLeft: '10px' }}
+            >
               파일 선택
             </Button>
           </label>
@@ -217,6 +233,7 @@ const CampaignCreate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
+                  disablePast
                   value={campaignStartDate}
                   onChange={handleCampaignStartDate}
                   label="날짜를 선택해주세요."
@@ -234,6 +251,7 @@ const CampaignCreate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
+                  disablePast
                   value={campaignEndDate}
                   onChange={handleCampaignEndDate}
                   label="날짜를 선택해주세요."
@@ -254,6 +272,7 @@ const CampaignCreate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
+                  disablePast
                   value={activityStartDate}
                   onChange={handleActivityStartDate}
                   label="날짜를 선택해주세요."
@@ -271,6 +290,7 @@ const CampaignCreate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateField', 'DatePicker']}>
                 <DatePicker
+                  disablePast
                   value={activityEndDate}
                   onChange={handleActivityEndDate}
                   label="날짜를 선택해주세요."
@@ -292,7 +312,7 @@ const CampaignCreate = () => {
           <span>펀딩 여부</span>
         </div>
 
-        <div className='marginBottom10'>
+        <div className='marginBottom30'>
           <div className='campaignCreateTitle'>펀딩 목표 금액</div>
           <FormControl sx={{ width: '100%', }}>
             <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
@@ -302,21 +322,22 @@ const CampaignCreate = () => {
               label="금액"
               disabled={!isFundChecked}
               inputProps={{ min: 0 }}
-              value={campaignFundGoal}
+              value={campaignFundGoal.toLocaleString()}
               onChange={handleCampaignFundGoal}
             />
           </FormControl>
         </div>
 
-        <div>
+        <div className='marginBottom10'>
           <div className='campaignCreateTitle'>펀딩 첨부 파일</div>
           <TextField
             value={selectedFileName}
             label="첨부 파일"
-            id="standard-size-small"
             size="small"
             variant="standard"
             readOnly={true}
+            disabled
+            sx={{ width: "70%" }}
           />
           <label htmlFor="file-upload">
             <input
@@ -331,6 +352,7 @@ const CampaignCreate = () => {
               color="gray"
               component="div"
               disabled={!isFundChecked}
+              sx={{ marginLeft: '10px' }}
             >
               파일 선택
             </Button>

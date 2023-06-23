@@ -112,6 +112,9 @@ function Sidebar() {
                   <button className="details-button">
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
+                  <button className="details-button">
+                    <Link to="/update_pw">비밀번호 변경</Link>
+                  </button>
                 </div>
               );
             })}

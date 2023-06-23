@@ -1,0 +1,36 @@
+.slide {
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
+    overflow: hidden;
+    box-shadow: rgb(0 0 0 / 30%) 0px 0px 6px 3px;
+}
+
+#slide-ul {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#slide-ul>li {
+    position: absolute;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#slide1 {
+    background-image: url('https://unsplash.com/photos/x8ZStukS2PM/download?ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA&force=true&w=1920');
+}
+
+#slide2 {
+    background-image: url('https://unsplash.com/photos/RuRYRswYDkk/download?ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA&force=true&w=1920');
+}
+
+#slide3 {
+    background-image: url('https://unsplash.com/photos/i5FsBOLsB50/download?ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA&force=true&w=1920');
+}

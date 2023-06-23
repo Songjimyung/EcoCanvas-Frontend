@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Topbar from './components/topbar/Topbar'
-import Sidebar from './components/sidebar/Sidebar';
+import Footer from './components/footer/Footer';
 import AdminSidebar from './admin_conponents/Adminsidebar/AdminSidebar';
 import AdminTopbar from './admin_conponents/Admintopbar/AdminTopbar';
 import './css/App.css'
 import { Home } from './pages/Home';
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
+import { ResetPasswordEmail } from "./pages/ResetPasswordEmail";
+import { ReadPasswordEmail } from "./pages/ReadPasswordEmail";
+import { ResetPassword } from "./pages/ResetPassword";
+import { UpdatePassword } from "./pages/UpdatePassword";
 import { Campaign } from "./pages/Campaign";
 import { CampaignDetail } from "./pages/CampaignDetail";
 import { CampaignCreate } from "./pages/CampaignCreate";
+import { KakaoInit } from "./campaign/Kakaohooks";
 import { Shop } from "./pages/Shop";
 import { ShopDetail } from "./pages/ShopDetail";
 import { Mypage } from "./pages/Mypage";
@@ -39,6 +44,7 @@ import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
 import { RegisterPayment } from './pages/mypagelist/myPayment';
 import { ReceiptList} from './pages/mypagelist/mySchedule';
+import ChatButton from './components/chatbutton/ChatButton';
 
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
@@ -81,16 +87,22 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div id='wrapper'>
+        <KakaoInit />
+        <ChatButton />
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
-          {!isAdmin ? <Sidebar /> : (isMypage ? null : <AdminSidebar />)}
+          {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
           {/* <AdminSidebar /> */}
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/reset_pw/email_code" element={<ResetPasswordEmail />}></Route>
+            <Route path="/reset_pw/reset_params" element={<ReadPasswordEmail />}></Route>
+            <Route path="/reset_pw" element={<ResetPassword />}></Route>
+            <Route path="/update_pw" element={<UpdatePassword />}></Route>
             <Route path="/campaign" element={<Campaign />}></Route>
             <Route path="/campaign/:id" element={<CampaignDetail />} />
             <Route path="/campaign/create" element={<CampaignCreate />} />
@@ -118,12 +130,14 @@ function App() {
             <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
-            <Route path="/chat/:chatId" element={<ChatDetail />} />
             <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
             <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
+            <Route path="/chat" element={<ChatDetail />} />
           </Routes>
         </div>
+
       </div >
+      <Footer />
     </ThemeProvider>
   );
 }

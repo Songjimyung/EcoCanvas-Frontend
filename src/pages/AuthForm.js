@@ -23,12 +23,20 @@ const AuthForm = ({ type }) => {
     };
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/`, signUpData);
-      console.log(response.data); // 회원가입 성공 시 서버로부터 받은 응답 데이터 출력
-
-      alert("회원가입 성공!")
+      alert(response.data['message'])
       navigate("/login");
     } catch (error) {
-      console.error(error.response.data); // 회원가입 실패 시 서버로부터 받은 에러 데이터 출력
+      if (error.response.data['email']) {
+        alert(error.response.data['email']);
+      } else if (error.response.data['username']) {
+        alert(error.response.data['username']);
+      } else if (error.response.data['password']) {
+        alert(error.response.data['password']);
+      } else if (error.response.data['re_password']) {
+        alert(error.response.data['re_password']);
+      } else if (error.response.data['username']) {
+        alert(error.response.data['username']);
+      }
     }
   };
   const handleEmailFormSubmit = async (e) => {
@@ -38,7 +46,6 @@ const AuthForm = ({ type }) => {
     }
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/email_code/`, emailSendData);
-      console.log(response.data);
 
       alert(response.data['message'])
     } catch (error) {
@@ -84,8 +91,10 @@ const AuthForm = ({ type }) => {
   };
   const SocialKakao = () => {
     const handleLogin = () => {
-      const REST_API_KEY = "0d5db60d8b7cf11250d01452825aea32";
-      const REDIRECT_URI = `${process.env.REACT_APP_FRONTEND_URL}/users/oauth/kakao/callback`;
+
+      const REST_API_KEY = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
+
+      const REDIRECT_URI = `${process.env.REACT_APP_FRONTEND_URL}/users/oauth/kakao/callback/`;
       const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
       window.location.href = KAKAO_AUTH_URL;
@@ -108,9 +117,12 @@ const AuthForm = ({ type }) => {
     );
   };
 
+  const handleResetPasswordEmailFormSubmit = () => {
+    navigate('/reset_pw/email_code')
+  }
 
   return (
-    <div>
+    <div className='log-div'>
       <div>
         <h3 className='inputList'>
           {type === 'signup' ? '회원가입' : '로그인'}
@@ -150,6 +162,11 @@ const AuthForm = ({ type }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {type === 'login' && (
+          <span onClick={handleResetPasswordEmailFormSubmit} className='find-pw-btn'>
+            비밀번호를 잊으셨나요?
+          </span>
+        )}
         {type === 'signup' && (
           <input
             name="re_password"

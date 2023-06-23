@@ -24,9 +24,18 @@ body {
 html {
   /* 기본 스타일 설정 */
   background-color: white;
+  height: 100%;
 }
 
 .adminContainer {
   display: flex;
 }
 
+#wrapper {
+  min-height: 100%;
+  position: relative;
+}
+
+h1 {
+  font-size: 3rem;
+}

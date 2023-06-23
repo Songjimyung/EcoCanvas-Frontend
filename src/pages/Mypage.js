@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/MypageSidebar"
 import '../components/mypageSidebar/mypageSidebar.css'
 import { format, isAfter } from 'date-fns';
@@ -6,6 +7,16 @@ import { Link } from 'react-router-dom';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 
 const Mypage = () => {
+  // 비로그인 시 주소창 접근 제한
+  const navigate = useNavigate();
+  const token = localStorage.getItem('access')
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/');
+    }
+  }, [navigate, token]);
+
   const [selectedInfo, setSelectedInfo] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -83,7 +94,7 @@ const Mypage = () => {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        alert("상품 등록 완료!")
+        alert("리뷰 등록 완료!")
         window.location.reload();
       })
       .catch((error) => {

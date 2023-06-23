@@ -4,6 +4,7 @@ import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 import sharekakao from "../img/sharekakao.webp"
+import SelectCard from "../selectcard/selectcard";
 
 // MUI
 import PropTypes from 'prop-types';
@@ -30,6 +31,7 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { handleKakaoButton } from '../campaign/Kakaohooks';
 
 // Mui Tab
 function TabPanel(props) {
@@ -153,9 +155,15 @@ const CampaignDetail = () => {
     axiosCampaignReview();
   }, [id]);
 
+  // 이미지처리
   const getImageUrl = (imagePath) => {
-    return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    if (process.env.NODE_ENV === 'production') {
+      return `/${imagePath}`;
+    } else {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
   };
+
 
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image
@@ -166,22 +174,27 @@ const CampaignDetail = () => {
   const axiosCommentCreate = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
-        'content': createComment,
-      }, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      console.log(response)
-      alert("댓글 작성 성공!");
-      // 작성 후 바로 댓글 재렌더링시키기
-      axiosCampaignComment();
-    } catch (error) {
-      console.log(error)
-      alert("댓글 작성에 실패했습니다.");
+    if (token) {
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
+          'content': createComment,
+        }, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        console.log(response)
+        alert("댓글 작성 성공!");
+        // 작성 후 바로 댓글 재렌더링시키기
+        axiosCampaignComment();
+      } catch (error) {
+        console.log(error)
+        alert("댓글 작성에 실패했습니다.");
+      }
+    } else {
+      alert("로그인이 필요합니다.")
     }
+
   };
 
   const handleCommentCreate = (event) => {
@@ -191,6 +204,8 @@ const CampaignDetail = () => {
   // Fund Modal
   const [fundModalOpen, setFundModalOpen] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [selectedCard, setSelectedCard] = useState(null);
+
   const openFundModal = () => {
     setFundModalOpen(true);
   };
@@ -203,10 +218,11 @@ const CampaignDetail = () => {
   };
 
   const handleFundSubmit = async () => {
+    
     const requestData = {
       amount: amount,
       campaign: id,
-      selected_card : "1"
+      selected_card : selectedCard.cardId
     };
     console.log(requestData);
     try {
@@ -218,6 +234,7 @@ const CampaignDetail = () => {
           setFundModalOpen(false)
       } catch(error) {
         console.error("후원 실패", error);
+        alert("후원 실패")
       }
   };
   // Share Modal
@@ -254,7 +271,11 @@ const CampaignDetail = () => {
 
   // 좋아요 빨갛게 하는 함수
   const handleLikeButton = () => {
-    setIsLiked(!isLiked);
+    if (token) {
+      setIsLiked(!isLiked);
+    } else {
+      alert("로그인이 필요합니다.")
+    };
   };
   // 좋아요 누른상태인지 상태확인 get함수
   const axiosCampaignLikeStatus = async () => {
@@ -310,21 +331,25 @@ const CampaignDetail = () => {
   }, []);
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {}, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      console.log(response)
-      setIsParticipated(response.data.is_participated);
-      console.log(isParticipated)
-      isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
-    } catch (error) {
-      console.log(error)
-      alert("캠페인 참여에 실패했습니다.")
-    }
-  };
+    if (token) {
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {}, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsParticipated(response.data.is_participated);
+        isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
+        axiosCampaignDetail();
+      } catch (error) {
+        console.log(error)
+        alert("캠페인 참여에 실패했습니다.")
+      }
+    } else {
+      alert("로그인이 필요합니다.")
+    };
+  }
+
 
   // Share url
   const currentUrl = window.location.href;
@@ -336,7 +361,6 @@ const CampaignDetail = () => {
     const end = new Date(endFormatting).getDate();
 
     const differenceInDays = end - today
-    console.log(differenceInDays)
     return differenceInDays >= 0 && differenceInDays <= 3;
   };
 
@@ -345,28 +369,35 @@ const CampaignDetail = () => {
     <div className="campaignContainer">
       {campaign ? (
         <>
-          <h1>{campaign.title}</h1>
+          <h1 style={{ margin: "50px 0 50px 0" }}>{campaign.title}</h1>
           <div className="campaignContentDiv">
-            <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : ""}>
+            <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadgeDetail" : "campaignImageDiv"}>
               <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
             </div>
             <div className="campaignContentRight">
               <div className="campaignStatus">{campaign.status}</div>
-              <div className="marginBottom10">{campaign.content}</div>
-              <div className="marginBottom10">주최 : {campaign.user}</div>
-              <div className="marginBottom10">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
-              <div className="marginBottom10">신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
-              <div className="marginBottom10">신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
+              <div className="campaignContent">
+                {campaign.content.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+              <hr style={{ marginBottom: "10px" }} />
+              <div className="campaignContentBottom">주최 : {campaign.user}</div>
+              <div className="campaignContentBottom">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
+              <div className="campaignContentBottom">캠페인 신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
+              <div className="campaignContentBottom">캠페인 신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
-                <div className="marginBottom10">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+                <div className="campaignContentBottom">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
               ) : (
-                <div className="marginBottom10">활동이 없는 캠페인입니다.</div>
+                <div className="campaignContentBottom">활동이 없는 캠페인입니다.</div>
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
-                  {/* https://devbirdfeet.tistory.com/238 */}
-                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.current / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.current}원)</span>
+                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원 달성)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -376,8 +407,15 @@ const CampaignDetail = () => {
                   >펀딩 참여하기
                   </Button>
                   <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
+                    <SelectCard setSelectedCard={setSelectedCard}/>
+                    {selectedCard && (
+                      <div>
+                        <h2>선택한 카드:</h2>
+                        <p>{selectedCard.cardNumber}</p>
+                      </div>
+                    )}
                     {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
-                    <div className="modalMent">펀딩 금액을 입력해주세요.</div>
+                    <div className="modalMent">카드를 선택하고 펀딩 금액을 입력해주세요.</div>
                     <FormControl sx={{ width: '100%', }}>
                       <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
                       <OutlinedInput
@@ -404,13 +442,14 @@ const CampaignDetail = () => {
                   </Modal>
                 </div>
               ) : (
-                <div className="marginBottom10">펀딩을 진행하지 않는 캠페인입니다.</div>
+                <div className="campaignContentBottom">펀딩을 진행하지 않는 캠페인입니다.</div>
               )}
               <div className="campaignContentBtn">
                 <Button
                   variant={isLiked ? 'contained' : 'outlined'}
                   color={isLiked ? 'danger' : 'gray'}
                   sx={{
+                    width: '75px',
                     height: '50px',
                     fontSize: '1.3rem',
                     color: isLiked ? 'white' : 'red',
@@ -439,9 +478,8 @@ const CampaignDetail = () => {
                   <ShareIcon />
                 </Button>
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                  {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
-                  <div className="modalMent">캠페인을 공유해보세요.(kakao미구현)</div>
-                  <div>
+                  <div className="modalMent">캠페인을 공유해보세요.</div>
+                  <div className='shareBtnContainer'>
                     <CopyToClipboard text={currentUrl}>
                       <button
                         className="shareUrlBtn"
@@ -449,10 +487,10 @@ const CampaignDetail = () => {
                         URL
                       </button>
                     </CopyToClipboard>
-                    <FacebookShareButton url={currentUrl}>
+                    <FacebookShareButton url={currentUrl} className="shareBtn">
                       <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
                     </FacebookShareButton>
-                    <TwitterShareButton url={currentUrl}>
+                    <TwitterShareButton url={currentUrl} className="shareBtn">
                       <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
                     </TwitterShareButton>
                     <button
@@ -460,7 +498,9 @@ const CampaignDetail = () => {
                       style={{
                         padding: '0',
                         backgroundColor: 'transparent'
-                      }}>
+                      }}
+                      onClick={() => handleKakaoButton(campaign.id)}
+                    >
                       <img
                         src={sharekakao}
                         alt="kakaoShareButton"
@@ -481,7 +521,7 @@ const CampaignDetail = () => {
                   disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={axiosParticipate}
                 >
-                  캠페인 참여하기
+                  {isParticipated ? "캠페인 참여취소" : "캠페인 참여하기"}
                 </Button>
               </div>
             </div>

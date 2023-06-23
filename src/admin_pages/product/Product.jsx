@@ -25,7 +25,7 @@ export default function Product() {
         console.log(result)
         setProduct(result)
       })
-  }, []);
+  }, [id]);
 
   return (
     <div className="product">

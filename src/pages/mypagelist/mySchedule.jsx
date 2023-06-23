@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import '../../components/mypageSidebar/mypageSidebar.css'
 import Sidebar from '../../components//mypageSidebar/MypageSidebar';
@@ -15,26 +15,46 @@ function ReceiptList() {
      };
     
  const user_id = getUserFromLocalStorage();
-
+ const token = localStorage.getItem('access');
  const [receipts, setReceipts] = useState([]);
 
- useEffect(() => {
-    fetchReceipts();
- }, []);
+ const fetchReceipts = useCallback(() => {
+    
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}`,
+      {headers: {
+          'Authorization': `Bearer ${token}`,
+         }})
+         .then((response) => {
+            setReceipts(response.data);
+            console.log(response.data)
+         })
+         .catch((error) => {
+            console.error(error);
+         });
+      }, [user_id, token]);
 
- const fetchReceipts = () => {
-    const token = localStorage.getItem('access');
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}`,
-    {headers: {
-        'Authorization': `Bearer ${token}`,
-       }})
-       .then((response) => {
-          setReceipts(response.data);
-       })
-       .catch((error) => {
+ 
+    const cancelSchedule = (receiptId) => {
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/detail/${receiptId}`,
+      {headers: {
+         'Authorization': `Bearer ${token}`,
+        }})
+        .then((response) => {
+          // 취소 요청 성공 시 처리
+          console.log(response.data);
+          alert(response.data.message);
+          fetchReceipts();
+          
+        })
+        .catch((error) => {
+          // 취소 요청 실패 시 처리
           console.error(error);
-       });
+          alert(error)
+        });
     };
+   useEffect(() => {
+      fetchReceipts();
+   }, [fetchReceipts]);
 
   return (
     <div>
@@ -59,9 +79,9 @@ function ReceiptList() {
                 <td className='fundingAmount' style={{border: '1px solid black'}}>{receipt.amount}</td>
                 <td className='fundingCampaign'style={{border: '1px solid black'}}>{receipt.campaign}</td>
                 <td className='fundingDate'style={{border: '1px solid black'}}>{receipt.campaign_date}</td>
-                <td className='fundingStatus'style={{border: '1px solid black'}}>{receipt.status[0]}</td>
+                <td className='fundingStatus'style={{border: '1px solid black'}}>{Object.values(receipt.status)[0]}</td>
                 <td className='fundingrefund' style={{border: '1px solid black'}}>
-                    {Object.keys(receipt.status)[0] === '0' ? <button>취소</button> :"결제 후 취소 불가" }
+                    {Object.keys(receipt.status)[0] === '0' ? <button onClick={() => cancelSchedule(receipt.id)}>취소</button> :"취소 불가" }
                 </td>
             </tr>
             ))
