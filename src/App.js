@@ -78,7 +78,6 @@ function App() {
     const payload = localStorage.getItem('payload');
     if (payload) {
       const payloadObject = JSON.parse(payload);
-      console.log(payloadObject.is_admin);
       setIsAdmin(payloadObject.is_admin);
     }
   }, []);

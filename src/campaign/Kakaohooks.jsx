@@ -68,8 +68,6 @@ function KakaoInit() {
   const status = UseScript("https://developers.kakao.com/sdk/js/kakao.js");
 
   useEffect(() => {
-    console.log("status:", status);
-    console.log("window.Kakao:", window.Kakao);
     if (status === "ready") {
       // kakao sdk 초기화하기
       // status가 변경될 때마다 실행되며, status가 ready일 때 초기화를 시도합니다.
@@ -80,7 +78,7 @@ function KakaoInit() {
           window.Kakao.init(`${process.env.REACT_APP_KAKAOSHARE_KEY}`);
         }
       }
-    };
+    }
   }, [status]);
 
   // Render loading state or other components based on status if needed
@@ -89,12 +87,10 @@ function KakaoInit() {
 }
 
 const generateCampaignUrl = (campaignId) => {
-  console.log(campaignId)
   return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${campaignId}`;
 };
 
 function handleKakaoButton(campaignId) {
-  console.log(generateCampaignUrl(campaignId))
   if (window.Kakao && window.Kakao.Link) {
     window.Kakao.Link.sendScrap({
       requestUrl: generateCampaignUrl(campaignId),

@@ -4,6 +4,7 @@ import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 import sharekakao from "../img/sharekakao.webp"
+import CommentForm from "../campaign/CommentForm";
 
 // MUI
 import PropTypes from 'prop-types';
@@ -102,12 +103,17 @@ const CampaignDetail = () => {
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
 
+  // token
+  const token = localStorage.getItem('access');
+  const payload = localStorage.getItem('payload');
+  const payloadObject = JSON.parse(payload);
+  const userId = payloadObject['user_id'];
+
   // comment POST
   const [createComment, setCreateComment] = useState('');
 
   // Tab 
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -131,6 +137,7 @@ const CampaignDetail = () => {
   const axiosCampaignComment = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
+      console.log(response)
       setCampaignComment(response.data);
     } catch (error) {
       console.log(error)
@@ -168,7 +175,6 @@ const CampaignDetail = () => {
   }
 
   // 댓글 POST
-  const token = localStorage.getItem('access')
   const axiosCommentCreate = async (e) => {
     e.preventDefault();
 
@@ -181,9 +187,7 @@ const CampaignDetail = () => {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response)
-        alert("댓글 작성 성공!");
-        // 작성 후 바로 댓글 재렌더링시키기
+        console.log(response);
         axiosCampaignComment();
       } catch (error) {
         console.log(error)
@@ -249,22 +253,21 @@ const CampaignDetail = () => {
     };
   };
   // 좋아요 누른상태인지 상태확인 get함수
-  const axiosCampaignLikeStatus = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsLiked(response.data.is_liked);
-    } catch (error) {
-      console.log(error)
-    }
-  };
   useEffect(() => {
+    const axiosCampaignLikeStatus = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsLiked(response.data.is_liked);
+      } catch (error) {
+        console.log(error)
+      }
+    };
     axiosCampaignLikeStatus();
-    // eslint-disable-next-line
-  }, []);
+  }, [id, token]);
 
   // 좋아요 axios
   const axiosLike = async () => {
@@ -284,22 +287,21 @@ const CampaignDetail = () => {
   const [isParticipated, setIsParticipated] = useState(false);
 
   // 캠페인 참여정보 초기값 GET
-  const axiosParticipateStatus = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsParticipated(response.data.is_participated);
-    } catch (error) {
-      console.log(error)
-    }
-  };
   useEffect(() => {
+    const axiosParticipateStatus = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsParticipated(response.data.is_participated);
+      } catch (error) {
+        console.log(error)
+      }
+    };
     axiosParticipateStatus();
-    // eslint-disable-next-line
-  }, []);
+  }, [id, token]);
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
     if (token) {
@@ -345,18 +347,18 @@ const CampaignDetail = () => {
 
   // 댓글 수정삭제
   const commentOptions = [
-    { id: "edit", label: "수정하기" },
+    { id: "update", label: "수정하기" },
     { id: "delete", label: "삭제하기" },
   ];
   const axiosCommentDelete = async (commentId) => {
     if (token) {
       try {
-        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}`, {
+        const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         });
-        console.log(response)
+        console.log(response);
         alert("삭제되었습니다.");
         axiosCampaignComment();
       } catch (error) {
@@ -367,16 +369,46 @@ const CampaignDetail = () => {
       alert("로그인이 필요합니다.")
     };
   }
+  const [updateComment, setUpdateComment] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentId, setCommentId] = useState(null);
+
+  const handleUpdateSubmit = (commentId, updateComment) => {
+    setUpdateComment(updateComment);
+    console.log("작성한 댓글:", updateComment);
+    axiosCommentUpdate(commentId, updateComment);
+  };
+
+  const axiosCommentUpdate = async (commentId, updateComment) => {
+    if (token) {
+      try {
+        const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
+          'content': updateComment,
+        }, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        console.log(response)
+        setIsEditing(false);
+        axiosCampaignComment();
+        alert("수정되었습니다.");
+      } catch (error) {
+        console.log(error)
+        alert("댓글 수정에 실패했습니다.")
+      }
+    } else {
+      alert("로그인이 필요합니다.")
+    };
+  }
   const handleCommentEdit = (optionId, commentId) => {
-    if (optionId === "edit") {
-      console.log("edit")
+    if (optionId === "update") {
+      setIsEditing(true);
+      setCommentId(commentId);
     } else if (optionId === "delete") {
-      const onRemove = () => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-          axiosCommentDelete(commentId);
-        }
-      };
-      onRemove();
+      if (window.confirm("정말 삭제하시겠습니까?")) {
+        axiosCommentDelete(commentId);
+      }
     }
   }
 
@@ -570,14 +602,16 @@ const CampaignDetail = () => {
                 <div className="campaignCommentDiv" key={campaignComment.id}>
                   <div className="campaignCommentUser">
                     {campaignComment.user}
-                    {campaignComment.user ? <EditMenu
-                      options={commentOptions}
-                      onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
-                    /> : ""}
+                    {userId === campaignComment.user_id ?
+                      <EditMenu
+                        options={commentOptions}
+                        onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
+                      /> : <div style={{ height: "40px" }}></div>}
                   </div>
-                  <div className="campaignCommentContent">
-                    {campaignComment.content}
-                  </div>
+                  {isEditing && commentId === campaignComment.id ? (
+                    <CommentForm comment={campaignComment.content} onSubmit={(submittedComment) => handleUpdateSubmit(campaignComment.id, submittedComment)} />
+                  ) : <div className="campaignCommentContent">{campaignComment.content}</div>
+                  }
                   <div className="campaignCommentCreatedAt">
                     {campaignComment.created_at}
                   </div>
