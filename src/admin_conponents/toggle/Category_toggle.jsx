@@ -9,14 +9,20 @@ function Toggle({ content }) {
     category_name,
   };
   const handleSubmit = () => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`, CategoryData)
+    const token = localStorage.getItem('access');
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`, CategoryData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+
       .then((response) => {
-        console.log(response)
+        
         alert("카테고리 등록 완료!")
         window.location.reload();
       })
       .catch((error) => {
-        console.log(error)
+        
       });
   };
 

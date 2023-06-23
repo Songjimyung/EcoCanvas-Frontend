@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
-import "../../components/mypageSidebar/mypageSidebar.css";
 import "../../css/mypage.css";
-import Pagination from '@mui/material/Pagination';
-import Grid from '@mui/material/Grid';
-import axios from 'axios';
+import Pagination from "@mui/material/Pagination";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
@@ -14,22 +13,22 @@ const MyOrder = () => {
 
   useEffect(() => {
     const fetchOrderList = async () => {
-      const token = localStorage.getItem('access');
+      const token = localStorage.getItem("access");
       try {
         let url = `${process.env.REACT_APP_BACKEND_URL}/shop/mypage/order/`;
         url += `?page=${currentPage}`;
-
 
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }); setMyOrderData(response.data.results);
+        });
+        setMyOrderData(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        console.log(response.data)
+        
       } catch (error) {
-        console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+        
       }
     };
     fetchOrderList();
@@ -38,8 +37,6 @@ const MyOrder = () => {
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
-
-
 
   const openModal = (orderId) => {
     setSelectedOrder(orderId);
@@ -53,7 +50,9 @@ const MyOrder = () => {
     modal.style.display = "none";
   };
 
-  const selectedOrderData = myorderData.find(order => order.id === selectedOrder);
+  const selectedOrderData = myorderData.find(
+    (order) => order.id === selectedOrder
+  );
 
   return (
     <div className="mypage-block">
@@ -61,7 +60,7 @@ const MyOrder = () => {
       <div className="order-table-container">
         <h1>주문 내역</h1>
         <table>
-          <thead>
+          <thead className="table-bar">
             <tr>
               <th>주문 번호</th>
               <th>상품명</th>
@@ -78,7 +77,14 @@ const MyOrder = () => {
                   <td>{order.product}</td>
                   <td>{order.order_totalprice}</td>
                   <td>{order["order_info"][0]["status"] || "알 수 없음"}</td>
-                  <td><button className="details-button" onClick={() => openModal(order.id)}>세부 정보 보기</button></td>
+                  <td>
+                    <button
+                      className="details-button"
+                      onClick={() => openModal(order.id)}
+                    >
+                      세부 정보 보기
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -97,7 +103,9 @@ const MyOrder = () => {
       </div>
       <div id="orderModal" className="modal">
         <div className="modal-content">
-          <span className="close-button" onClick={closeModal}>&times;</span>
+          <span className="close-button" onClick={closeModal}>
+            &times;
+          </span>
           {selectedOrderData && (
             <div>
               <div className="order-details">
@@ -110,7 +118,8 @@ const MyOrder = () => {
                   <p>
                     주문상태:{" "}
                     <span style={{ color: "blue" }}>
-                      {selectedOrderData["order_info"]?.[0]?.status || "알 수 없음"}
+                      {selectedOrderData["order_info"]?.[0]?.status ||
+                        "알 수 없음"}
                     </span>
                   </p>
                   <p>주문일: {selectedOrderData.order_date}</p>

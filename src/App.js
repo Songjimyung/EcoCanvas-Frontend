@@ -25,11 +25,10 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import UserList from "./admin_pages/userList/UserList"
 import User from "./admin_pages/user/User"
 import { AdminOrderList } from "./admin_pages/orderList/OrderList"
-import CreateUser from "./admin_pages/createUser/CreateUser"
 import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
-import { CallbackKakao } from './pages/kakaocallback';
+import { KakaoRedirect } from './pages/kakaoredirect';
 import { CallbackGoogle } from './pages/GoogleCallback';
 import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
@@ -40,11 +39,14 @@ import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
 import { MyProfile } from './pages/mypagelist/myprofile'
-import { ProductDetail } from './admin_pages/productdetail/Productdetail'
+import { UserWithdrawal } from './pages/UserWithdrawal'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
+import { RegisterPayment } from './pages/mypagelist/myPayment';
+import { ReceiptList } from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 
+import NotificationHistory from './components/NotificationHistory/NotificationHistory'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 const theme = createTheme({
   typography: {
@@ -110,6 +112,7 @@ function App() {
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
             <Route path="/mypage/profile" element={<MyProfile />}></Route>
+            <Route path="/mypage/profile/withdrawal" element={<UserWithdrawal />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
@@ -121,15 +124,16 @@ function App() {
             <Route path="/admin-users" element={<UserList />} />
             <Route path="/admin-campaign" element={<ApplyListCampaign />} />
             <Route path="/admin-users/:userId" element={<User />} />
-            <Route path="/admin-createUser" element={<CreateUser />} />
             <Route path="/admin-products" element={<ProductList />} />
-            <Route path="/admin-product/detail/:productId" element={<ProductDetail />} />
             <Route path="/admin-products/:productId" element={<Product />} />
             <Route path="/admin-createProduct" element={<CreateProduct />} />
-            <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+            <Route path="/users/oauth/kakao/callback/" element={<KakaoRedirect />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
+            <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
+            <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
             <Route path="/chat" element={<ChatDetail />} />
+            <Route path="/notification" element={<NotificationHistory />} />
           </Routes>
         </div>
 

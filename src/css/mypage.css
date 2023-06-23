@@ -1,28 +1,63 @@
+h2 {
+  color: #333;
+  text-align: center;
+}
+
+tbody>h2 {
+  color: #333;
+}
+
 .mypage-block {
+  width: 100%;
+  height: 100vh;
   display: flex;
-  align-items: flex-start;
+  flex-flow: column;
+  justify-content: flex-start;
+}
+
+.info-update-box {
+  padding: 50px 0px;
+}
+
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px 30px;
+}
+
+.card-section>h2 {
+  margin: 0px auto;
+}
+
+.card {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid rgb(55, 146, 55);
+  padding: 15px;
 }
 
 .order-table-container {
   width: 800px;
-  margin-top: 20px;
+  margin: 50px auto 0px;
 }
 
 .order-table-container table {
   width: 80%;
   border-collapse: collapse;
   margin: auto;
+  background-color: rgb(235, 235, 235);
 }
 
 .order-table-container th,
 .order-table-container td {
-  border: 1px solid #e2e2e2;
+  border: 1px solid rgb(95, 141, 78);
   padding: 8px;
   text-align: center;
 }
 
 .order-table-container th {
-  background-color: #e5eaff;
   color: #333;
 }
 
@@ -142,4 +177,28 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.button-box {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.button-box > a{
+  margin-top: 7px;
+  font-size: 0.8rem;
+}
+
+.button-box>a:hover {
+  color: rgb(55, 146, 55);
+  font-size: 0.825rem;
 }

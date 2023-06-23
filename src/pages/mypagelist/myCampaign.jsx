@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Pagination from '@mui/material/Pagination';
 import Sidebar from "../../components/mypageSidebar/MypageSidebar"
-import '../../components/mypageSidebar/mypageSidebar.css'
+import '../../css/mypage.css'
 import { Link } from 'react-router-dom';
 import campaign_default_image from '../../img/campaign_default_image.jpg';
 
@@ -13,16 +13,16 @@ const MyPostCampaign = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participart/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participant/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => response.json(
-      console.log(response)
+      
     ))
       .then(result => {
-        console.log(result)
+        
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,

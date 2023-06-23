@@ -44,9 +44,7 @@ export default function ProductList() {
         setProductList(products);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-      } catch (error) {
-        console.error("상품 목록을 불러오는 중 오류가 발생했습니다:", error);
-      }
+      } catch (error) {}
     };
 
     fetchProductList();
@@ -83,7 +81,7 @@ export default function ProductList() {
                   <TableCell>{product.stock}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell>
-                    <Link to={`/admin-product/detail/${product.id}`}>
+                    <Link to={`/admin-products/${product.id}`}>
                       <Button
                         variant="contained"
                         color="primary"

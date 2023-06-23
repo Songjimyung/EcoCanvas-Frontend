@@ -41,9 +41,9 @@ export default function ApplyListCampaign() {
               ? campaign.fundings.goal
               : "";
 
-          console.log(campaign.fundings);
-          console.log(campaign.approve_file);
-          console.log(approveFile);
+          
+          
+          
 
           return {
             id: campaign.id,
@@ -103,7 +103,7 @@ export default function ApplyListCampaign() {
         window.location.reload();
       })
       .catch((error) => {
-        console.error(error);
+        
       });
   };
 

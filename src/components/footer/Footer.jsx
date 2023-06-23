@@ -13,11 +13,11 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        // backgroundColor: (theme) => theme.palette.grey[100],
-        backgroundColor: "rgb(247, 225, 174)",
+        backgroundColor: (theme) => theme.palette.grey[100],
         color: "rgb(40, 84, 48)",
         p: 4,
         bottom: 0,
+        boxShadow: "rgb(0 0 0 / 7%) 0px 0px 6px 3px",
       }}
     >
       <Container maxWidth="lg">

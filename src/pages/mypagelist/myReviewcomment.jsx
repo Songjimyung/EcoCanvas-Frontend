@@ -53,7 +53,7 @@ const MyReviewComment = () => {
           user: comment.author,
           campaign_id: comment.campaign
         }));
-        console.log(result)
+        
         setCommentData(comments);
       });
   }, []);
