@@ -5,7 +5,6 @@ import Chart from "../../admin_conponents/chart/Chart";
 import { productData } from "../../dummyData";
 import { Publish } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
-import  PaymentButton  from "../../pages/Payment";
 
 function UpdateProduct() {
   console.log("Update!")
@@ -34,7 +33,6 @@ export default function Product() {
         <Link to="/admin_createProduct">
           <button className="productAddButton">생성하기</button>
         </Link>
-        {product &&<PaymentButton product={product}/>}
       </div>
       <div className="productTop">
         <div className="productTopLeft">
