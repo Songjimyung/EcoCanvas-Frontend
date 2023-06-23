@@ -174,7 +174,7 @@ const CampaignDetail = () => {
 
     if (token) {
       try {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
           'content': createComment,
         }, {
           headers: {
