@@ -28,7 +28,7 @@ import CreateUser from "./admin_pages/createUser/CreateUser"
 import ProductList from "./admin_pages/productList/ProductList"
 import Product from "./admin_pages/product/Product"
 import CreateProduct from "./admin_pages/createProduct/CreateProduct"
-import { CallbackKakao } from './pages/kakaocallback';
+import { KakaoRedirect } from './pages/kakaoredirect';
 import { CallbackGoogle } from './pages/GoogleCallback';
 import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
@@ -128,7 +128,7 @@ function App() {
             <Route path="/admin_product/detail/:productId" element={<ProductDetail />} />
             <Route path="/admin_products/:productId" element={<Product />} />
             <Route path="/admin_createProduct" element={<CreateProduct />} />
-            <Route path="/users/oauth/kakao/callback" element={<CallbackKakao />} />
+            <Route path="/users/oauth/kakao/callback/" element={<KakaoRedirect />} />
             <Route path="/users/google/callback" element={<CallbackGoogle />} />
             <Route path="/chats" element={<ChatList />} />
             <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>

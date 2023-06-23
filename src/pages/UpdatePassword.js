@@ -45,7 +45,7 @@ const UpdatePassword = () => {
         }
     };
     return (
-        <div>
+        <div className="log-div">
             <div>
                 <h3 className='inputList'>
                     비밀번호 변경

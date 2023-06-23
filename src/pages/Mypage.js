@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/MypageSidebar"
-import '../components/mypageSidebar/mypageSidebar.css'
+import '../css/mypage.css'
 import { format, isAfter } from 'date-fns';
 import { Link } from 'react-router-dom';
 import campaign_default_image from '../img/campaign_default_image.jpg';
