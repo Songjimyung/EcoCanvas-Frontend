@@ -74,12 +74,6 @@ export default function Adminsidebar() {
                 유저정보
               </li>
             </Link>
-            <Link to="/admin_createUser" className="link">
-              <li className="sidebarListItem">
-                <StorefrontSharpIcon className="sidebarIcon" />
-                유저등록
-              </li>
-            </Link>
             <Link to="/chats" className="link">
               <li className="sidebarListItem">
                 <PermPhoneMsgSharpIcon className="sidebarIcon" />
