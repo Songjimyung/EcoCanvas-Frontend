@@ -83,7 +83,7 @@ const Shop = () => {
     } catch (error) {
       
     }
-  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
+  }, [categoryId, sortBy, currentPage, searchQuery]);
 
   const fetchCategoryList = async () => {
     try {
@@ -106,7 +106,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProductList();
-  }, [categoryId, sortBy, currentPage, searchQuery]);
+  }, [categoryId, sortBy, currentPage, searchQuery, fetchProductList]);
 
   useEffect(() => {
     fetchCategoryList();
