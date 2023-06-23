@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 import sharekakao from "../img/sharekakao.webp"
+import CommentForm from "../campaign/CommentForm";
 import SelectCard from "../selectcard/selectcard";
 
 // MUI
@@ -12,13 +13,12 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import SendIcon from '@mui/icons-material/Send';
 import ShareIcon from '@mui/icons-material/Share';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import EditMenu from "../components/editmenu/EditMenu";
 
 // modal
 import Modal from "../components/modal/Modal"
@@ -102,12 +102,19 @@ const CampaignDetail = () => {
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
 
-  // comment POST
-  const [createComment, setCreateComment] = useState('');
+  // token
+  const token = localStorage.getItem('access');
+  const payload = localStorage.getItem('payload');
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (payload) {
+      const payloadObject = JSON.parse(payload);
+      setUserId(payloadObject['user_id']);
+    }
+  }, [payload]);
 
   // Tab 
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -118,8 +125,8 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
-    } catch (error) {
-      
+    } catch (e) {
+      console.error(e);
     }
   };
   useEffect(() => {
@@ -132,8 +139,8 @@ const CampaignDetail = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
       setCampaignComment(response.data);
-    } catch (error) {
-      
+    } catch (e) {
+      console.error(e);
     }
   };
   useEffect(() => {
@@ -147,9 +154,8 @@ const CampaignDetail = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/`);
         setCampaignReview(response.data);
-
-      } catch (error) {
-        
+      } catch (e) {
+        console.error(e);
       }
     };
     axiosCampaignReview();
@@ -168,10 +174,10 @@ const CampaignDetail = () => {
   }
 
   // 댓글 POST
-  const token = localStorage.getItem('access')
-  const axiosCommentCreate = async (e) => {
-    e.preventDefault();
+  // eslint-disable-next-line
+  const [createComment, setCreateComment] = useState('');
 
+  const axiosCommentCreate = async (createComment) => {
     if (token) {
       try {
         await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
@@ -181,22 +187,18 @@ const CampaignDetail = () => {
             "Authorization": `Bearer ${token}`,
           },
         });
-        
-        alert("댓글 작성 성공!");
-        // 작성 후 바로 댓글 재렌더링시키기
         axiosCampaignComment();
-      } catch (error) {
-        
+      } catch (e) {
+        console.error(e);
         alert("댓글 작성에 실패했습니다.");
       }
     } else {
       alert("로그인이 필요합니다.")
     }
-
   };
-
-  const handleCommentCreate = (event) => {
-    setCreateComment(event.target.value);
+  const handleCreateSubmit = (createComment) => {
+    setCreateComment(createComment);
+    axiosCommentCreate(createComment);
   };
 
   // Fund Modal
@@ -218,21 +220,25 @@ const CampaignDetail = () => {
   };
 
   const handleFundSubmit = async () => {
-    
+
     const requestData = {
       amount: amount,
       campaign: id,
-      selected_card : selectedCard.cardId
+      selected_card: selectedCard.cardId
     };
     try {
-        await axios.post(`http://localhost:8000/payments/schedule/`, requestData, 
-        {headers: {
-          "Authorization": `Bearer ${token}`}})
-          alert("후원 감사합니다!")
-          setFundModalOpen(false)
-      } catch(error) {
-        alert("후원 실패")
-      }
+      await axios.post(`http://localhost:8000/payments/schedule/`, requestData,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        })
+      alert("후원 감사합니다!")
+      setFundModalOpen(false)
+    } catch (e) {
+      console.error(e);
+      alert("후원 실패")
+    }
   };
   // Share Modal
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -275,22 +281,21 @@ const CampaignDetail = () => {
     };
   };
   // 좋아요 누른상태인지 상태확인 get함수
-  const axiosCampaignLikeStatus = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsLiked(response.data.is_liked);
-    } catch (error) {
-      
-    }
-  };
   useEffect(() => {
+    const axiosCampaignLikeStatus = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsLiked(response.data.is_liked);
+      } catch (e) {
+        console.error(e);
+      }
+    };
     axiosCampaignLikeStatus();
-    // eslint-disable-next-line
-  }, []);
+  }, [id, token]);
 
   // 좋아요 axios
   const axiosLike = async () => {
@@ -302,30 +307,29 @@ const CampaignDetail = () => {
       });
       setIsLiked(response.data.is_liked);
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-    } catch (error) {
-      
+    } catch (e) {
+      console.error(e);
     }
   };
   // 캠페인 참여
   const [isParticipated, setIsParticipated] = useState(false);
 
   // 캠페인 참여정보 초기값 GET
-  const axiosParticipateStatus = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsParticipated(response.data.is_participated);
-    } catch (error) {
-      
-    }
-  };
   useEffect(() => {
+    const axiosParticipateStatus = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsParticipated(response.data.is_participated);
+      } catch (e) {
+        console.error(e)
+      }
+    };
     axiosParticipateStatus();
-    // eslint-disable-next-line
-  }, []);
+  }, [id, token]);
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
     if (token) {
@@ -338,15 +342,14 @@ const CampaignDetail = () => {
         setIsParticipated(response.data.is_participated);
         isParticipated ? (alert("캠페인 참여가 취소되었습니다.")) : (alert("캠페인 참여 성공!"))
         axiosCampaignDetail();
-      } catch (error) {
-        
+      } catch (e) {
+        console.error(e);
         alert("캠페인 참여에 실패했습니다.")
       }
     } else {
       alert("로그인이 필요합니다.")
     };
   }
-
 
   // Share url
   const currentUrl = window.location.href;
@@ -361,6 +364,81 @@ const CampaignDetail = () => {
     return differenceInDays >= 0 && differenceInDays <= 3;
   };
 
+  // 캠페인 수정삭제
+  const campaignOptions = [
+    { id: "update", label: "수정하기" },
+  ];
+  const navigate = useNavigate();
+  const handleCampaignEdit = async (optionId) => {
+    if (optionId === "update") {
+      navigate(`modify`);
+    }
+  }
+
+  // 댓글 수정삭제
+  const commentOptions = [
+    { id: "update", label: "수정하기" },
+    { id: "delete", label: "삭제하기" },
+  ];
+  const axiosCommentDelete = async (commentId) => {
+    if (token) {
+      try {
+        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        alert("삭제되었습니다.");
+        axiosCampaignComment();
+      } catch (e) {
+        console.error(e)
+        alert("댓글 삭제에 실패했습니다.")
+      }
+    } else {
+      alert("로그인이 필요합니다.")
+    };
+  }
+  // eslint-disable-next-line
+  const [updateComment, setUpdateComment] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentId, setCommentId] = useState(null);
+
+  const handleUpdateSubmit = (commentId, updateComment) => {
+    setUpdateComment(updateComment);
+    axiosCommentUpdate(commentId, updateComment);
+  };
+
+  const axiosCommentUpdate = async (commentId, updateComment) => {
+    if (token) {
+      try {
+        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
+          'content': updateComment,
+        }, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        setIsEditing(false);
+        axiosCampaignComment();
+        alert("수정되었습니다.");
+      } catch (e) {
+        console.error(e)
+        alert("댓글 수정에 실패했습니다.")
+      }
+    } else {
+      alert("로그인이 필요합니다.")
+    };
+  }
+  const handleCommentEdit = (optionId, commentId) => {
+    if (optionId === "update") {
+      setIsEditing(true);
+      setCommentId(commentId);
+    } else if (optionId === "delete") {
+      if (window.confirm("정말 삭제하시겠습니까?")) {
+        axiosCommentDelete(commentId);
+      }
+    }
+  }
 
   return (
     <div className="campaignContainer">
@@ -372,7 +450,13 @@ const CampaignDetail = () => {
               <img className="campaignImage" src={getImageUrl(campaign.image)} alt="campaign_image" onError={onErrorImg} />
             </div>
             <div className="campaignContentRight">
-              <div className="campaignStatus">{campaign.status}</div>
+              <div className="campaignTopSetting">
+                <div className="campaignStatus">{campaign.status}</div>
+                {userId === campaign.user_id ?
+                  <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
+                  : <div></div>
+                }
+              </div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
                   <React.Fragment key={index}>
@@ -383,7 +467,7 @@ const CampaignDetail = () => {
               </div>
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
-              <div className="campaignContentBottom">모집 인원 : {campaign.participant_count} / {campaign.members}</div>
+              <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>
               <div className="campaignContentBottom">캠페인 신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
               <div className="campaignContentBottom">캠페인 신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
@@ -394,7 +478,7 @@ const CampaignDetail = () => {
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
                   <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원 달성)</span>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
                     color="primary"
@@ -404,7 +488,7 @@ const CampaignDetail = () => {
                   >펀딩 참여하기
                   </Button>
                   <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
-                    <SelectCard setSelectedCard={setSelectedCard}/>
+                    <SelectCard setSelectedCard={setSelectedCard} />
                     {selectedCard && (
                       <div>
                         <h2>선택한 카드:</h2>
@@ -422,7 +506,7 @@ const CampaignDetail = () => {
                         inputProps={{ min: 0 }}
                         // useState앞에 값 (100000000)지우고 넣어주세요
                         value={amount.toLocaleString()}
-                        onChange={ handleAmountSubmit }
+                        onChange={handleAmountSubmit}
                       />
                     </FormControl>
                     <Button
@@ -433,7 +517,7 @@ const CampaignDetail = () => {
                         marginTop: '20px',
                         marginLeft: '385px',
                       }}
-                       onClick={handleFundSubmit}
+                      onClick={handleFundSubmit}
                     >
                       펀딩하기
                     </Button>
@@ -523,7 +607,6 @@ const CampaignDetail = () => {
                 </Button>
               </div>
             </div>
-
           </div>
         </>
       ) : (
@@ -556,10 +639,16 @@ const CampaignDetail = () => {
                 <div className="campaignCommentDiv" key={campaignComment.id}>
                   <div className="campaignCommentUser">
                     {campaignComment.user}
+                    {userId === campaignComment.user_id ?
+                      <EditMenu
+                        options={commentOptions}
+                        onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
+                      /> : <div style={{ height: "40px" }}></div>}
                   </div>
-                  <div className="campaignCommentContent">
-                    {campaignComment.content}
-                  </div>
+                  {isEditing && commentId === campaignComment.id ? (
+                    <CommentForm comment={campaignComment.content} onSubmit={(updateComment) => handleUpdateSubmit(campaignComment.id, updateComment)} />
+                  ) : <div className="campaignCommentContent">{campaignComment.content}</div>
+                  }
                   <div className="campaignCommentCreatedAt">
                     {campaignComment.created_at}
                   </div>
@@ -571,31 +660,7 @@ const CampaignDetail = () => {
                 <h2>작성된 댓글이 없습니다.</h2>
               </div>
             )}
-            <TextField
-              id="filled-multiline-flexible"
-              label="댓글을 작성해주세요."
-              multiline
-              maxRows={3}
-              variant="filled"
-              sx={{
-                width: '70%',
-                marginRight: '20px',
-              }}
-              value={createComment}
-              onChange={handleCommentCreate}
-            />
-            <Button
-              variant="contained"
-              endIcon={<SendIcon />}
-              sx={{
-                color: 'white',
-                fontSize: '0.8rem',
-                marginTop: '10px',
-              }}
-              onClick={axiosCommentCreate}
-            >
-              작성하기
-            </Button>
+            <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {campaignReviews.length > 0 ? (
@@ -636,6 +701,7 @@ const CampaignDetail = () => {
             ) : (
               <div className="campaignNothing">
                 <h2>작성된 후기가 없습니다.</h2>
+                <p style={{ marginTop: "10px", fontSize: "0.9rem", color: "gray" }}>후기는 캠페인이 끝난 후, 마이페이지에서 작성할 수 있습니다.</p>
               </div>
             )}
           </TabPanel>

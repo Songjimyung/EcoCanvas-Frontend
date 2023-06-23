@@ -1,12 +1,11 @@
 import React from "react";
-import './admin_sidebar.css'
-import HouseSharpIcon from '@mui/icons-material/HouseSharp';
-import CurrencyExchangeSharpIcon from '@mui/icons-material/CurrencyExchangeSharp';
-import LeaderboardSharpIcon from '@mui/icons-material/LeaderboardSharp';
-import GroupSharpIcon from '@mui/icons-material/GroupSharp';
-import PermPhoneMsgSharpIcon from '@mui/icons-material/PermPhoneMsgSharp';
+import "./admin_sidebar.css";
+import HouseSharpIcon from "@mui/icons-material/HouseSharp";
+import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp";
+import LeaderboardSharpIcon from "@mui/icons-material/LeaderboardSharp";
+import GroupSharpIcon from "@mui/icons-material/GroupSharp";
+import PermPhoneMsgSharpIcon from "@mui/icons-material/PermPhoneMsgSharp";
 import { Link } from "react-router-dom";
-
 
 export default function Adminsidebar() {
   return (
@@ -106,5 +105,5 @@ export default function Adminsidebar() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -40,8 +40,7 @@ export default function Footer() {
               Contact Us
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Email: 회원가입 시 이메일보낼 때 쓸 account 적어주세요(하나 새로
-              만드는 것도 좋을 것 같습니다)
+              Email: contact@ecocanvas.net
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>

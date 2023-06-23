@@ -5,6 +5,7 @@ import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
+import campaign_family from '../img/campaign_family.jpg'
 
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -66,11 +67,10 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
-      
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
-    } catch (error) {
-      
+    } catch (e) {
+      console.error(e);
     }
   };
   useEffect(() => {
@@ -99,10 +99,9 @@ const Campaign = () => {
   // 좋아요
   const [isLiked, setIsLiked] = useState(false);
 
-  // 좋아요
+  // 좋아요 버튼
   const handleLikeButton = (campaignId) => {
     if (token) {
-      
       setIsLiked(!isLiked);
       axiosLike(campaignId);
     } else {
@@ -119,9 +118,8 @@ const Campaign = () => {
         },
       });
       setIsLiked(response.data.is_liked);
-      
-    } catch (error) {
-      
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -161,7 +159,6 @@ const Campaign = () => {
   // 캠페인 신청 token check
   const handleCampaignLinkClick = () => {
     if (token) {
-      
       navigate(`/campaign/create`);
     } else {
       alert("로그인이 필요합니다.");
@@ -171,7 +168,11 @@ const Campaign = () => {
 
   return (
     <div className="campaignContainer">
-      <ImageHeader text="캠페인 둘러보기" />
+      <ImageHeader
+        h1Text="캠페인 둘러보기"
+        pText="EcoCanvas Campaigns"
+        imageUrl={campaign_family}
+      />
 
       <div className="campaignCardContainer">
         <Grid container justifyContent="flex-end" marginBottom={'25px'}>
@@ -212,7 +213,7 @@ const Campaign = () => {
         </Grid>
 
         {campaignList.map((campaign, index) => (
-          <Card sx={{ maxWidth: 450 }} key={campaign.id} className="campaignCard">
+          <Card sx={{ maxWidth: 500 }} key={campaign.id} className="campaignCard">
             <Link to={`/campaign/${campaign.id}`}>
               <CardActionArea>
                 <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
@@ -234,12 +235,12 @@ const Campaign = () => {
                     component={'span'}
                   >
                     {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
+                    참여인원 : {campaign.participant_count} / {campaign.members}<br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <>{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성<br /></>
+                      <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>
                     ) : (
                       <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                     )}
-                    참여인원 : {campaign.participant_count} / {campaign.members}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -307,7 +308,7 @@ const Campaign = () => {
         ))}
       </div >
 
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" sx={{ marginBottom: "30px" }}>
         <Pagination
           count={Math.ceil(campaignCount / campaignsPerPage)}
           page={currentPage}
