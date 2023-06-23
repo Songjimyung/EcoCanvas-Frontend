@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
-  color: rgb(40, 84, 48);
+  color: rgb(129, 178, 20);
   margin-bottom: 30px;
 }
 
@@ -19,7 +19,7 @@
   font-size: 1.0rem;
   width: 25%;
   outline-style: none;
-  border: 1.5px solid rgb(40, 84, 48);
+  border: 1.5px solid rgb(32, 106, 93);
 }
 
 .inputList>button {
@@ -30,22 +30,24 @@
   color: #e7e5e5;
   font-size: 1.0rem;
   width: 25%;
-  background-color: rgb(40, 84, 48);
+  background-color: rgb(129, 178, 20);
+  transition: 0.2s;
 }
 
 .inputList>button.active,
 .inputList>button:hover {
-  background-color: rgb(95, 141, 78);
+  background-color: rgb(32, 106, 93);
   cursor: pointer;
 }
 
 .find-pw-btn {
-  color: rgb(95, 141, 78);
+  color: rgb(129, 178, 20);
   font-size: 0.85rem;
   margin-bottom: 30px;
+  transition: 0.2s;
 }
 
 .find-pw-btn:hover {
-  color: rgb(40, 84, 48);
+  color: rgb(32, 106, 93);
   cursor: pointer;
 }
