@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import '../../components/mypageSidebar/mypageSidebar.css'
 import Sidebar from '../../components//mypageSidebar/MypageSidebar';
+import Pagination from "@mui/material/Pagination";
+import Grid from "@mui/material/Grid";
 
 function ReceiptList() {
  const getUserFromLocalStorage = () => {
@@ -13,28 +15,33 @@ function ReceiptList() {
         }
         return null;
      };
-    
+ const [currentPage, setCurrentPage] = useState(1);
+ const [totalPages, setTotalPages] = useState(0);   
  const user_id = getUserFromLocalStorage();
  const token = localStorage.getItem('access');
  const [receipts, setReceipts] = useState([]);
 
  const fetchReceipts = useCallback(() => {
-    
-      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}`,
+          
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}/?page=${currentPage}`,
       {headers: {
           'Authorization': `Bearer ${token}`,
          }})
          .then((response) => {
             setReceipts(response.data);
-            console.log(response.data)
+            const totalPages = Math.ceil(response.data.count / 10);
+            setTotalPages(totalPages);
          })
          .catch((error) => {
             console.error(error);
          });
-      }, [user_id, token]);
+      }, [user_id, currentPage, token]);
 
- 
-    const cancelSchedule = (receiptId) => {
+      const handlePageChange = async (event, page) => {
+        setCurrentPage(page);
+      };
+
+     const cancelSchedule = (receiptId) => {
       axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/detail/${receiptId}`,
       {headers: {
          'Authorization': `Bearer ${token}`,
@@ -89,7 +96,15 @@ function ReceiptList() {
                 <h2>펀딩한 캠페인이 없습니다.</h2>
             )}
         </tbody>
-      </table>        
+      </table>   
+      <Grid container justifyContent="center">
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            color="primary"
+            onChange={handlePageChange}
+          />
+        </Grid>     
       </div>
      </div>
     </div>

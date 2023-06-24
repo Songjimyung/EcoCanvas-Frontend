@@ -205,7 +205,11 @@ const CampaignDetail = () => {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const openFundModal = () => {
+    if (token) {
     setFundModalOpen(true);
+    } else {
+      alert("로그인이 필요합니다.")
+    }
   };
   const closeFundModal = () => {
     setFundModalOpen(false);
