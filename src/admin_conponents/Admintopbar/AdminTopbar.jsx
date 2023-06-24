@@ -2,10 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./Admintopbar.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function AdminTopbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  // const [notificationCount, setNotificationCount] = useState(0);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     // 로그인 상태를 localstorage에서 확인
@@ -14,6 +25,56 @@ export default function AdminTopbar() {
       setIsLoggedIn(true);
     }
   }, []);
+
+
+  const handleSnackbarOpen = (message) => {
+    setNotificationMessage(message);
+    setOpen(true);
+    // setNotificationCount((prevCount) => prevCount + 1);
+
+  };
+  // const handleNotificationCount = () => {
+  //   setNotificationCount(0);
+  // };
+
+  useEffect(() => {
+    const notificationSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/chat/alarm/`);
+
+    notificationSocket.onopen = () => {
+      // notification_admin_group 그룹 구독 요청
+      notificationSocket.send(
+        JSON.stringify({
+          command: "subscribe",
+          group: "notification_admin_group",
+        })
+      );
+    };
+
+    notificationSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const message = data.message;
+      handleSnackbarOpen(message);
+    };
+
+    notificationSocket.onclose = () => {
+
+    };
+
+
+    return () => {
+      notificationSocket.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    // 로그인 상태를 localstorage에서 확인
+    const loggedInStatus = localStorage.getItem("access");
+    if (loggedInStatus) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
@@ -78,6 +139,30 @@ export default function AdminTopbar() {
             </span>
           )}
         </div>
+      </div>
+      <div>
+        <Snackbar
+          open={open}
+          autoHideDuration={9000}
+          onClose={handleClose}
+          message={notificationMessage}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+          sx={{
+            "& .MuiSnackbarContent-root": {
+              backgroundColor: "midnightblue",
+              color: "white",
+            },
+          }}
+        />
       </div>
     </div>
   );
