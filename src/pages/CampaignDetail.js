@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
-import sharekakao from "../img/sharekakao.webp"
 import CommentForm from "../campaign/CommentForm";
 import SelectCard from "../selectcard/selectcard";
 
@@ -19,19 +18,12 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import EditMenu from "../components/editmenu/EditMenu";
+import Share from "../components/share/Share";
 
 // modal
 import Modal from "../components/modal/Modal"
 
-// share
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  TwitterShareButton,
-} from "react-share";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { handleKakaoButton } from '../campaign/Kakaohooks';
+
 
 // Mui Tab
 function TabPanel(props) {
@@ -351,9 +343,6 @@ const CampaignDetail = () => {
     };
   }
 
-  // Share url
-  const currentUrl = window.location.href;
-
   // 마감임박 Boolean
   const isAboutToClose = (endDate) => {
     const today = new Date().getDate();
@@ -560,36 +549,7 @@ const CampaignDetail = () => {
                   <ShareIcon />
                 </Button>
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                  <div className="modalMent">캠페인을 공유해보세요.</div>
-                  <div className='shareBtnContainer'>
-                    <CopyToClipboard text={currentUrl}>
-                      <button
-                        className="shareUrlBtn"
-                        onClick={() => alert("복사 완료!")}>
-                        URL
-                      </button>
-                    </CopyToClipboard>
-                    <FacebookShareButton url={currentUrl} className="shareBtn">
-                      <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                    </FacebookShareButton>
-                    <TwitterShareButton url={currentUrl} className="shareBtn">
-                      <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                    </TwitterShareButton>
-                    <button
-                      className="shareKakaoBtn"
-                      style={{
-                        padding: '0',
-                        backgroundColor: 'transparent'
-                      }}
-                      onClick={() => handleKakaoButton(campaign.id)}
-                    >
-                      <img
-                        src={sharekakao}
-                        alt="kakaoShareButton"
-                        className="shareKakaoBtn" />
-                    </button>
-                  </div>
-
+                  <Share id={id} />
                 </Modal>
                 <Button
                   variant="contained"
@@ -701,7 +661,7 @@ const CampaignDetail = () => {
             ) : (
               <div className="campaignNothing">
                 <h2>작성된 후기가 없습니다.</h2>
-                <p style={{ marginTop: "10px", fontSize: "0.9rem", color: "gray" }}>후기는 캠페인이 끝난 후, 마이페이지에서 작성할 수 있습니다.</p>
+                <p style={{ marginTop: "10px", fontSize: "0.9rem", color: "gray" }}>후기는 캠페인이 끝난 후, 마이페이지에서 작성하실 수 있습니다.</p>
               </div>
             )}
           </TabPanel>
