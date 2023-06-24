@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/campaign.css';
 import campaign_default_image from '../img/campaign_default_image.jpg';
-import sharekakao from "../img/sharekakao.webp"
 import ImageHeader from '../components/imageheader/ImageHeader';
 import campaign_family from '../img/campaign_family.jpg'
+import Share from '../components/share/Share';
 
+// mui
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -22,15 +23,6 @@ import Pagination from '@mui/material/Pagination';
 // modal
 import Modal from "../components/modal/Modal"
 
-// share
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  TwitterShareButton,
-} from "react-share";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { handleKakaoButton } from '../campaign/Kakaohooks';
 
 
 const Campaign = () => {
@@ -140,10 +132,6 @@ const Campaign = () => {
       newState[index] = false;
       return newState;
     });
-  };
-  // Share url
-  const generateCampaignUrl = (campaignId) => {
-    return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${campaignId}`;
   };
 
   // 마감임박 Boolean
@@ -263,44 +251,7 @@ const Campaign = () => {
                   <ShareIcon />
                 </IconButton>
                 <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <div
-                    className="modalMent"
-
-                  >캠페인을 공유해보세요.</div>
-                  <div className='shareBtnContainer'>
-                    <CopyToClipboard
-                      text={generateCampaignUrl(campaign.id)}
-                      style={{
-                        marginRight: "10px"
-                      }}>
-                      <button
-                        className="shareUrlBtn"
-                        onClick={() => alert("복사 완료!")}
-                      >
-                        URL
-                      </button>
-                    </CopyToClipboard>
-                    <FacebookShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
-                      <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
-                    </FacebookShareButton>
-                    <TwitterShareButton url={generateCampaignUrl(campaign.id)} className="shareBtn">
-                      <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
-                    </TwitterShareButton>
-                    <button
-                      className="shareKakaoBtn"
-                      style={{
-                        padding: '0',
-                        backgroundColor: 'transparent'
-                      }}
-                      onClick={() => handleKakaoButton(campaign.id)}
-                    >
-                      <img
-                        src={sharekakao}
-                        alt="kakaoShareButton"
-                        className="shareKakaoBtn" />
-                    </button>
-                  </div>
-
+                  <Share id={campaign.id} />
                 </Modal>
               </div>
             </CardActions>
