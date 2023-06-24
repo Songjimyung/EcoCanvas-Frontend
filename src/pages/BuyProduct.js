@@ -215,15 +215,16 @@ export default function BuyProduct() {
               customer_uid: customer_uid,
               pay_method: 'card',
               merchant_uid: merchant_uid,
-              name: email,
+              name: Product.product_name,
               amount: productPrice,
-              buyer_email: 'Iamport@chai.finance',
-              buyer_name: '아임포트 기술지원팀',
-              buyer_tel: '010-1234-5678',
-              buyer_addr: '서울특별시 강남구 삼성동',
-              buyer_postcode: '123-456',
+              buyer_email: email,
+              buyer_name: formData.receiver_name,
+              buyer_tel: formData.phonenum,
+              buyer_addr: formData.address + formData.address_detail,
+              buyer_postcode: formData.zip_code,
             },
             (response) => {
+              console.log(response)
               const paid_imp_uid = response.imp_uid;
               const paid_amount = response.paid_amount;
               
@@ -252,7 +253,6 @@ export default function BuyProduct() {
                     reject(); // Promise가 실패 상태로 처리됨
                   });
               } else {
-                console.log(response.data);
                 alert(response.error_msg);
                 reject(); // Promise가 실패 상태로 처리됨
               }
