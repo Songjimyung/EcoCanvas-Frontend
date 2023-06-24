@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../css/mypage.css";
 import { Button, Grid, Typography, TextField } from "@mui/material";
@@ -27,7 +28,7 @@ export default function MyProfile() {
           }
         );
         const result = await response.json();
-        console.log(result);
+        
 
         const user_info = {
           address: result.address,
@@ -38,7 +39,7 @@ export default function MyProfile() {
         };
         setUserData(user_info);
       } catch (error) {
-        console.log(error);
+        
       }
     };
 
@@ -80,15 +81,15 @@ export default function MyProfile() {
       const result = await response.json();
 
       if (result.errors) {
-        console.log(result.errors.user);
+        
         alert(result.errors.user[0]);
       } else {
-        console.log(result);
+        
         alert("등록 완료!");
         window.location.reload();
       }
     } catch (error) {
-      console.error(error);
+      
     }
   };
 
@@ -171,22 +172,25 @@ export default function MyProfile() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            sx={{
-              width: "150px",
-              backgroundColor: "rgb(129, 178, 20)",
-              fontSize: "20px",
-              color: "white",
-              margin: "0px auto",
-              transition: "0.2s",
-              ":hover": {
-                backgroundColor: "rgb(32, 106, 93)",
-              },
-            }}
-          >
-            Save
-          </Button>
+          <div className="button-box">
+            <Button
+              type="submit"
+              sx={{
+                width: "150px",
+                backgroundColor: "rgb(129, 178, 20)",
+                fontSize: "20px",
+                color: "white",
+                margin: "0px auto",
+                transition: "0.2s",
+                ":hover": {
+                  backgroundColor: "rgb(32, 106, 93)",
+                },
+              }}
+            >
+              Save
+            </Button>
+            <Link to="/mypage/profile/withdrawal">회원탈퇴를 원하시나요?</Link>
+          </div>
         </form>
       </div>
     </div>

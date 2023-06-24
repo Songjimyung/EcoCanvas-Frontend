@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination'; import Sidebar from "../components/mypageSidebar/MypageSidebar"
 import '../css/mypage.css'
-import { format, isAfter } from 'date-fns';
+import { isAfter } from 'date-fns';
 import { Link } from 'react-router-dom';
 import campaign_default_image from '../img/campaign_default_image.jpg';
 
@@ -43,9 +43,9 @@ const Mypage = () => {
           id: campaign.id,
           title: campaign.title,
           content: campaign.content,
-          campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
-          activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
-          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd'),
+          campaign_end_date: campaign.campaign_end_date,
+          activity_start_date: campaign.activity_start_date,
+          activity_end_date: campaign.activity_end_date,
           image: campaign.image,
           status: campaign.status
         }));
@@ -81,9 +81,6 @@ const Mypage = () => {
     formData.append('title', e.target.elements.title.value);
     formData.append('content', e.target.elements.content.value);
 
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
     fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${selectedInfo}/`, {
       method: "POST",
       headers: {
@@ -93,12 +90,12 @@ const Mypage = () => {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+
         alert("리뷰 등록 완료!")
         window.location.reload();
       })
       .catch((error) => {
-        console.error(error);
+
       });
   };
 
@@ -106,7 +103,7 @@ const Mypage = () => {
   //모달 open, close
   const openModal = (campaignId) => {
     setSelectedInfo(campaignId);
-    console.log(campaignId)
+
     const modal = document.getElementById("Reivewmodal");
     modal.style.display = "block";
   };

@@ -31,9 +31,9 @@ function Sidebar() {
     { name: "환불/취소 접수", path: "/mypage/myrefund" },
   ];
   const menus2 = [
-    { name: "카드정보", path: "/mypage/mypayments"},
-    { name: "예약결제확인", path: "/mypage/myschedule"}
-  ]
+    { name: "카드정보", path: "/mypage/mypayments" },
+    { name: "예약결제확인", path: "/mypage/myschedule" },
+  ];
 
   // payload에서 user_id 가져와서 GET요청
   useEffect(() => {
@@ -60,7 +60,6 @@ function Sidebar() {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result.image);
           const user_info = {
             id: result["user"]["id"],
             email: result["user"]["email"],
@@ -78,9 +77,7 @@ function Sidebar() {
           };
           setUserData([defaultUserInfo]);
         }
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     if (userId) {
@@ -113,7 +110,7 @@ function Sidebar() {
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
                   <button className="details-button">
-                    <Link to="/update_pw">비밀번호 변경</Link>
+                    <Link to="/update-pw">비밀번호 변경</Link>
                   </button>
                 </div>
               );
@@ -148,13 +145,13 @@ function Sidebar() {
             })}
           </div>
           <div className="mypage-sidebar">
-            <h3>나의 결제</h3>
+            <span>나의 결제</span>
             {menus2.map((menu, index) => {
               return (
                 <Link to={menu.path} key={index}>
                   <SidebarItem
                     menu={menu}
-                    isActive={pathName === menu.path ? true : false}	// 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
+                    isActive={pathName === menu.path ? true : false} // 현재 URL pathname과 객체에 담긴 path값 일치 여부 확인
                   />
                 </Link>
               );

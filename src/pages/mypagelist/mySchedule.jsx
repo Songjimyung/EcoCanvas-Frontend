@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../components/mypageSidebar/mypageSidebar.css'
 import Sidebar from '../../components//mypageSidebar/MypageSidebar';
@@ -6,62 +6,60 @@ import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 
 function ReceiptList() {
- const getUserFromLocalStorage = () => {
-    const payload = localStorage.getItem('payload');
-     if (payload) {
-        const payload_data = JSON.parse(payload);
-        const user_id = payload_data.user_id;
-        return user_id;
-        }
-        return null;
-     };
+
  const [currentPage, setCurrentPage] = useState(1);
  const [totalPages, setTotalPages] = useState(0);   
- const user_id = getUserFromLocalStorage();
- const token = localStorage.getItem('access');
  const [receipts, setReceipts] = useState([]);
 
- const fetchReceipts = useCallback(() => {
+
+  useEffect(() => {
+    const fetchReceipts = async() => {
           
-      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}/?page=${currentPage}`,
+      const token = localStorage.getItem('access');
+
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/?page=${currentPage}`,
       {headers: {
           'Authorization': `Bearer ${token}`,
-         }})
+         }
+        })
          .then((response) => {
-            setReceipts(response.data);
-            const totalPages = Math.ceil(response.data.count / 10);
+            setReceipts(response.data.results);
+            const totalPages = Math.ceil(response.data.count / 6);
+            console.log(response.data.results)
             setTotalPages(totalPages);
          })
          .catch((error) => {
-            console.error(error);
+          console.log(error)
+            
          });
-      }, [user_id, currentPage, token]);
+        }
+         fetchReceipts();
+      }, [currentPage]);
 
       const handlePageChange = async (event, page) => {
         setCurrentPage(page);
       };
 
      const cancelSchedule = (receiptId) => {
+      const token = localStorage.getItem('access');
+
       axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/detail/${receiptId}`,
       {headers: {
          'Authorization': `Bearer ${token}`,
         }})
         .then((response) => {
           // 취소 요청 성공 시 처리
-          console.log(response.data);
+          
           alert(response.data.message);
-          fetchReceipts();
+          window.location.reload();
           
         })
         .catch((error) => {
           // 취소 요청 실패 시 처리
-          console.error(error);
+          
           alert(error)
         });
     };
-   useEffect(() => {
-      fetchReceipts();
-   }, [fetchReceipts]);
 
   return (
     <div>

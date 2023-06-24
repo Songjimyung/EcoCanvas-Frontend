@@ -28,14 +28,14 @@ export default function Topbar() {
     setNotificationMessage(message);
     setOpen(true);
     setNotificationCount((prevCount) => prevCount + 1);
-    console.log(message);
+    
   };
   useEffect(() => {
-    const newSocket = new WebSocket("ws://localhost:8000/ws/restock/"); // WebSocket 연결 URL
+    const newSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/restock/`); // WebSocket 연결 URL
     setSocket(newSocket);
 
     newSocket.onopen = () => {
-      console.log("연결 성공");
+      
 
       // notification_group 그룹 구독 요청
       newSocket.send(
@@ -51,7 +51,7 @@ export default function Topbar() {
       handleSnackbarOpen(message);
     };
     newSocket.onclose = () => {
-      console.log("WebSocket 연결 종료");
+      
     };
 
     return () => {

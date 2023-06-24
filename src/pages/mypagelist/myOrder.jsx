@@ -25,10 +25,12 @@ const MyOrder = () => {
         });
         setMyOrderData(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
+        console.log(response.data)
+        console.log(response.data.count)
         setTotalPages(totalPages);
-        console.log(response.data);
+        
       } catch (error) {
-        console.error("상품 목록을 불러오는 중 오류가 발생했습니다:", error);
+        
       }
     };
     fetchOrderList();

@@ -49,7 +49,7 @@ const AuthForm = ({ type }) => {
 
       alert(response.data['message'])
     } catch (error) {
-      console.error(error.response.data);
+      
     }
   };
   const handleLoginFormSubmit = async (e) => {
@@ -61,7 +61,7 @@ const AuthForm = ({ type }) => {
     };
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login/`, loginData);
-      console.log(response.data); // 로그인 성공 시 서버로부터 받은 응답 데이터 출력
+      
 
       localStorage.setItem("access", response.data.access);
       localStorage.setItem("refresh", response.data.refresh);
@@ -77,16 +77,16 @@ const AuthForm = ({ type }) => {
       window.location.replace("/")
       const payload = localStorage.getItem('payload');
       const payloadObject = JSON.parse(payload);
-      console.log(payloadObject.is_admin);
+      
       if (payloadObject.is_admin) {
-        navigate('/admin_home'); // is_admin이 true인 경우 admin_home으로 이동
+        navigate('/admin-home'); // is_admin이 true인 경우 admin-home으로 이동
         window.location.reload();
       } else {
         window.location.replace("/")
       }
     } catch (error) {
       alert("이메일과 비밀번호를 확인해주세요.")
-      console.log(error)
+      
     }
   };
   const SocialKakao = () => {
@@ -116,7 +116,7 @@ const AuthForm = ({ type }) => {
   };
 
   const handleResetPasswordEmailFormSubmit = () => {
-    navigate('/reset_pw/email_code')
+    navigate('/reset-pw/email-code')
   }
 
   return (

@@ -1,73 +1,96 @@
 import React, { useEffect, useState } from "react";
-
+import { Card, CardContent, Typography, Button } from "@mui/material";
+import axios from 'axios';
+import Pagination from '@mui/material/Pagination';
+import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
 import './userList.css'
-import { Link } from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid'
-// import { DeleteOutline } from "@mui/icons-material";
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'status', headerName: 'Status', width: 130 },
-  {
-    field: 'action',
-    headerName: 'Action',
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <>
-          <Link to={'/users/' + params.row.id}>
-            <button className="userListEdit">수정</button>
-          </Link>
-        </>
-      )
-    }
-  }
-]
 
 
 export default function UserList() {
   const [userList, setUserList] = useState([]);
-  useEffect(() => {
-    const token = localStorage.getItem('access');
-    console.log(token)
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/list/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).then(response => response.json())
-      .then(result => {
-        const users = result.map((user, index) => ({
-          id: user.id,
-          email: user.email,
-          name: user.username,
-          status: user.is_active,
-        }));
-        setUserList(users);
-      })
-  }, []);
-  return (
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
+  const handlePageChange = async (event, page) => {
+    setCurrentPage(page);
+  };
+
+  useEffect(() => {
+    const fetchUserList = async () => {
+      const token = localStorage.getItem('access');
+
+      try {
+        let url = `${process.env.REACT_APP_BACKEND_URL}/users/list/`;
+        url += `?page=${currentPage}`;
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUserList(response.data.results);
+        const totalPages = Math.ceil(response.data.count / 6);
+        setTotalPages(totalPages);
+
+      } catch (error) {
+
+      }
+    };
+
+    fetchUserList();
+  }, [currentPage]);
+
+
+  return (
     <div className="userList">
       <div className="userListContainer">
         <h1 className="userTitle">유저 리스트</h1>
-        <Link to='/createUser'>
-          <button className="userAddButton">유저 생성</button>
-        </Link>
       </div>
-      <DataGrid
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } }
-        }}
-        rows={userList}
-        disableRowSelectionOnClick
-        columns={columns}
-        pageSizeOptions={[5, 10, 15]}
-        checkboxSelection
-      />
-
+      <Card variant="outlined" className="user-card">
+        <CardContent className="user-cardContent">
+          <Typography variant="body1">이메일</Typography>
+          <Typography variant="body1">이름</Typography>
+          <Typography variant="body1">활성여부</Typography>
+          <Typography variant="body1">등급</Typography>
+          <Typography variant="body1">상세보기</Typography>
+        </CardContent>
+      </Card>
+      {userList.map((user) => (
+        <Card key={user.id} variant="outlined" className="user-card">
+          <CardContent className="user-cardContent">
+            <Typography variant="body1">{user.email}</Typography>
+            <Typography variant="body1">{user.username}</Typography>
+            <Typography variant="body1">
+              {user.is_active ? "Active" : "Inactive"}
+            </Typography>
+            <Typography variant="body1">
+              {user.is_admin ? "관리자" : "일반유저"}
+            </Typography>
+            <Link to={`/admin-users/${user.id}`}>
+              <Button
+                variant="contained"
+                color="primary"
+              >
+                상세
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ))}
+      <Grid container justifyContent="center">
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          color="primary"
+          onChange={handlePageChange}
+        />
+      </Grid>
     </div>
-  )
+  );
+
 }
+
+
+export { UserList };

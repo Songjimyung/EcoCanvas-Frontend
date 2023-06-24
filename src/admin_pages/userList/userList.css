@@ -1,39 +1,22 @@
-.userList{
-    flex: 4;
-}
-
-.userListEdit {
-    border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    background-color: #3bb077;
-    color: white;
-    cursor: pointer;
-    margin-right: 15px;
-}
-
-.userListDelete {
-    color : red;
-    cursor: point;
-}
-
-.userListContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 10px;
+.userList {
+  flex: 4;
 }
 
 
-.userAddButton {
-    margin-top: 30px;
-    margin-right: 30px;
-    width: 80px;
-    border: none;
-    padding: 5px;
-    background-color: teal;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
+.user-card {
+  background-color: #fffffe;
+  width: 90%;
+  margin: auto;
+}
 
+.user-cardWrapper {
+  margin-top: 50px;
+  position: relative;
+}
+
+
+.user-cardContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

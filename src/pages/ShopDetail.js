@@ -44,12 +44,12 @@ const ShopDetail = () => {
         }
       })
       .then((result) => {
-        console.log(result);
-        console.log("재입고 알림 신청 완료!");
+
+
         window.location.reload();
       })
       .catch((error) => {
-        console.error(error);
+
         alert(error.message);
       });
   };
@@ -63,22 +63,15 @@ const ShopDetail = () => {
     const fetchProduct = async () => {
       try {
 
-        const token = localStorage.getItem('access');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`);
 
-
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`,
-          { headers }
-        );
         if (response.status === 200) {
-          console.log(response.data)
+
           setProduct(response.data);
           setLoading(false);
         }
       } catch (error) {
-        console.error('상품 불러오기 실패:', error);
+
         setLoading(false);
       }
 

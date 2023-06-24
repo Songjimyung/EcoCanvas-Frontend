@@ -1,6 +1,5 @@
 .campaignContainer {
     font-family: var(--font-Pretendard-Regular);
-    /* padding-top: 50px; */
 }
 
 .campaignCreateForm {
@@ -28,10 +27,7 @@ hr {
     display: flex;
     flex-wrap: wrap;
     margin: 30px 50px 0 50px;
-    min-width: 750px;
     justify-content: space-between;
-    /* align-content: space-around; */
-    /* align-items: stretch; */
 }
 
 .campaignCard {
@@ -39,6 +35,12 @@ hr {
     min-width: 350px;
     width: 35%;
     font-family: var(--font-KCC-Ganpan);
+}
+
+.campaignCardPercent{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #3eac3e;
 }
 
 /* detail Top */
@@ -50,7 +52,7 @@ hr {
 }
 
 .campaignImageDiv {
-    margin-left: 50px;
+    text-align: center;
 }
 
 .campaignImage {
@@ -60,6 +62,12 @@ hr {
 
 .campaignContentRight {
     width: 85%;
+}
+
+.campaignTopSetting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .campaignStatus {
@@ -184,8 +192,10 @@ hr {
 
 .campaignCommentUser {
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .campaignCommentContent {

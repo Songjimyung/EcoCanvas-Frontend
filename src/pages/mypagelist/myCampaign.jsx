@@ -13,16 +13,15 @@ const MyPostCampaign = () => {
   useEffect(() => {
     const token = localStorage.getItem('access');
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participart/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/mypage/participant/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => response.json(
-      console.log(response)
+
     ))
       .then(result => {
-        console.log(result)
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,

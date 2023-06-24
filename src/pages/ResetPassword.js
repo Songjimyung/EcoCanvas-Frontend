@@ -27,7 +27,7 @@ const ResetPassword = () => {
             navigate(`/`);
 
         } catch (error) {
-            console.error(error.response.data);
+            
         }
     };
     return (

@@ -12,6 +12,8 @@ import { CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import product_default_img from '../img/sample_product.png';
+import ImageHeader from '../components/imageheader/ImageHeader';
+import zerowaste from '../img/zerowaste.jpg';
 
 
 const Shop = () => {
@@ -79,9 +81,9 @@ const Shop = () => {
       setProductList(response.data.results);
       const totalPages = Math.ceil(response.data.count / 6);
       setTotalPages(totalPages);
-      console.log(response.data)
+      
     } catch (error) {
-      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      
     }
   }, [categoryId, sortBy, currentPage, searchQuery]);
 
@@ -90,7 +92,7 @@ const Shop = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
       setCategoryList(response.data);
     } catch (error) {
-      console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+      
     }
   };
 
@@ -114,6 +116,11 @@ const Shop = () => {
 
   return (
     <div>
+      <ImageHeader
+        h1Text="EcoCanvas Shop"
+        pText="지속 가능한 소비, 그 이상의 가치"
+        imageUrl={zerowaste}
+      />
       <header>
         <nav>
           <select className="category-dropdown" onChange={handleCategorySelect}>
