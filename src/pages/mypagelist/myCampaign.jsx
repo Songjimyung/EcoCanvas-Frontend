@@ -19,10 +19,9 @@ const MyPostCampaign = () => {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => response.json(
-      
+
     ))
       .then(result => {
-        
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,

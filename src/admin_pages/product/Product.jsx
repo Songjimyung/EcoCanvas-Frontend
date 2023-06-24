@@ -125,7 +125,7 @@ export default function ProductDetail() {
       );
       if (response.ok) {
         alert("삭제 완료!");
-        navigate("/admin_products");
+        navigate("/admin-products");
       } else {
         alert("삭제 실패!");
       }
