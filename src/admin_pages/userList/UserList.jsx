@@ -33,9 +33,9 @@ export default function UserList() {
         setUserList(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        
+
       } catch (error) {
-        
+
       }
     };
 
@@ -68,7 +68,7 @@ export default function UserList() {
             <Typography variant="body1">
               {user.is_admin ? "관리자" : "일반유저"}
             </Typography>
-            <Link to={`/admin_users/${user.id}`}>
+            <Link to={`/admin-users/${user.id}`}>
               <Button
                 variant="contained"
                 color="primary"
