@@ -25,8 +25,6 @@ const MyOrder = () => {
         });
         setMyOrderData(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
-        console.log(response.data)
-        console.log(response.data.count)
         setTotalPages(totalPages);
         
       } catch (error) {

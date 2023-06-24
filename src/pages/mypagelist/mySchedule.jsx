@@ -25,7 +25,6 @@ function ReceiptList() {
          .then((response) => {
             setReceipts(response.data.results);
             const totalPages = Math.ceil(response.data.count / 6);
-            console.log(response.data.results)
             setTotalPages(totalPages);
          })
          .catch((error) => {
