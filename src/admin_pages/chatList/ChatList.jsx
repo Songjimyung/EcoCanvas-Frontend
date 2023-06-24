@@ -69,8 +69,8 @@ export default function ChatList() {
       <h1>Chat List</h1>
       {userList.map((user, index) => (
         <div key={index}>
-          <h2>{user[0].email}</h2>
-          <Button onClick={() => openChatModal(user[0].id)}>상담하기</Button>
+          <h2>{user.email}</h2>
+          <Button onClick={() => openChatModal(user.id)}>상담하기</Button>
           <Modal open={chatModalOpen} close={closeChatModal} header="상담">
             {selectedUserId && <ChatDetail id={selectedUserId} />}
           </Modal>
