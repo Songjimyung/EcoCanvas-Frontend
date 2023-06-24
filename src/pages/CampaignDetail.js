@@ -549,7 +549,7 @@ const CampaignDetail = () => {
                   <ShareIcon />
                 </Button>
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
-                  <Share id={id} />
+                  <Share id={id} type="campaign" />
                 </Modal>
                 <Button
                   variant="contained"

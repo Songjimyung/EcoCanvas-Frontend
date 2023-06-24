@@ -12,10 +12,10 @@ import {
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Share = (props) => {
-  const { id } = props;
+  const { id, type } = props;
 
   const generateUrl = (id) => {
-    return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${id}`;
+    return `${process.env.REACT_APP_FRONTEND_URL}/${type}/${id}`;
   };
 
   function handleKakaoButton(id) {
@@ -28,7 +28,10 @@ const Share = (props) => {
 
   return (
     <>
-      <div className="modalMent">캠페인을 공유해보세요.</div>
+      <div className="modalMent">
+        {type === "campaign" ? "EcoCanvas의 캠페인" : "EcoCanvas의 상품"}을
+        공유해보세요.
+      </div>
       <div className="shareBtnContainer">
         <CopyToClipboard
           text={generateUrl(id)}

@@ -1,0 +1,14 @@
+.product-detail-wrap {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.product-image {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.product-detail-info {
+    text-align: left;
+}

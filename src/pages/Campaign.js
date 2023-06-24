@@ -6,6 +6,7 @@ import campaign_default_image from '../img/campaign_default_image.jpg';
 import ImageHeader from '../components/imageheader/ImageHeader';
 import campaign_family from '../img/campaign_family.jpg'
 import Share from '../components/share/Share';
+import Modal from "../components/modal/Modal"
 
 // mui
 import Card from '@mui/material/Card';
@@ -19,9 +20,6 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
-
-// modal
-import Modal from "../components/modal/Modal"
 
 
 const Campaign = () => {
@@ -250,7 +248,7 @@ const Campaign = () => {
                   <ShareIcon />
                 </IconButton>
                 <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <Share id={campaign.id} />
+                  <Share id={campaign.id} type="campaign" />
                 </Modal>
               </div>
             </CardActions>
