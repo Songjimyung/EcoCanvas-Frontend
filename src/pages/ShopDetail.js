@@ -44,12 +44,12 @@ const ShopDetail = () => {
         }
       })
       .then((result) => {
-        
-        
+
+
         window.location.reload();
       })
       .catch((error) => {
-        
+
         alert(error.message);
       });
   };
@@ -63,22 +63,15 @@ const ShopDetail = () => {
     const fetchProduct = async () => {
       try {
 
-        const token = localStorage.getItem('access');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`);
 
-
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`,
-          { headers }
-        );
         if (response.status === 200) {
-          
+
           setProduct(response.data);
           setLoading(false);
         }
       } catch (error) {
-        
+
         setLoading(false);
       }
 

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function BuyProduct() {
+
   const [phonenum, setPhoneNum] = useState('');
   const phoneRef = useRef();
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function BuyProduct() {
     setIsOpen((prev) => !prev);
   };
   const handleComplete = (data) => {
-    
+
     setAddress(data.address);
     setZipcode(data.zonecode);
     setIsComplete(true);
@@ -55,24 +56,29 @@ export default function BuyProduct() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      try {
-        const token = localStorage.getItem('access');
+      const token = localStorage.getItem('access');
+      if (token) {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const result = await response.json();
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/${productId}/`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const result = await response.json();
-        
-        setProduct(result);
-      } catch (error) {
-        
+          setProduct(result);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        alert("로그인이 필요합니다.")
+        window.location.replace('/login')
       }
     };
     fetchProduct();
   }, [productId]);
+
   useEffect(() => {
     // num 값이 변경될 때마다 productPrice 업데이트
     setProductPrice(Product ? Product.product_price * num : 0);
@@ -84,11 +90,11 @@ export default function BuyProduct() {
         if (token) {
           const payload = jwtDecode(token);
           const userId = payload.user_id;
-          
+
           setUserId(userId);
         }
       } catch (error) {
-        
+
       }
     };
     fetchUserId();
@@ -115,7 +121,7 @@ export default function BuyProduct() {
     e.preventDefault();
     const token = localStorage.getItem('access');
 
-    
+
     const formData = new FormData();
     formData.append('zip_code', isComplete ? zipcode : e.target.elements.zip_code.value);
     formData.append('address', isComplete ? Address : e.target.elements.address.value);
@@ -148,12 +154,12 @@ export default function BuyProduct() {
         }
       })
       .then((result) => {
-        
+
         alert("상품 주문 완료");
         navigate('/mypage/myorders');
       })
       .catch((error) => {
-        
+
         alert(error.message);
       });
   };
@@ -170,7 +176,7 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-          
+
           const addressInfo = {
             receiver_name: result.receiver_name,
             receiver_number: result.receiver_number,
@@ -185,7 +191,7 @@ export default function BuyProduct() {
           }));
         }
       } catch (error) {
-        
+
       }
     };
 
