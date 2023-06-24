@@ -81,9 +81,9 @@ const Shop = () => {
       setProductList(response.data.results);
       const totalPages = Math.ceil(response.data.count / 6);
       setTotalPages(totalPages);
-      
+
     } catch (error) {
-      
+
     }
   }, [categoryId, sortBy, currentPage, searchQuery]);
 
@@ -92,7 +92,7 @@ const Shop = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shop/categorys/list/`);
       setCategoryList(response.data);
     } catch (error) {
-      
+
     }
   };
 

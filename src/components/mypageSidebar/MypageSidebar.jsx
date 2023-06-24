@@ -9,7 +9,10 @@ function Sidebar() {
   const [userId, setUserId] = useState();
 
   const getImageUrl = (imagePath) => {
-    return `http://localhost:8000${imagePath}`;
+    if (process.env.NODE_ENV === "development") {
+      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
+    }
+    return `${imagePath}`;
   };
   const onErrorImg = (e) => {
     e.target.src = profile_default_image;

@@ -24,7 +24,6 @@ import Pagination from '@mui/material/Pagination';
 import Modal from "../components/modal/Modal"
 
 
-
 const Campaign = () => {
   const token = localStorage.getItem('access')
 

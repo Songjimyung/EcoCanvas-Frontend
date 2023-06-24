@@ -159,7 +159,7 @@ export default function ProductDetail() {
                 image
                   ? image
                   : product.images
-                  ? `${process.env.REACT_APP_BACKEND_URL}${product.images}`
+                  ? `${product.images}`
                   : product_default_img
               }
               alt={product.name}
@@ -259,7 +259,7 @@ export default function ProductDetail() {
                   image
                     ? image
                     : product.images
-                    ? `${process.env.REACT_APP_BACKEND_URL}${product.images}`
+                    ? `${product.images}`
                     : product_default_img
                 }
                 alt={product.name}
