@@ -21,7 +21,7 @@ const NotificationHistory = () => {
       const token = localStorage.getItem('access');
 
       try {
-        let url = `${process.env.REACT_APP_BACKEND_URL}/users/notifications/`;
+        let url = `${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`;
         url += `?page=${currentPage}`;
 
         const response = await axios.get(url, {
@@ -32,9 +32,9 @@ const NotificationHistory = () => {
         setNotifications(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        
+
       } catch (error) {
-        
+
       }
     };
 
@@ -44,38 +44,38 @@ const NotificationHistory = () => {
   const handleConfirmClick = (notificationId) => {
     const token = localStorage.getItem('access');
 
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/users/notifications/`, {
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
       data: { notification_id: notificationId },
       headers: {
         'Authorization': `Bearer ${token}`
       }
     })
       .then(() => {
-        
+
         alert("알림 삭제 완료")
         window.location.reload();
       })
       .catch((error) => {
 
-        
+
       });
   };
 
   const handleDeleteAllClick = () => {
     const token = localStorage.getItem('access');
 
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/users/notifications/`, {
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     })
       .then(() => {
-        
+
         alert("알림 일괄 삭제 완료");
         setNotifications([]);
       })
       .catch((error) => {
-        
+
       });
   };
 

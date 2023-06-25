@@ -45,7 +45,7 @@ const ShopDetail = () => {
       })
       .then((result) => {
 
-
+        alert("재입고 신청이 완료 되었습니다")
         window.location.reload();
       })
       .catch((error) => {
