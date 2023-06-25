@@ -9,9 +9,6 @@ function Sidebar() {
   const [userId, setUserId] = useState();
 
   const getImageUrl = (imagePath) => {
-    if (process.env.NODE_ENV === "development") {
-      return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
-    }
     return `${imagePath}`;
   };
   const onErrorImg = (e) => {
