@@ -2,10 +2,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import './chatDetail.css'
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
 import Messages from "./messages/messages";
 
-export default function ChatDetail() {
+export default function ChatDetail(room) {
     const [messages, setMessages] = useState([])
     const chatMessageInputRef = useRef(null);
     const chatMessageSendRef = useRef(null);
@@ -15,9 +14,7 @@ export default function ChatDetail() {
     const userId = payload.user_id
     const email = payload.email
     const token = localStorage.getItem('access')
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get('id');
+    const id = room.id
     const [roomId, setRoomId] = useState('');
 
     useEffect(() => {
