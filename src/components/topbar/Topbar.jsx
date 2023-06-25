@@ -28,14 +28,14 @@ export default function Topbar() {
     setNotificationMessage(message);
     setOpen(true);
     setNotificationCount((prevCount) => prevCount + 1);
-    
+
   };
   useEffect(() => {
-    const newSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/restock/`); // WebSocket 연결 URL
+    const newSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/notification/`); // WebSocket 연결 URL
     setSocket(newSocket);
 
     newSocket.onopen = () => {
-      
+      console.log("연결")
 
       // notification_group 그룹 구독 요청
       newSocket.send(
@@ -47,11 +47,13 @@ export default function Topbar() {
     };
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log(data)
       const message = data.message;
+      console.log(message)
       handleSnackbarOpen(message);
     };
     newSocket.onclose = () => {
-      
+
     };
 
     return () => {
@@ -85,11 +87,6 @@ export default function Topbar() {
           </Link>
         </div>
         <div className="_topbarMenu">
-          <h3 className="_topbarTitle">
-            <Link to="/" className="_topbarTitle">
-              Home
-            </Link>
-          </h3>
           <h3 className="_topbarTitle">
             <Link to="/campaign" className="_topbarMainTitle">
               지구의 날

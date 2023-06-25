@@ -5,66 +5,67 @@ import Modal from "../../components/modal/Modal";
 import ChatDetail from "../chatDetail/ChatDetail";
 
 export default function ChatList() {
-    const [chatList, setChatList] = useState([]);
-    const [userList, setUserList] = useState([]);
+  const [chatList, setChatList] = useState([]);
+  const [userList, setUserList] = useState([]);
 
-    useEffect(() => {
-        const getChatList = async () => {
-            const token = localStorage.getItem('access');
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chat/info/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const result = await response.json();
-            setChatList(result);
-        };
-
-        getChatList();
-    }, []);
-
-    useEffect(() => {
-        const getUserData = async () => {
-            const userIds = chatList.map(chatItem => chatItem.advisee);
-            const token = localStorage.getItem('access');
-            const fetchUserPromises = userIds.map(async userId => {
-                try {
-                    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}/`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                    });
-                    const result = await response.json();
-                    return result;
-                } catch (error) {
-                    console.error(error);
-                    return null;
-                }
-            });
-            const users = await Promise.all(fetchUserPromises);
-            setUserList(users);
-        };
-
-        getUserData();
-    }, [chatList]);
-
-    const [chatModalOpen, setChatModalOpen] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState(null);
-    const openChatModal = (userId) => {
-        setSelectedUserId(userId);
-        setChatModalOpen(true);
-    };
-        const closeChatModal = () => {
-        setSelectedUserId(null);
-        setChatModalOpen(false);
+  useEffect(() => {
+    const getChatList = async () => {
+      const token = localStorage.getItem('access');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chat/info/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const result = await response.json();
+      console.log(result)
+      setChatList(result);
     };
 
-        
-    return (
+    getChatList();
+  }, []);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userIds = chatList.map(chatItem => chatItem.advisee);
+      const token = localStorage.getItem('access');
+      const fetchUserPromises = userIds.map(async userId => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}/`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+          });
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+      });
+      const users = await Promise.all(fetchUserPromises);
+      setUserList(users);
+    };
+
+    getUserData();
+  }, [chatList]);
+
+  const [chatModalOpen, setChatModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const openChatModal = (userId) => {
+    setSelectedUserId(userId);
+    setChatModalOpen(true);
+  };
+  const closeChatModal = () => {
+    setSelectedUserId(null);
+    setChatModalOpen(false);
+  };
+
+
+  return (
     <div>
       <h1>Chat List</h1>
       {userList.map((user, index) => (
@@ -77,7 +78,7 @@ export default function ChatList() {
         </div>
       ))}
     </div>
-    )
+  )
 }
 
 export { ChatList };

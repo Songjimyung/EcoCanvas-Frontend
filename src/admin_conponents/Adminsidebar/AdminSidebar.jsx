@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./admin_sidebar.css";
 import HouseSharpIcon from "@mui/icons-material/HouseSharp";
 import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp";
@@ -6,8 +6,57 @@ import LeaderboardSharpIcon from "@mui/icons-material/LeaderboardSharp";
 import GroupSharpIcon from "@mui/icons-material/GroupSharp";
 import PermPhoneMsgSharpIcon from "@mui/icons-material/PermPhoneMsgSharp";
 import { Link } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function Adminsidebar() {
+  const [open, setOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [changeColor, setChangeColor] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleSnackbarOpen = (message) => {
+    setNotificationMessage(message);
+    setOpen(true);
+    setChangeColor(true);
+  }
+  const handleSidebarItemClick = () => {
+    setChangeColor(false)
+  }
+
+  useEffect(() => {
+    const notificationSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/chat/alarm/`);
+
+    notificationSocket.onopen = () => {
+      // notification_admin_group 그룹 구독 요청
+      notificationSocket.send(
+        JSON.stringify({
+          command: "subscribe",
+          group: "notification_admin_group",
+        })
+      );
+    };
+
+    notificationSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const message = data.message;
+      handleSnackbarOpen(message);
+    };
+
+    notificationSocket.onclose = () => {
+
+    };
+
+
+    return () => {
+      notificationSocket.close();
+    };
+  }, []);
+
   return (
     <div className="adminsidebar">
       <div className="sidebarWrapper">
@@ -67,7 +116,8 @@ export default function Adminsidebar() {
               </li>
             </Link>
             <Link to="/chats" className="link">
-              <li className="sidebarListItem">
+              <li className={`sidebarListItem ${changeColor ? "highlighted" : ""}`}
+                onClick={handleSidebarItemClick}>
                 <PermPhoneMsgSharpIcon className="sidebarIcon" />
                 상담
               </li>
@@ -103,6 +153,30 @@ export default function Adminsidebar() {
             </Link>
           </ul>
         </div>
+      </div>
+      <div>
+        <Snackbar
+          open={open}
+          autoHideDuration={9000}
+          onClose={handleClose}
+          message={notificationMessage}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+          sx={{
+            "& .MuiSnackbarContent-root": {
+              backgroundColor: "midnightblue",
+              color: "white",
+            },
+          }}
+        />
       </div>
     </div>
   );

@@ -45,3 +45,8 @@
   text-decoration: none;
   color: inherit;
 }
+
+.highlighted {
+  color: red;
+  /* Change the color to the desired highlighted color */
+}

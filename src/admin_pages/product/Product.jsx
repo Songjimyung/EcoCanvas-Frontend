@@ -57,7 +57,7 @@ export default function ProductDetail() {
         } else {
           setIsSoldOut(false);
         }
-      } catch (error) { }
+      } catch (error) {}
     };
     fetchProduct();
   }, [productId]);
@@ -129,7 +129,7 @@ export default function ProductDetail() {
       } else {
         alert("삭제 실패!");
       }
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleImageUpload = (event) => {
     const files = event.target.files;
@@ -159,8 +159,8 @@ export default function ProductDetail() {
                 image
                   ? image
                   : product.images
-                    ? `${process.env.REACT_APP_BACKEND_URL}${product.images}`
-                    : product_default_img
+                  ? `${product.images}`
+                  : product_default_img
               }
               alt={product.name}
               style={{ height: "30%", width: "30%" }}
@@ -239,8 +239,8 @@ export default function ProductDetail() {
               {isSoldOut
                 ? "품절"
                 : product && product.product_price
-                  ? `${product.product_price.toLocaleString()}원`
-                  : "N/A"}
+                ? `${product.product_price.toLocaleString()}원`
+                : "N/A"}
             </label>
             <input
               type="text"
@@ -259,8 +259,8 @@ export default function ProductDetail() {
                   image
                     ? image
                     : product.images
-                      ? `${process.env.REACT_APP_BACKEND_URL}${product.images}`
-                      : product_default_img
+                    ? `${product.images}`
+                    : product_default_img
                 }
                 alt={product.name}
                 style={{ height: "300px", width: "300px" }}
