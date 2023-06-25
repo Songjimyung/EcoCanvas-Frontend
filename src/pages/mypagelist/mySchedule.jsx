@@ -1,40 +1,47 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../components/mypageSidebar/mypageSidebar.css'
 import Sidebar from '../../components//mypageSidebar/MypageSidebar';
+import Pagination from "@mui/material/Pagination";
+import Grid from "@mui/material/Grid";
 
 function ReceiptList() {
- const getUserFromLocalStorage = () => {
-    const payload = localStorage.getItem('payload');
-     if (payload) {
-        const payload_data = JSON.parse(payload);
-        const user_id = payload_data.user_id;
-        return user_id;
-        }
-        return null;
-     };
-    
- const user_id = getUserFromLocalStorage();
- const token = localStorage.getItem('access');
+
+ const [currentPage, setCurrentPage] = useState(1);
+ const [totalPages, setTotalPages] = useState(0);   
  const [receipts, setReceipts] = useState([]);
 
- const fetchReceipts = useCallback(() => {
-    
-      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/${user_id}`,
+
+  useEffect(() => {
+    const fetchReceipts = async() => {
+          
+      const token = localStorage.getItem('access');
+
+      axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/receipt/?page=${currentPage}`,
       {headers: {
           'Authorization': `Bearer ${token}`,
-         }})
+         }
+        })
          .then((response) => {
-            setReceipts(response.data);
-            
+            setReceipts(response.data.results);
+            const totalPages = Math.ceil(response.data.count / 6);
+            setTotalPages(totalPages);
          })
          .catch((error) => {
+          console.log(error)
             
          });
-      }, [user_id, token]);
+        }
+         fetchReceipts();
+      }, [currentPage]);
 
- 
-    const cancelSchedule = (receiptId) => {
+      const handlePageChange = async (event, page) => {
+        setCurrentPage(page);
+      };
+
+     const cancelSchedule = (receiptId) => {
+      const token = localStorage.getItem('access');
+
       axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/detail/${receiptId}`,
       {headers: {
          'Authorization': `Bearer ${token}`,
@@ -43,7 +50,7 @@ function ReceiptList() {
           // 취소 요청 성공 시 처리
           
           alert(response.data.message);
-          fetchReceipts();
+          window.location.reload();
           
         })
         .catch((error) => {
@@ -52,9 +59,6 @@ function ReceiptList() {
           alert(error)
         });
     };
-   useEffect(() => {
-      fetchReceipts();
-   }, [fetchReceipts]);
 
   return (
     <div>
@@ -89,7 +93,15 @@ function ReceiptList() {
                 <h2>펀딩한 캠페인이 없습니다.</h2>
             )}
         </tbody>
-      </table>        
+      </table>   
+      <Grid container justifyContent="center">
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            color="primary"
+            onChange={handlePageChange}
+          />
+        </Grid>     
       </div>
      </div>
     </div>

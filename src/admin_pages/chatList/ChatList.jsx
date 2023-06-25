@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import './chatList.css'
 import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import Modal from "../../components/modal/Modal";
+import ChatDetail from "../chatDetail/ChatDetail";
 
 export default function ChatList() {
   const [chatList, setChatList] = useState([]);
@@ -51,15 +52,29 @@ export default function ChatList() {
 
     getUserData();
   }, [chatList]);
+
+  const [chatModalOpen, setChatModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const openChatModal = (userId) => {
+    setSelectedUserId(userId);
+    setChatModalOpen(true);
+  };
+  const closeChatModal = () => {
+    setSelectedUserId(null);
+    setChatModalOpen(false);
+  };
+
+
   return (
     <div>
       <h1>Chat List</h1>
       {userList.map((user, index) => (
         <div key={index}>
           <h2>{user.email}</h2>
-          <Link to={`/chat?id=${chatList[index].id}`}>
-            <Button style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>채팅</Button>
-          </Link>
+          <Button onClick={() => openChatModal(user.id)}>상담하기</Button>
+          <Modal open={chatModalOpen} close={closeChatModal} header="상담">
+            {selectedUserId && <ChatDetail id={selectedUserId} />}
+          </Modal>
         </div>
       ))}
     </div>
