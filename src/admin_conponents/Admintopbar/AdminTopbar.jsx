@@ -3,9 +3,11 @@ import "./Admintopbar.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+
 export default function AdminTopbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     // 로그인 상태를 localstorage에서 확인
@@ -14,6 +16,17 @@ export default function AdminTopbar() {
       setIsLoggedIn(true);
     }
   }, []);
+
+
+  useEffect(() => {
+    // 로그인 상태를 localstorage에서 확인
+    const loggedInStatus = localStorage.getItem("access");
+    if (loggedInStatus) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");

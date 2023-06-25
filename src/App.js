@@ -132,7 +132,7 @@ function App() {
             <Route path="/chats" element={<ChatList />} />
             <Route path="/mypage/mypayments" element={<RegisterPayment />}></Route>
             <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
-            <Route path="/chat" element={<ChatDetail />} />
+            <Route path="/chats" element={<ChatDetail />} />
             <Route path="/notification" element={<NotificationHistory />} />
           </Routes>
         </div>
