@@ -223,7 +223,7 @@ const CampaignDetail = () => {
       selected_card: selectedCard.cardId
     };
     try {
-      await axios.post(`http://localhost:8000/payments/schedule/`, requestData,
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/`, requestData,
         {
           headers: {
             "Authorization": `Bearer ${token}`
