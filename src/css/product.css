@@ -111,7 +111,7 @@ input {
   background-color: #e6eff8;
 }
 
-.addProductButton {
+.PayProductButton {
   background-color: #4caf50;
   color: #fff;
   padding: 10px 15px;
@@ -122,7 +122,7 @@ input {
   margin: auto;
 }
 
-.addProductButton:hover {
+.PayProductButton:hover {
   background-color: #75bc79;
   width: 100px;
 }

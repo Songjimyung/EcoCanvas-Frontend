@@ -152,6 +152,7 @@ export default function BuyProduct() {
 
       if (response.ok) {
         await response.json();
+        console.log(response)
         navigate('/mypage/myorders');
       } else {
         const data = await response.json();
@@ -461,12 +462,9 @@ export default function BuyProduct() {
                     <p>주문 수량 : {num}</p>
                     <p>총 주문 금액 : {productPrice.toLocaleString()} 원</p>
                   </div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className="addProductButton"
-                    sx={{ color: "white", margin: "auto" }}
-                  >구매하기</Button>
+                  <button
+                    className="PayProductButton"
+                  >구매하기</button>
                 </form>
               </div>
             </div>
