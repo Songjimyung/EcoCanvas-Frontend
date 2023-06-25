@@ -14,7 +14,29 @@ jobs:
       # npm 패키지 설치
       - name: install npm dependencies
         run: yarn install
-        
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL" >> .env.production
+          echo "REACT_APP_FRONTEND_URL=$REACT_APP_FRONTEND_URL" >> .env.production
+          echo "REACT_APP_WEBSOCK_URL=$REACT_APP_WEBSOCK_URL" >> .env.production
+          echo "REACT_APP_KAKAO_REST_API_KEY=$REACT_APP_KAKAO_REST_API_KEY" >> .env.production
+          echo "REACT_APP_KAKAOSHARE_KEY=$REACT_APP_KAKAOSHARE_KEY" >> .env.production
+          echo "REACT_APP_S3_URL=$REACT_APP_S3_URL" >> .env.production
+          echo "REACT_APP_ACCESS_KEY=$REACT_APP_ACCESS_KEY" >> .env.production
+          echo "REACT_APP_SECRET_ACCESS_KEY=$REACT_APP_SECRET_ACCESS_KEY" >> .env.production
+          echo "REACT_APP_REGION=$REACT_APP_REGION" >> .env.production
+          echo "REACT_APP_BUCKET_NAME=$REACT_APP_BUCKET_NAME" >> .env.production
+        env:
+          REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+          REACT_APP_FRONTEND_URL: ${{ secrets.REACT_APP_FRONTEND_URL }}
+          REACT_APP_WEBSOCK_URL: ${{ secrets.REACT_APP_WEBSOCK_URL }}
+          REACT_APP_KAKAO_REST_API_KEY: ${{ secrets.REACT_APP_KAKAO_REST_API_KEY }}
+          REACT_APP_KAKAOSHARE_KEY: ${{ secrets.REACT_APP_KAKAOSHARE_KEY }}
+          REACT_APP_S3_URL: ${{ secrets.REACT_APP_S3_URL }}
+          REACT_APP_ACCESS_KEY: ${{ secrets.REACT_APP_ACCESS_KEY }}
+          REACT_APP_SECRET_ACCESS_KEY: ${{ secrets.REACT_APP_SECRET_ACCESS_KEY }}
+          REACT_APP_REGION: ${{ secrets.REACT_APP_REGION }}
+          REACT_APP_BUCKET_NAME: ${{ secrets.REACT_APP_BUCKET_NAME }}
       # 리액트 빌드
       - name: build react
         run: npm run build

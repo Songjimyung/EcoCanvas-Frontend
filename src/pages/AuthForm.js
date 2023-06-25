@@ -10,6 +10,7 @@ const AuthForm = ({ type }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [re_password, setPasswordCheck] = useState('');
+  const time_check = String(new Date().getFullYear()) + String(new Date().getMonth() + 1) + String(new Date().getDate());
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +21,7 @@ const AuthForm = ({ type }) => {
       username,
       password,
       re_password,
+      time_check
     };
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/`, signUpData);
@@ -36,20 +38,28 @@ const AuthForm = ({ type }) => {
         alert(error.response.data['re_password']);
       } else if (error.response.data['username']) {
         alert(error.response.data['username']);
+      } else if (error.response.data['empty']) {
+        alert(error.response.data['empty'])
+      } else if (error.response.data['not_match']) {
+        alert(error.response.data['not_match'])
       }
+
     }
   };
   const handleEmailFormSubmit = async (e) => {
     e.preventDefault();
     const emailSendData = {
       email,
+      time_check
     }
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/email_code/`, emailSendData);
 
       alert(response.data['message'])
     } catch (error) {
-      
+      if (error.response.data['email']) {
+        alert(error.response.data['email'])
+      }
     }
   };
   const handleLoginFormSubmit = async (e) => {
