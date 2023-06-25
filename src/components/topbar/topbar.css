@@ -23,14 +23,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
+  width: 430px;
 }
 
 ._topbarRight {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 30%;
+  width: 250px;
 }
 
 ._topbarLogFunction {
@@ -48,7 +48,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 60%;
+  width: 220px;
 }
 
 ._topbarTitle {
@@ -114,4 +114,104 @@
 
 .alinBox {
   display: flex;
+}
+
+@media (max-width: 900px) {
+  ._topbar {
+    padding: 15px;
+  }
+
+  ._topbarLeft {
+    width: auto;
+  }
+
+  ._topbarRight {
+    width: auto;
+  }
+
+  ._topbarLogFunction {
+    margin-right: 10px;
+  }
+
+  ._topbarLogo {
+    font-size: 1.5rem;
+  }
+
+  ._topbarMenu {
+    margin-left: 10px;
+    width: 170px;
+  }
+
+  ._topbarTitle {
+    font-size: 1.2rem;
+  }
+
+  ._signBtn {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 540px) {
+  ._topbar {
+    padding: 15px;
+  }
+
+  ._topbarLeft {
+    width: auto;
+  }
+
+  ._topbarRight {
+    width: auto;
+  }
+
+  ._topbarLogFunction {
+    margin-right: 10px;
+  }
+
+  ._topbarLogo {
+    font-size: 1.2rem;
+  }
+
+  ._topbarTitle {
+    font-size: 1.0rem;
+  }
+
+  ._signBtn {
+    font-size: 1.0rem;
+  }
+}
+
+@media (max-width: 480px) {
+  ._topbar {
+    padding: 15px;
+  }
+
+  ._topbarLeft {
+    width: auto;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ._topbarRight {
+    width: auto;
+  }
+
+  ._topbarLogFunction {
+    margin-right: 10px;
+  }
+
+  ._topbarLogo {
+    font-size: 1.2rem;
+    display: none;
+  }
+
+  ._topbarTitle {
+    font-size: 1.0rem;
+  }
+
+  ._signBtn {
+    font-size: 1.0rem;
+  }
 }
