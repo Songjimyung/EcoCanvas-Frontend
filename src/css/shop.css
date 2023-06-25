@@ -31,7 +31,6 @@
 
 @media (max-width: 800px) {
   .productCardContainer {
-    display: flex;
     flex-direction: column;
   }
 

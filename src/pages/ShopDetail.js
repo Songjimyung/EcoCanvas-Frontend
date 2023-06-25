@@ -100,7 +100,7 @@ const ShopDetail = () => {
   };
 
   return (
-    <div className="product-detail-wrap" >
+    <div className="productContainer" >
       {loading ? (
         <Grid container alignItems="center" justifyContent="center" style={{ height: '100%' }}>
           <CircularProgress />
@@ -110,9 +110,9 @@ const ShopDetail = () => {
           <img
             src={product.images && product.images.length > 0 ? getImageUrl(product.images[0]['image_file']) : product_default_img}
             alt={product.name}
-            className='product-image'
+            className='productImage'
           />
-          <div className="product-detail-info">
+          <div className="productDetailInfo">
             <Typography variant="h3" gutterBottom>
               {product.product_name}
             </Typography>
@@ -134,20 +134,20 @@ const ShopDetail = () => {
               </Typography>
             ) : (
               <>
-                <Link to={`/product/buy/${product.id}`}>
-                  <Button
-                    variant="contained"
-                    className='buyBtn'
-                    sx={{
-                      color: 'white',
-                      height: '50px',
-                      width: '100px',
-                      fontSize: '1.1rem'
-                    }}>구매하기</Button>
-                </Link>
-                <IconButton>
+                <hr style={{ marginBottom: "20px" }} />
+                <Button
+                  variant="outlined"
+                  color="gray"
+                  sx={{
+                    height: '50px',
+                    fontSize: '1.2rem',
+                    color: 'gray',
+                    marginRight: '30px',
+                  }}
+                >
+                  장바구니 담기
                   <ShoppingCart />
-                </IconButton>
+                </Button>
                 <Button
                   variant="outlined"
                   color="gray"
@@ -164,10 +164,20 @@ const ShopDetail = () => {
                 <Modal open={shareModalOpen} close={closeShareModal} header="공유하기">
                   <Share id={productId} type="product" />
                 </Modal>
+                <Link to={`/product/buy/${product.id}`}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: 'white',
+                      height: '50px',
+                      width: '100px',
+                      fontSize: '1.1rem'
+                    }}>구매하기</Button>
+                </Link>
               </>
             )}
             {product.sold_out && (
-              <Button variant="contained" className='buyBtn' onClick={handleFormSubmit}>
+              <Button variant="contained" onClick={handleFormSubmit}>
                 재입고 알림신청
                 <IconButton>
                   <NotificationAddRoundedIcon />

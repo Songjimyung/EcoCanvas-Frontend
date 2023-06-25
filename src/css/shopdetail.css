@@ -1,14 +1,31 @@
-.product-detail-wrap {
-    margin-top: 50px;
+.productContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin: 50px;
+    justify-content: center;
 }
 
-.product-image {
-    width: 100%;
+.productImage {
+    min-width: 45%;
+    width: 90%;
     border-radius: 20px;
+    margin: auto;
 }
 
-.product-detail-info {
-    text-align: left;
+.productDetailInfo {
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+    .productContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .productImage {
+        margin-bottom: 30px;
+    }
 }

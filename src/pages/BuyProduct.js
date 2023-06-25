@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import '../css/product.css';
 import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
+import { Button } from '@mui/material'
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
@@ -240,7 +241,7 @@ export default function BuyProduct() {
 
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 120 },
+    { field: 'id', headerName: 'ID', width: 70 },
     {
       field: 'product_name',
       headerName: 'Product',
@@ -255,7 +256,7 @@ export default function BuyProduct() {
       },
     },
     { field: 'product_desc', headerName: '상품정보', width: 200 },
-    { field: 'product_price', headerName: 'Price', width: 200 },
+    { field: 'product_price', headerName: 'Price', width: 100 },
     {
       field: 'action',
       headerName: '수량',
@@ -263,9 +264,18 @@ export default function BuyProduct() {
       renderCell: () => {
         return (
           <>
-            <button onClick={increase}>+1</button>
-            <button onClick={decrease}>-1</button>
-            <p>{num}</p>
+            <input
+              type="number"
+              value={num}
+              onChange={(e) => setNumber(parseInt(e.target.value))}
+              style={{ margin: "2px 20px 0 0", width: "50px" }}
+            />
+            <button onClick={increase} className="num-button">
+              +1
+            </button>
+            <button onClick={decrease} className="num-button" style={{ marginLeft: "5px" }}>
+              -1
+            </button>
           </>
         );
       },
@@ -277,6 +287,7 @@ export default function BuyProduct() {
       {Product ? (
         <>
           <div className="productList">
+            <h1>주문 목록</h1>
             <DataGrid
               initialState={{
                 pagination: { paginationModel: { pageSize: 5 } }
@@ -285,7 +296,9 @@ export default function BuyProduct() {
               disableSelectionOnClick
               columns={columns}
               pageSizeOptions={[5, 10, 15]}
-              checkboxSelection
+              sx={{
+                marginTop: "20px"
+              }}
             />
           </div>
           <div className='product-detail'>
@@ -315,7 +328,11 @@ export default function BuyProduct() {
                   <div className="addOrderItem">
                     <label>주소</label>
                     <input type="address" name="address" value={isComplete ? Address : formData.address} onChange={handleInputChange} className="order-address" />
-                    <Button type="primary" className="addProductButton" onClick={onToggleModal}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="addProductButton"
+                      onClick={onToggleModal}>
                       주소 검색
                     </Button>
                     {isOpen && (
@@ -342,8 +359,11 @@ export default function BuyProduct() {
                   </div>
                   <div className='check-order'>
                     <p>주문 수량 : {num}</p>
-                    <p>총 주문 금액 : {productPrice.toLocaleString()}won</p>
-                    <button className="addProductButton">구매하기</button>
+                    <p>총 주문 금액 : {productPrice.toLocaleString()} 원</p>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="addProductButton">구매하기</Button>
                   </div>
                 </form>
               </div>
