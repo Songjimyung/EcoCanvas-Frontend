@@ -26,6 +26,7 @@ jobs:
           echo "REACT_APP_SECRET_ACCESS_KEY=$REACT_APP_SECRET_ACCESS_KEY" >> .env.production
           echo "REACT_APP_REGION=$REACT_APP_REGION" >> .env.production
           echo "REACT_APP_BUCKET_NAME=$REACT_APP_BUCKET_NAME" >> .env.production
+          echo "NODE_ENV=$NODE_ENV" >> .env.production
         env:
           REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
           REACT_APP_FRONTEND_URL: ${{ secrets.REACT_APP_FRONTEND_URL }}
