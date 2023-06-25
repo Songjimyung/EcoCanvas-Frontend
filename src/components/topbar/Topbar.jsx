@@ -86,11 +86,6 @@ export default function Topbar() {
         </div>
         <div className="_topbarMenu">
           <h3 className="_topbarTitle">
-            <Link to="/" className="_topbarTitle">
-              Home
-            </Link>
-          </h3>
-          <h3 className="_topbarTitle">
             <Link to="/campaign" className="_topbarMainTitle">
               지구의 날
             </Link>
