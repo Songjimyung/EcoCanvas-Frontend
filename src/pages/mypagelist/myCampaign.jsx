@@ -52,7 +52,7 @@ const MyPostCampaign = () => {
               <div className="card" key={index}>
                 <Link to={`/campaign/${card.id}`}>
                   {card.image ? (
-                    <img src={`${process.env.REACT_APP_BACKEND_URL}${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
+                    <img src={`${card.image}`} alt={card.title} style={{ width: '200px', height: '200px' }} />
                   ) : (
                     <img src={campaign_default_image} alt="Default Campaign" style={{ width: '200px', height: '200px' }} />
                   )}
