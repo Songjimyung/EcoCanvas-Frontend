@@ -470,7 +470,7 @@ const CampaignDetail = () => {
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
-                  <div className="campaignFundPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}% 달성</div>
+                  <div className="campaignFundPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal)*100)}% 달성</div>
                   <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
