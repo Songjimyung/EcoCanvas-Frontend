@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/campaign.css"
 import campaign_default_image from "../img/campaign_default_image.jpg"
 import CommentForm from "../campaign/CommentForm";
 import SelectCard from "../selectcard/selectcard";
+import EditMenu from "../components/editmenu/EditMenu";
+import Share from "../components/share/Share";
+import Modal from "../components/modal/Modal"
+import PaiginationComponent from "../components/pagination/Pagination";
 
 // MUI
 import PropTypes from 'prop-types';
@@ -17,12 +21,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import EditMenu from "../components/editmenu/EditMenu";
-import Share from "../components/share/Share";
-
-// modal
-import Modal from "../components/modal/Modal"
-
 
 
 // Mui Tab
@@ -38,7 +36,11 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 5 }}>
+        <Box sx={{
+          p: 10,
+          pt: 5,
+          pb: 5,
+        }}>
           {children}
         </Box>
       )}
@@ -94,6 +96,23 @@ const CampaignDetail = () => {
   const [campaignReviews, setCampaignReview] = useState('');
   const [campaignComments, setCampaignComment] = useState('');
 
+  // 댓글 Pagination
+  const [commentPage, setCommentPage] = useState(1);
+  const [commentCount, setCommentCount] = useState(0);
+  const commentPerPage = 5;
+
+  const handleCommentPage = (page) => {
+    setCommentPage(page);
+  };
+  // 리뷰 Pagination
+  const [reviewPage, setReviewPage] = useState(1);
+  const [reviewCount, setReviewCount] = useState(0);
+  const reviewPerPage = 5;
+
+  const handleReviewPage = (page) => {
+    setReviewPage(page);
+  };
+
   // token
   const token = localStorage.getItem('access');
   const payload = localStorage.getItem('payload');
@@ -127,31 +146,34 @@ const CampaignDetail = () => {
   }, [id]);
 
   // 캠페인 댓글 GET
-  const axiosCampaignComment = async () => {
+  const axiosCampaignComment = useCallback(async (page) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`);
-      setCampaignComment(response.data);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/?page=${page}`);
+      console.log(response);
+      setCampaignComment(response.data.results);
+      setCommentCount(response.data.count);
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [id]);
   useEffect(() => {
-    axiosCampaignComment();
-    // eslint-disable-next-line
-  }, []);
+    axiosCampaignComment(commentPage);
+  }, [commentPage, axiosCampaignComment]);
 
   // 캠페인 후기 GET
-  useEffect(() => {
-    const axiosCampaignReview = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/`);
-        setCampaignReview(response.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    axiosCampaignReview();
+  const axiosCampaignReview = useCallback(async (page) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/?page=${page}`);
+      console.log(response);
+      setCampaignReview(response.data.results);
+      setReviewCount(response.data.count);
+    } catch (e) {
+      console.error(e);
+    }
   }, [id]);
+  useEffect(() => {
+    axiosCampaignReview(reviewPage);
+  }, [reviewPage, axiosCampaignReview]);
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
@@ -179,7 +201,7 @@ const CampaignDetail = () => {
             "Authorization": `Bearer ${token}`,
           },
         });
-        axiosCampaignComment();
+        axiosCampaignComment(commentPage);
       } catch (e) {
         console.error(e);
         alert("댓글 작성에 실패했습니다.");
@@ -200,7 +222,7 @@ const CampaignDetail = () => {
 
   const openFundModal = () => {
     if (token) {
-    setFundModalOpen(true);
+      setFundModalOpen(true);
     } else {
       alert("로그인이 필요합니다.")
     }
@@ -216,7 +238,6 @@ const CampaignDetail = () => {
   };
 
   const handleFundSubmit = async () => {
-
     const requestData = {
       amount: amount,
       campaign: id,
@@ -310,7 +331,6 @@ const CampaignDetail = () => {
   // 캠페인 참여
   const [isParticipated, setIsParticipated] = useState(false);
 
-  // 캠페인 참여정보 초기값 GET
   useEffect(() => {
     const axiosParticipateStatus = async () => {
       try {
@@ -326,6 +346,7 @@ const CampaignDetail = () => {
     };
     axiosParticipateStatus();
   }, [id, token]);
+
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
     if (token) {
@@ -470,7 +491,7 @@ const CampaignDetail = () => {
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
-                  <div className="campaignFundPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal)*100)}% 달성</div>
+                  <div className="campaignFundPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal) * 100)}% 달성</div>
                   <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
@@ -624,8 +645,14 @@ const CampaignDetail = () => {
                 <h2>작성된 댓글이 없습니다.</h2>
               </div>
             )}
+            <PaiginationComponent
+              currentPage={commentPage}
+              contentPerPage={commentPerPage}
+              pageCount={commentCount}
+              handlePageChange={handleCommentPage}
+            />
             <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
-          </TabPanel>
+          </TabPanel >
           <TabPanel value={value} index={1}>
             {campaignReviews.length > 0 ? (
               campaignReviews.map((campaignReview, index) => (
@@ -634,9 +661,9 @@ const CampaignDetail = () => {
                   key={campaignReview.id}
                   onClick={() => openReviewModal(index)}
                 >
-                  <h2>
+                  <div className="campaignReviewTitle">
                     {campaignReview.title}
-                  </h2>
+                  </div>
                   <div className="campaignCommentContent">
                     {campaignReview.user}
                   </div>
@@ -646,18 +673,18 @@ const CampaignDetail = () => {
                   <hr />
 
                   <Modal open={reviewModalOpen[index] || false} close={(event) => closeReviewModal(event, index)} header="캠페인 후기">
-                    <h2>
+                    <div className="campaignReviewTitle" style={{ textAlign: "center" }}>
                       {campaignReview.title}
-                    </h2>
-                    <img className="campaignImage" src={getImageUrl(campaignReview.image)} alt="review_image" onError={onErrorImg} />
-                    <div className="campaignCommentContent">
+                    </div>
+                    <div className="campaignReviewUser">
                       {campaignReview.user}
                     </div>
+                    <div className="campaignCommentCreatedAt" style={{ textAlign: "right", marginBottom: "10px" }}>
+                      {campaignReview.created_at}
+                    </div>
+                    <img className="campaignReivewImage" src={getImageUrl(campaignReview.image)} alt="review_image" onError={onErrorImg} />
                     <div className="campaignCommentContent">
                       {campaignReview.content}
-                    </div>
-                    <div className="campaignCommentCreatedAt">
-                      {campaignReview.created_at}
                     </div>
                   </Modal>
                 </div>
@@ -668,6 +695,12 @@ const CampaignDetail = () => {
                 <p style={{ marginTop: "10px", fontSize: "0.9rem", color: "gray" }}>후기는 캠페인이 끝난 후, 마이페이지에서 작성하실 수 있습니다.</p>
               </div>
             )}
+            <PaiginationComponent
+              currentPage={reviewPage}
+              contentPerPage={reviewPerPage}
+              pageCount={reviewCount}
+              handlePageChange={handleReviewPage}
+            />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <InfoAnnounceMap text={infoAnnounce} />

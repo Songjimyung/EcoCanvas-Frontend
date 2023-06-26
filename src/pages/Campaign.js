@@ -31,6 +31,13 @@ const Campaign = () => {
   const campaignsPerPage = 6;
   const navigate = useNavigate();
 
+  // pagination
+  const handlePageChange = (event, page) => {
+    const pageNumber = parseInt(page);
+    setCurrentPage(pageNumber);
+    navigate(`?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}`);
+  };
+
   // Filter and Order with Querystring
   const [end, setEnd] = useState(null);
   const [order, setOrder] = useState("recent");
@@ -76,13 +83,6 @@ const Campaign = () => {
 
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image;
-  };
-
-  // pagination
-  const handlePageChange = (event, page) => {
-    const pageNumber = parseInt(page);
-    setCurrentPage(pageNumber);
-    navigate(`?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}`);
   };
 
   // 좋아요
