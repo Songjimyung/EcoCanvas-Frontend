@@ -149,6 +149,17 @@ const Campaign = () => {
       alert("로그인이 필요합니다.");
     }
   };
+  // 시간 변환
+  function convertDateTime(datetimeString) {
+    const datetime = new Date(datetimeString);
+    const year = datetime.getFullYear();
+    const month = datetime.getMonth() + 1;
+    const date = datetime.getDate();
+
+    const koreanDatetime = `${year}년 ${month}월 ${date}일`;
+
+    return koreanDatetime;
+  }
 
 
   return (
@@ -219,7 +230,7 @@ const Campaign = () => {
                     color="text.secondary"
                     component={'span'}
                   >
-                    {campaign.campaign_start_date.substr(0, 13)} ~ {campaign.campaign_end_date.substr(0, 13)} <br />
+                    {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
                     참여인원 : {campaign.participant_count} / {campaign.members}<br />
                     {campaign.fundings && campaign.fundings.goal !== 0 ? (
                       <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>

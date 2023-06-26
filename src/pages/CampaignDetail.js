@@ -136,6 +136,7 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
+      console.log(response)
     } catch (e) {
       console.error(e);
     }
@@ -149,7 +150,6 @@ const CampaignDetail = () => {
   const axiosCampaignComment = useCallback(async (page) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/?page=${page}`);
-      console.log(response);
       setCampaignComment(response.data.results);
       setCommentCount(response.data.count);
     } catch (e) {
@@ -164,7 +164,6 @@ const CampaignDetail = () => {
   const axiosCampaignReview = useCallback(async (page) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/review/${id}/?page=${page}`);
-      console.log(response);
       setCampaignReview(response.data.results);
       setReviewCount(response.data.count);
     } catch (e) {
@@ -454,6 +453,19 @@ const CampaignDetail = () => {
       }
     }
   }
+  // 시간 변환
+  function convertDateTime(datetimeString) {
+    const datetime = new Date(datetimeString);
+    const year = datetime.getFullYear();
+    const month = datetime.getMonth() + 1;
+    const date = datetime.getDate();
+    const hour = datetime.getHours();
+    const minutes = datetime.getMinutes();
+
+    const koreanDatetime = `${year}년 ${month}월 ${date}일 ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    return koreanDatetime;
+  }
 
   return (
     <div className="campaignContainer">
@@ -483,10 +495,10 @@ const CampaignDetail = () => {
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
               <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>
-              <div className="campaignContentBottom">캠페인 신청 시작일 : {campaign.campaign_start_date.substr(0, 13)}</div>
-              <div className="campaignContentBottom">캠페인 신청 마감일 : {campaign.campaign_end_date.substr(0, 13)}</div>
+              <div className="campaignContentBottom">캠페인 신청 시작일 : {convertDateTime(campaign.campaign_start_date)}</div>
+              <div className="campaignContentBottom">캠페인 신청 마감일 : {convertDateTime(campaign.campaign_end_date)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
-                <div className="campaignContentBottom">활동 예정일 : {campaign.activity_start_date.substr(0, 13)} ~ {campaign.activity_end_date.substr(0, 13)}</div>
+                <div className="campaignContentBottom">활동 예정일 : {convertDateTime(campaign.activity_start_date)} ~ {convertDateTime(campaign.activity_end_date)}</div>
               ) : (
                 <div className="campaignContentBottom">활동이 없는 캠페인입니다.</div>
               )}
@@ -636,7 +648,7 @@ const CampaignDetail = () => {
                   ) : <div className="campaignCommentContent">{campaignComment.content}</div>
                   }
                   <div className="campaignCommentCreatedAt">
-                    {campaignComment.created_at}
+                    {convertDateTime(campaignComment.created_at)}
                   </div>
                   <hr />
                 </div>
@@ -669,7 +681,7 @@ const CampaignDetail = () => {
                     {campaignReview.user}
                   </div>
                   <div className="campaignCommentCreatedAt">
-                    {campaignReview.created_at}
+                    {convertDateTime(campaignReview.created_at)}
                   </div>
                   <hr />
 
@@ -681,7 +693,7 @@ const CampaignDetail = () => {
                       {campaignReview.user}
                     </div>
                     <div className="campaignCommentCreatedAt" style={{ textAlign: "right", marginBottom: "10px" }}>
-                      {campaignReview.created_at}
+                      {convertDateTime(campaignReview.created_at)}
                     </div>
                     <img className="campaignReivewImage" src={getImageUrl(campaignReview.image)} alt="review_image" onError={onErrorImg} />
                     <div className="campaignCommentContent">
