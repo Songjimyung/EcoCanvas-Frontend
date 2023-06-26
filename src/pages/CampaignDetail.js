@@ -201,6 +201,7 @@ const CampaignDetail = () => {
             "Authorization": `Bearer ${token}`,
           },
         });
+        setCommentPage(commentPage);
         axiosCampaignComment(commentPage);
       } catch (e) {
         console.error(e);
@@ -403,7 +404,7 @@ const CampaignDetail = () => {
           },
         });
         alert("삭제되었습니다.");
-        axiosCampaignComment();
+        axiosCampaignComment(commentPage);
       } catch (e) {
         console.error(e)
         alert("댓글 삭제에 실패했습니다.")
@@ -433,7 +434,7 @@ const CampaignDetail = () => {
           },
         });
         setIsEditing(false);
-        axiosCampaignComment();
+        axiosCampaignComment(commentPage);
         alert("수정되었습니다.");
       } catch (e) {
         console.error(e)
