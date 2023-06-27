@@ -26,9 +26,9 @@ const MyOrder = () => {
         setMyOrderData(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        
+
       } catch (error) {
-        
+
       }
     };
     fetchOrderList();
@@ -76,7 +76,7 @@ const MyOrder = () => {
                   <td>{order.id}</td>
                   <td>{order.product}</td>
                   <td>{order.order_totalprice}</td>
-                  <td>{order["order_info"][0]["status"] || "알 수 없음"}</td>
+                  <td>{order["order_info"][0]?.status || "알 수 없음"}</td>
                   <td>
                     <button
                       className="details-button"
