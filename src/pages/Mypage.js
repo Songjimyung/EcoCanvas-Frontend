@@ -38,7 +38,6 @@ const Mypage = () => {
     }).then(response => response.json(
     ))
       .then(result => {
-        console.log(result)
         const campaigns = result.map((campaign) => ({
           id: campaign.id,
           title: campaign.title,

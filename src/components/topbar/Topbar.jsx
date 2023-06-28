@@ -35,7 +35,6 @@ export default function Topbar() {
     setSocket(newSocket);
 
     newSocket.onopen = () => {
-      console.log("연결")
 
       // notification_group 그룹 구독 요청
       newSocket.send(
@@ -47,9 +46,7 @@ export default function Topbar() {
     };
     newSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data)
       const message = data.message;
-      console.log(message)
       handleSnackbarOpen(message);
     };
     newSocket.onclose = () => {

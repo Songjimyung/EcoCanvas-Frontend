@@ -152,7 +152,7 @@ export default function BuyProduct() {
 
       if (response.ok) {
         await response.json();
-        console.log(response)
+        // console.log(response)
         navigate('/mypage/myorders');
       } else {
         const data = await response.json();
@@ -226,7 +226,7 @@ export default function BuyProduct() {
             buyer_postcode: formData.zip_code,
           },
           (response) => {
-            console.log(response)
+            // console.log(response)
             const paid_imp_uid = response.imp_uid;
             const paid_amount = response.paid_amount;
 
@@ -244,7 +244,7 @@ export default function BuyProduct() {
                   }
                 )
                 .then((response) => {
-                  console.log(response.data);
+                  // console.log(response.data);
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
                   // navigate('/mypage/myorders');
