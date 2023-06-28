@@ -19,7 +19,6 @@ export default function ChatList() {
         }
       });
       const result = await response.json();
-      console.log(result)
       setChatList(result);
     };
 
