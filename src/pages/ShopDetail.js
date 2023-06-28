@@ -57,7 +57,9 @@ const ShopDetail = () => {
       });
   };
 
-
+  const openAlertModal = () => {
+    alert("구현 중 입니다!")
+  }
   const handleStockAlertClose = () => {
     setStockAlertOpen(false);
   };
@@ -144,6 +146,7 @@ const ShopDetail = () => {
                     color: 'gray',
                     marginRight: '30px',
                   }}
+                  onClick={openAlertModal}
                 >
                   장바구니 담기
                   <ShoppingCart />

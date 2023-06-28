@@ -58,7 +58,6 @@ export default function ChatDetail(room) {
       chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
 
       chatSocket.current.onopen = function (e) {
-        console.log("연결됨")
         chatSocket.current.send(JSON.stringify({
           'command': 'fetch_messages',
           'user_id': userId,
@@ -66,7 +65,6 @@ export default function ChatDetail(room) {
       };
 
       chatSocket.current.onclose = function (e) {
-        console.log("Close Socket")
       };
       chatSocket.current.onmessage = function (e) {
         const data = JSON.parse(e.data);
