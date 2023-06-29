@@ -34,7 +34,6 @@ import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
 import DeliveryTracking from './pages/mypagelist/myDelivery';
 import { MyOrder } from './pages/mypagelist/myOrder';
-import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
@@ -117,7 +116,6 @@ function App() {
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
             <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
-            <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>
