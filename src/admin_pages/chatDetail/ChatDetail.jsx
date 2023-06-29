@@ -82,10 +82,12 @@ export default function ChatDetail(room) {
         chatSocket.current.onclose();
       };
     }
-    connect();
-    return () => {
-      chatSocket.current.close();
-    };
+    if (roomId) {
+      connect();
+      return () => {
+        chatSocket.current.close();
+      };
+    }
   }, [roomId, token, userId]);
 
   return (
