@@ -6,9 +6,11 @@ const CallbackGoogle = (props) => {
 
     useEffect(() => {
         const getToken = async () => {
+            const codeData = { code }
             try {
-                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/?code=${code}`);
+                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/`, codeData);
                 const token_req_json = response.data;
+                console.log(token_req_json)
                 localStorage.setItem('access', token_req_json['access']);
                 localStorage.setItem("refresh", token_req_json['refresh']);
                 const base64Url = token_req_json['access'].split('.')[1];
@@ -19,9 +21,7 @@ const CallbackGoogle = (props) => {
                 localStorage.setItem("payload", jsonPayload);
                 alert("구글 로그인 성공!")
                 window.location.replace("/")
-            } catch (error) {
-                
-            }
+            } catch (error) { }
         };
 
         getToken();

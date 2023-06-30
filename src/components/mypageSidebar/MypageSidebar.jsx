@@ -7,6 +7,7 @@ import profile_default_image from "../../img/profile_default_image.png";
 function Sidebar() {
   const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState();
+  const [loginType, setLoginType] = useState(null);
 
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === "development") {
@@ -44,6 +45,10 @@ function Sidebar() {
     if (payload) {
       const payloadObject = JSON.parse(payload);
       setUserId(payloadObject.user_id);
+      if (payloadObject.login_type) {
+        setLoginType(payloadObject.login_type);
+        console.log(setLoginType(payloadObject.login_type));
+      }
     }
   }, []);
   useEffect(() => {
@@ -112,9 +117,11 @@ function Sidebar() {
                   <button className="details-button">
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
-                  <button className="details-button">
-                    <Link to="/update-pw">비밀번호 변경</Link>
-                  </button>
+                  {loginType === "normal" && (
+                    <button className="details-button">
+                      <Link to="/update-pw">비밀번호 변경</Link>
+                    </button>
+                  )}
                 </div>
               );
             })}
