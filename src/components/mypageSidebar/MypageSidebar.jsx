@@ -47,7 +47,6 @@ function Sidebar() {
       setUserId(payloadObject.user_id);
       if (payloadObject.login_type) {
         setLoginType(payloadObject.login_type);
-        console.log(setLoginType(payloadObject.login_type));
       }
     }
   }, []);

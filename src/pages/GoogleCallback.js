@@ -10,7 +10,6 @@ const CallbackGoogle = (props) => {
             try {
                 const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/`, codeData);
                 const token_req_json = response.data;
-                console.log(token_req_json)
                 localStorage.setItem('access', token_req_json['access']);
                 localStorage.setItem("refresh", token_req_json['refresh']);
                 const base64Url = token_req_json['access'].split('.')[1];
