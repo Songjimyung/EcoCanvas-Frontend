@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
 
@@ -32,8 +31,7 @@ const OrderProductList = () => {
   const [DeliveryMessage, setDeliveryMessage] = useState('');
   const [DetailAddress, setDetailAddress] = useState('');
   const [UserName, setUserName] = useState('');
-
-
+  const [num, setNumber] = useState(0);
 
 
   useEffect(() => {
@@ -52,10 +50,10 @@ const OrderProductList = () => {
     const orders = cartItems.map((product) => ({
       zip_code: isComplete ? zipcode : e.target.elements.zip_code.value,
       address: isComplete ? Address : e.target.elements.address.value,
-      address_detail: e.target.elements.address_detail.value,
-      address_message: e.target.elements.address_message.value,
-      receiver_name: e.target.elements.receiver_name.value,
-      receiver_number: phonenum,
+      address_detail: isComplete ? DetailAddress : e.target.elements.address_detail.value,
+      address_message: isComplete ? DeliveryMessage : e.target.elements.address_message.value,
+      receiver_name: isComplete ? UserName : e.target.elements.receiver_name.value,
+      receiver_number: isComplete ? phonenum : e.target.elements.receiver_number.value,
       order_quantity: product.quantity,
       order_totalprice: product.product_price * product.quantity,
       product: product.id,
@@ -63,25 +61,32 @@ const OrderProductList = () => {
     }));
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, { orders }, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify({ orders })
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         await response.json();
-        // console.log(response)
+
         navigate('/mypage/myorders');
-      } else {
+      } else if (response.status === 400) {
         const data = await response.json();
         const errorValues = Object.values(data);
-        throw new Error(errorValues.join('\n'));
+        const errorMessage = errorValues.join('\n');
+        alert(errorMessage);
+      } else {
+        console.log(response);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("결제 오류! 다시 결제해주세요");
     }
+
   };
 
   const handlePhone = (e) => {
@@ -116,6 +121,11 @@ const OrderProductList = () => {
     setLoadProfileAddress(isChecked);
     if (!isChecked) {
       setAddress("");
+      setPhoneNum("");
+      setZipcode("");
+      setDetailAddress("");
+      setDeliveryMessage("");
+      setUserName("");
     }
   };
 
@@ -157,8 +167,18 @@ const OrderProductList = () => {
     }
   }, [loadProfileAddress]);
 
+  useEffect(() => {
+    let totalQuantity = 0;
+    let totalPrice = 0;
 
+    for (const product of cartItems) {
+      totalQuantity += product.quantity;
+      totalPrice += product.product_price * product.quantity;
+    }
 
+    setNumber(totalQuantity);
+    setProductPrice(totalPrice);
+  }, [cartItems]);
 
 
 
@@ -211,7 +231,8 @@ const OrderProductList = () => {
                 <input
                   type="text"
                   name="receiver_name"
-                  value={isComplete ? UserName : ""}
+                  value={UserName}
+                  onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
               <div className="addOrderItem">
@@ -220,10 +241,9 @@ const OrderProductList = () => {
                   type="tel"
                   name="receiver_number"
                   ref={phoneRef}
-                  value={isComplete ? phonenum : ""}
+                  value={phonenum}
                   onChange={handlePhone}
                   maxLength="13"
-                  readOnly={isComplete}
                 />
               </div>
               <div className="addOrderItem">
@@ -231,9 +251,9 @@ const OrderProductList = () => {
                 <input
                   type="text"
                   name="address"
-                  value={isComplete ? Address : ""}
+                  value={Address}
                   className="order-address"
-                  readOnly={isComplete}
+                  onChange={(e) => setAddress(e.target.value)}
                 />
                 <Button
                   variant="contained"
@@ -255,8 +275,9 @@ const OrderProductList = () => {
                 <input
                   type="text"
                   name="zip_code"
-                  value={isComplete ? zipcode : ""}
-                  readOnly={isComplete}
+                  value={zipcode}
+                  onChange={(e) => setZipcode(e.target.value)}
+
                 />
               </div>
               <div className="addOrderItem">
@@ -264,7 +285,8 @@ const OrderProductList = () => {
                 <input
                   type="text"
                   name="address_detail"
-                  value={isComplete ? DetailAddress : ""}
+                  value={DetailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
                 />
               </div>
               <div className="addOrderItem">
@@ -272,12 +294,13 @@ const OrderProductList = () => {
                 <input
                   type="text"
                   name="address_message"
-                  value={isComplete ? DeliveryMessage : ""}
+                  value={DeliveryMessage}
                   className="order-address"
+                  onChange={(e) => setDeliveryMessage(e.target.value)}
                 />
               </div>
               <div className="check-order">
-                {/* <p>주문 수량 : {num}</p> */}
+                <p>총 주문 수량 : {num}</p>
                 <p>총 주문 금액 : {productPrice.toLocaleString()} 원</p>
               </div>
               <button className="PayProductButton">구매하기</button>

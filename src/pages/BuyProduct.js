@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import '../css/product.css';
 import { DataGrid } from '@mui/x-data-grid'
@@ -14,8 +14,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BuyProduct() {
 
-  const [phonenum, setPhoneNum] = useState('');
-  const phoneRef = useRef();
   const navigate = useNavigate();
   let { productId } = useParams();
   const [Product, setProduct] = useState(null);
@@ -23,21 +21,17 @@ export default function BuyProduct() {
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    receiver_name: "",
-    receiver_number: "",
-    zip_code: "",
-    address: "",
-    address_detail: "",
-    address_message: "",
-    order_quantity: "",
-    order_totalprice: "",
-    user: ""
-  });
   const [userId, setUserId] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [loadProfileAddress, setLoadProfileAddress] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [DeliveryMessage, setDeliveryMessage] = useState('');
+  const [DetailAddress, setDetailAddress] = useState('');
+  const [UserName, setUserName] = useState('');
+  const [phonenum, setPhoneNum] = useState('');
+  const phoneRef = useRef();
+
+
   const onToggleModal = () => {
     setIsOpen((prev) => !prev);
   };
@@ -108,15 +102,12 @@ export default function BuyProduct() {
     const isChecked = e.target.checked;
     setLoadProfileAddress(isChecked);
     if (!isChecked) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        receiver_name: "",
-        receiver_number: "",
-        zip_code: "",
-        address: "",
-        address_detail: "",
-        address_message: "",
-      }));
+      setAddress("");
+      setPhoneNum("");
+      setZipcode("");
+      setDetailAddress("");
+      setDeliveryMessage("");
+      setUserName("");
     }
   }
 
@@ -126,33 +117,34 @@ export default function BuyProduct() {
     const token = localStorage.getItem('access');
 
 
-    const formData = new FormData();
-    formData.append('zip_code', isComplete ? zipcode : e.target.elements.zip_code.value);
-    formData.append('address', isComplete ? Address : e.target.elements.address.value);
-    formData.append('address_detail', e.target.elements.address_detail.value);
-    formData.append('address_message', e.target.elements.address_message.value);
-    formData.append('receiver_name', e.target.elements.receiver_name.value);
-    formData.append('receiver_number', phonenum);
-    formData.append('order_quantity', num);
-    formData.append('order_totalprice', productPrice);
-    formData.append('product', productId);
-    formData.append('user', userId);
+    const orders = [{
+      receiver_name: e.target.elements.receiver_name.value,
+      receiver_number: e.target.elements.receiver_number.value,
+      zip_code: isComplete ? zipcode : e.target.elements.zip_code.value,
+      address: isComplete ? Address : e.target.elements.address.value,
+      address_detail: e.target.elements.address_detail.value,
+      address_message: e.target.elements.address_message.value,
+      order_quantity: num,
+      order_totalprice: productPrice,
+      user: userId,
+      product: parseInt(productId),
+    }];
 
     try {
-      await requestPay();
+      // await requestPay();
 
 
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: "POST",
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: formData,
+        body: JSON.stringify({ orders }),
       });
 
       if (response.ok) {
         await response.json();
-        // console.log(response)
         navigate('/mypage/myorders');
       } else {
         const data = await response.json();
@@ -220,10 +212,10 @@ export default function BuyProduct() {
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
-            buyer_name: formData.receiver_name,
-            buyer_tel: formData.phonenum,
-            buyer_addr: formData.address + formData.address_detail,
-            buyer_postcode: formData.zip_code,
+            buyer_name: UserName,
+            buyer_tel: phonenum,
+            buyer_addr: Address + DetailAddress,
+            buyer_postcode: zipcode,
           },
           (response) => {
             // console.log(response)
@@ -276,19 +268,14 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-
-          const addressInfo = {
-            receiver_name: result.receiver_name,
-            receiver_number: result.receiver_number,
-            zip_code: result.zip_code,
-            address: result.address,
-            address_detail: result.address_detail,
-            address_message: result.address_message
-          };
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ...addressInfo,
-          }));
+          console.log(result)
+          setDeliveryMessage(result.delivery_message)
+          setPhoneNum(result.receiver_number);
+          setAddress(result.address);
+          setDetailAddress(result.detail_address)
+          setZipcode(result.zip_code);
+          setUserName(result.user['username'])
+          setIsComplete(true);
         }
       } catch (error) {
 
@@ -299,14 +286,6 @@ export default function BuyProduct() {
       fetchProfileAddress();
     }
   }, [loadProfileAddress]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
 
   const handlePhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");
@@ -335,8 +314,6 @@ export default function BuyProduct() {
 
     setPhoneNum(e.target.value);
   };
-
-
 
 
   const columns = [
@@ -411,22 +388,31 @@ export default function BuyProduct() {
                 <form className="addOrderForm" onSubmit={handleFormSubmit}>
                   <div className="addOrderItem">
                     <label>받으시는 분</label>
-                    <input type="text" name="receiver_name" onChange={handleInputChange} />
+                    <input type="text"
+                      name="receiver_name"
+                      value={UserName}
+                      onChange={(e) => setUserName(e.target.value)}
+                    />
                   </div>
                   <div className="addOrderItem">
                     <label>휴대전화</label>
                     <input
                       type="tel"
                       name="receiver_number"
-                      ref={phoneRef}
                       value={phonenum}
+                      ref={phoneRef}
                       onChange={handlePhone}
                       maxLength="13"
                     />
                   </div>
                   <div className="addOrderItem">
                     <label>주소</label>
-                    <input type="address" name="address" value={isComplete ? Address : formData.address} onChange={handleInputChange} className="order-address" />
+                    <input type="address"
+                      name="address"
+                      value={Address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="order-address"
+                    />
                     <Button
                       variant="contained"
                       color="primary"
@@ -448,15 +434,28 @@ export default function BuyProduct() {
                   </div>
                   <div className="addOrderItem">
                     <label>우편번호</label>
-                    <input type="address" name="zip_code" value={isComplete ? zipcode : formData.zip_code} onChange={handleInputChange} />
+                    <input type="address"
+                      name="zip_code"
+                      value={zipcode}
+                      onChange={(e) => setZipcode(e.target.value)}
+                    />
                   </div>
                   <div className="addOrderItem">
                     <label>상세주소</label>
-                    <input type="address_detail" name="address_detail" value={formData.address_detail} onChange={handleInputChange} />
+                    <input type="address_detail"
+                      name="address_detail"
+                      value={DetailAddress}
+                      onChange={(e) => setDetailAddress(e.target.value)}
+                    />
                   </div>
                   <div className="addOrderItem">
                     <label>배송메세지</label>
-                    <input type="text" name="address_message" value={formData.address_message} onChange={handleInputChange} className="order-address" />
+                    <input type="text"
+                      name="address_message"
+                      value={DeliveryMessage}
+                      onChange={(e) => setDeliveryMessage(e.target.value)}
+                      className="order-address"
+                    />
                   </div>
                   <div className='check-order'>
                     <p>주문 수량 : {num}</p>

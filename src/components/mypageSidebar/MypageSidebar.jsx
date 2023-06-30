@@ -29,6 +29,7 @@ function Sidebar() {
     { name: "리뷰/댓글", path: "/mypage/myreviews" },
   ];
   const menus1 = [
+    { name: "나의 장바구니", path: "/cart" },
     { name: "주문내역", path: "/mypage/myorders" },
     { name: "배송조회", path: "/mypage/mydelivery" },
     { name: "환불/취소 접수", path: "/mypage/myrefund" },
@@ -80,7 +81,7 @@ function Sidebar() {
           };
           setUserData([defaultUserInfo]);
         }
-      } catch (error) {}
+      } catch (error) { }
     };
 
     if (userId) {
