@@ -101,6 +101,7 @@ const ShopDetail = () => {
     setShareModalOpen(false);
   };
 
+
   return (
     <div className="productContainer" >
       {loading ? (

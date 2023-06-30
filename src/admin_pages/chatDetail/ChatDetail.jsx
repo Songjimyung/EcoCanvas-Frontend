@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import './chatDetail.css'
 import axios from "axios";
@@ -57,30 +56,34 @@ export default function ChatDetail(room) {
     function connect() {
       chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
 
-      chatSocket.current.onopen = function (e) {
-        chatSocket.current.send(JSON.stringify({
-          'command': 'fetch_messages',
-          'user_id': userId,
-        }));
-      };
-
-      chatSocket.current.onclose = function (e) {
-      };
-      chatSocket.current.onmessage = function (e) {
-        const data = JSON.parse(e.data);
-
-        if (data['command'] === 'messages') {
-          for (let i = 0; i < data['messages'].length; i++) {
-            setMessages((messages) => [...messages, data['messages'][i]])
+      chatSocket.current.onopen = async function (e) {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/chat/message/?room=${roomId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
           }
-        } else if (data['command'] === 'new_message') {
-          setMessages((messages) => [...messages, data['message']])
-        }
-      };
+        })
+          .then((response) => {
+          console.log(response['data'].length)
+          for (let i = response['data'].length-1; i >= 0; i--) {
+              setMessages((messages) => [...messages, response['data'][i]])
+            }
+          })
+          
+        };
 
-      chatSocket.current.onerror = function (err) {
-        chatSocket.current.onclose();
-      };
+        chatSocket.current.onclose = function (e) {
+        };
+        chatSocket.current.onmessage = function (e) {
+          const data = JSON.parse(e.data);
+          if (data['command'] === 'new_message') {
+            setMessages((messages) => [...messages, data['message']])
+          }
+        };
+
+        chatSocket.current.onerror = function (err) {
+          chatSocket.current.onclose();
+        };
+      
     }
     if (roomId) {
       connect();
