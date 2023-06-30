@@ -142,7 +142,7 @@ export default function BuyProduct() {
       await requestPay();
 
 
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/${productId}/`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}`
