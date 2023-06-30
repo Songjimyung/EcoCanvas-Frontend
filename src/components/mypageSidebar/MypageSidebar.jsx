@@ -117,7 +117,7 @@ function Sidebar() {
                   <button className="details-button">
                     <Link to="/mypage/profile">회원정보 수정</Link>
                   </button>
-                  {loginType === "normal" && (
+                  {!loginType && (
                     <button className="details-button">
                       <Link to="/update-pw">비밀번호 변경</Link>
                     </button>

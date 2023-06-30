@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
 const CallbackGoogle = (props) => {
@@ -21,17 +21,16 @@ const CallbackGoogle = (props) => {
                 localStorage.setItem("payload", jsonPayload);
                 alert("구글 로그인 성공!")
                 window.location.replace("/")
-            } catch (error) { }
+            } catch (error) {
+                if (error.response.data['err_msg']) {
+                    alert(error.response.data['err_msg'])
+                }
+                window.location.replace("/")
+            }
         };
 
         getToken();
     }, [code]);
-
-    return (
-        <div>
-            구글 로그인 성공!
-        </div>
-    );
 };
 
 export { CallbackGoogle };
