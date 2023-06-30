@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 const OrderProductList = () => {
   const [phonenum, setPhoneNum] = useState('');
-  const phoneRef = useRef();
+  const phoneRef = useRef('');
   const navigate = useNavigate();
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
@@ -35,7 +35,7 @@ const OrderProductList = () => {
 
 
   useEffect(() => {
-    const storedCartItems = JSON.parse(localStorage.getItem(`cartItems_${userId}`)) || [];
+    const storedCartItems = JSON.parse(localStorage.getItem(`cartItems_${userId}_order`)) || [];
     setCartItems(storedCartItems);
   }, [userId]);
 
@@ -70,9 +70,9 @@ const OrderProductList = () => {
         body: JSON.stringify({ orders })
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         await response.json();
-
+        localStorage.removeItem(`cartItems_${userId}_order`);
         navigate('/mypage/myorders');
       } else if (response.status === 400) {
         const data = await response.json();

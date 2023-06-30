@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../css/mypage.css";
 import { Button, Grid, Typography, TextField } from "@mui/material";
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
 
-export default function MyProfile() {
+export default function MyOrderInfo() {
   const [userData, setUserData] = useState({
     address: "",
     zipcode: "",
@@ -14,7 +13,6 @@ export default function MyProfile() {
     contact: "",
     deliveryMessage: "",
   });
-  const [image, setImage] = useState("");
   const [phonenum, setPhoneNum] = useState('');
   const phoneRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -98,18 +96,17 @@ export default function MyProfile() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access");
-    if (
-      !userData.address ||
-      !userData.zipcode ||
-      !userData.detailAddress ||
-      !userData.contact ||
-      !userData.deliveryMessage
-    ) {
-      alert("모든 필드를 입력해주세요.");
-      return;
-    }
+    // if (
+    //   !userData.address ||
+    //   !userData.zipcode ||
+    //   !userData.detailAddress ||
+    //   !userData.contact ||
+    //   !userData.deliveryMessage
+    // ) {
+    //   alert("모든 필드를 입력해주세요.");
+    //   return;
+    // }
     const formData = new FormData();
-    formData.append("image", image);
     formData.append("address", isComplete ? Address : userData.address);
     formData.append("zip_code", isComplete ? zipcode : userData.zipcode);
     formData.append("detail_address", userData.detailAddress);
@@ -141,10 +138,6 @@ export default function MyProfile() {
     }
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
-  };
 
   return (
     <div className="mypage-block">
@@ -230,14 +223,6 @@ export default function MyProfile() {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">프로필 이미지 업로드</Typography>
-              <input
-                type="file"
-                accept="image/jpg,image/png,image/jpeg,image/gif"
-                onChange={handleImageUpload}
-              />
-            </Grid>
           </Grid>
           <div className="button-box">
             <Button
@@ -256,7 +241,6 @@ export default function MyProfile() {
             >
               Save
             </Button>
-            <Link to="/mypage/profile/withdrawal">회원탈퇴를 원하시나요?</Link>
           </div>
         </form>
       </div>
@@ -264,4 +248,4 @@ export default function MyProfile() {
   );
 }
 
-export { MyProfile };
+export { MyOrderInfo };

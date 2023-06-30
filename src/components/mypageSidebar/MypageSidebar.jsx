@@ -37,6 +37,7 @@ function Sidebar() {
   const menus2 = [
     { name: "카드정보", path: "/mypage/mypayments" },
     { name: "예약결제확인", path: "/mypage/myschedule" },
+    { name: "배송지 등록", path: "/mypage/orderinfo" },
   ];
 
   // payload에서 user_id 가져와서 GET요청

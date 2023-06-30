@@ -29,7 +29,7 @@ export default function BuyProduct() {
   const [DetailAddress, setDetailAddress] = useState('');
   const [UserName, setUserName] = useState('');
   const [phonenum, setPhoneNum] = useState('');
-  const phoneRef = useRef();
+  const phoneRef = useRef('');
 
 
   const onToggleModal = () => {

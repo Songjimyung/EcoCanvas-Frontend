@@ -72,6 +72,11 @@ const Cart = () => {
     setIsCheckedAll(!isCheckedAll);
   };
 
+  const handlePlaceOrder = () => {
+    const checkedItems = cartItems.filter((item) => item.checked);
+    localStorage.setItem(`cartItems_${userId}_order`, JSON.stringify(checkedItems));
+  };
+
   return (
     <div>
       <h1>장바구니</h1>
@@ -128,7 +133,7 @@ const Cart = () => {
             삭제하기
           </Button>
           <Link to={`/order/productlist`}>
-            <Button variant="contained" color="info">
+            <Button variant="contained" color="info" onClick={handlePlaceOrder}>
               주문하기
             </Button>
           </Link>
