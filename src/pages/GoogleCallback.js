@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
 const CallbackGoogle = (props) => {
@@ -6,8 +6,9 @@ const CallbackGoogle = (props) => {
 
     useEffect(() => {
         const getToken = async () => {
+            const codeData = { code }
             try {
-                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/?code=${code}`);
+                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/`, codeData);
                 const token_req_json = response.data;
                 localStorage.setItem('access', token_req_json['access']);
                 localStorage.setItem("refresh", token_req_json['refresh']);
@@ -20,18 +21,15 @@ const CallbackGoogle = (props) => {
                 alert("구글 로그인 성공!")
                 window.location.replace("/")
             } catch (error) {
-                
+                if (error.response.data['err_msg']) {
+                    alert(error.response.data['err_msg'])
+                }
+                window.location.replace("/")
             }
         };
 
         getToken();
     }, [code]);
-
-    return (
-        <div>
-            구글 로그인 성공!
-        </div>
-    );
 };
 
 export { CallbackGoogle };
