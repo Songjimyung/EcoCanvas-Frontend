@@ -43,6 +43,47 @@ hr {
     color: #3eac3e;
 }
 
+.campaignBtnDiv{
+    display: flex;
+    flex-direction: row;
+    margin: 30px;
+}
+
+#campaignCategory {
+    margin: 20px;
+}
+
+.campaignSearch {
+    float: right;
+    margin-right: 50px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 600px) {
+    .campaignBtnDiv {
+        display: inline-block;
+    }
+    #campaignCategory {
+        margin: 10px;
+    }
+    .campaignCardContainer {
+        margin: auto;
+    }
+
+    .category-dropdown {
+        margin-bottom: 20px;
+        float: right;
+    }
+    .campaignSearch {
+        width: 85%;
+        float: none;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        margin-bottom: 30px;
+    }
+}
+
 /* detail Top */
 .campaignContentDiv {
     display: grid;

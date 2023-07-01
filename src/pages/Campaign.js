@@ -20,6 +20,9 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 
 
 const Campaign = () => {
@@ -41,6 +44,7 @@ const Campaign = () => {
   // Filter and Order with Querystring
   const [end, setEnd] = useState(null);
   const [order, setOrder] = useState("recent");
+  const [category, setCategory] = useState("");
 
   const handleEndQuery = (event) => {
     const selectedEnd = event.target.value;
@@ -55,14 +59,38 @@ const Campaign = () => {
     navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${selectedOrder}`);
   };
 
+  // search
+  const [keyword, setKeyword] = useState("");
+
+  const handleKeywordChange = (event) => {
+    setKeyword(event.target.value);
+  };
+
+  const handleSearchButtonClick = () => {
+    axiosCampaignList(currentPage, end, order, category, keyword);
+  };
+
+
+  const handleKeywordKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      axiosCampaignList(currentPage, end, order, category, keyword);
+    }
+  };
+
+
   // Campaign GET
-  const axiosCampaignList = async (currentPage, end, order) => {
+  const axiosCampaignList = async (currentPage, end, order, category, keyword) => {
     try {
-      let url = `${process.env.REACT_APP_BACKEND_URL}/campaigns/?page=${currentPage}&order=${order}`
+      let url = `${process.env.REACT_APP_BACKEND_URL}/campaigns/?page=${currentPage}&order=${order}&category=${category}`
+      if (keyword) {
+        url += `&keyword=${encodeURIComponent(keyword)}`;
+      }
       if (end) {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
+      console.log(response)
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
     } catch (e) {
@@ -70,8 +98,8 @@ const Campaign = () => {
     }
   };
   useEffect(() => {
-    axiosCampaignList(currentPage, end, order);
-  }, [currentPage, end, order]);
+    axiosCampaignList(currentPage, end, order, category);
+  }, [currentPage, end, order, category]);
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
@@ -170,9 +198,29 @@ const Campaign = () => {
         imageUrl={campaign_family}
       />
 
-      <div className="campaignCardContainer">
-        <Grid container justifyContent="flex-end" marginBottom={'25px'}>
-          <header style={{ marginTop: "10px" }}>
+      <div className="campaignBtnDiv">
+        <select
+          id="campaignCategory"
+          className="category-dropdown"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option value="">카테고리</option>
+          <option value={0}>봉사</option>
+          <option value={1}>교육</option>
+          <option value={2}>투자</option>
+          <option value={3}>이벤트</option>
+          <option value={4}>환경운동</option>
+        </select>
+        <Grid
+          container
+          justifyContent={'flex-end'}
+          sx={{
+            flexDirection: { xs: 'column', sm: 'row' },
+            marginTop: { xs: '10px' }
+          }}
+        >
+          <header style={{ marginTop: "10px" }} >
             <nav>
               <select
                 className="category-dropdown"
@@ -203,69 +251,100 @@ const Campaign = () => {
               height: '50px',
               fontSize: '1.3rem',
               color: 'white',
+              marginBottom: '30px'
             }}>
             캠페인 신청하기
           </Button>
         </Grid>
+      </div>
+      <div className="campaignCardContainer">
 
-        {campaignList.map((campaign, index) => (
-          <Card sx={{ maxWidth: 500 }} key={campaign.id} className="campaignCard">
-            <Link to={`/campaign/${campaign.id}`}>
-              <CardActionArea>
-                <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
-                  <CardMedia
-                    component="img"
-                    height="250"
-                    image={getImageUrl(campaign.image)}
-                    alt="campaign_image"
-                    onError={onErrorImg}
-                  />
-                </div>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {campaign.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    component={'span'}
+
+        {campaignList.length === 0 ? (
+          <div className="campaignNothing">
+            <h2>해당하는 캠페인이 존재하지 않습니다.</h2>
+          </div>
+        ) : (
+          campaignList.map((campaign, index) => (
+            <Card sx={{ maxWidth: 500 }} key={campaign.id} className="campaignCard">
+              <Link to={`/campaign/${campaign.id}`}>
+                <CardActionArea>
+                  <div className={isAboutToClose(campaign.campaign_end_date) ? "closeBadge" : ""}>
+                    <CardMedia
+                      component="img"
+                      height="250"
+                      image={getImageUrl(campaign.image)}
+                      alt="campaign_image"
+                      onError={onErrorImg}
+                    />
+                  </div>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {campaign.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      component={'span'}
+                    >
+                      {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
+                      참여인원 : {campaign.participant_count} / {campaign.members}<br />
+                      {campaign.fundings && campaign.fundings.goal !== 0 ? (
+                        <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>
+                      ) : (
+                        <div>펀딩을 진행하지 않는 캠페인입니다.</div>
+                      )}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
+
+              <CardActions disableSpacing>
+                <div key={campaign.id}>
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={() => {
+                      handleLikeButton(campaign.id);
+                    }}
                   >
-                    {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
-                    참여인원 : {campaign.participant_count} / {campaign.members}<br />
-                    {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                      <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>
-                    ) : (
-                      <div>펀딩을 진행하지 않는 캠페인입니다.</div>
-                    )}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Link>
-
-            <CardActions disableSpacing>
-              <div key={campaign.id}>
-                <IconButton
-                  aria-label="add to favorites"
-                  onClick={() => {
-                    handleLikeButton(campaign.id);
-                  }}
-                >
-                  <FavoriteIcon
-                    sx={{ color: isLiked ? 'red' : '', }} />
-                </IconButton>
-                <IconButton
-                  aria-label="share"
-                  onClick={() => openShareModal(index)}>
-                  <ShareIcon />
-                </IconButton>
-                <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
-                  <Share id={campaign.id} type="campaign" />
-                </Modal>
-              </div>
-            </CardActions>
-          </Card>
-        ))}
+                    <FavoriteIcon
+                      sx={{ color: isLiked ? 'red' : '', }} />
+                  </IconButton>
+                  <IconButton
+                    aria-label="share"
+                    onClick={() => openShareModal(index)}>
+                    <ShareIcon />
+                  </IconButton>
+                  <Modal open={shareModalOpen[index] || false} close={(event) => closeShareModal(event, index)} header="공유하기">
+                    <Share id={campaign.id} type="campaign" />
+                  </Modal>
+                </div>
+              </CardActions>
+            </Card>
+          )))}
       </div >
+      <div className='campaignSearch'>
+        <Paper
+          component="form"
+          sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="캠페인 검색"
+            inputProps={{ "aria-label": "캠페인 검색" }}
+            value={keyword}
+            onChange={handleKeywordChange}
+            onKeyDown={handleKeywordKeyDown}
+          />
+          <IconButton
+            sx={{ p: "10px" }}
+            aria-label="search"
+            onClick={handleSearchButtonClick}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </div>
 
       <Grid container justifyContent="center" sx={{ marginBottom: "30px" }}>
         <Pagination
