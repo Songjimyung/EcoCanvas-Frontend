@@ -478,12 +478,16 @@ const CampaignDetail = () => {
             </div>
             <div className="campaignContentRight">
               <div className="campaignTopSetting">
-                <div className="campaignStatus">{campaign.status}</div>
+                <div className="campaignCategoryBadge">
+                  <span>카테고리 {`>`} </span>{campaign.category}
+                </div>
                 {userId === campaign.user_id ?
                   <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
                   : <div></div>
                 }
               </div>
+              <hr style={{ marginBottom: "10px" }} />
+              <div className="campaignStatus">{campaign.status}</div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
                   <React.Fragment key={index}>
@@ -492,6 +496,13 @@ const CampaignDetail = () => {
                   </React.Fragment>
                 ))}
               </div>
+
+              <div className="campaignTags">
+                {campaign.tags.map(tag => (
+                  <span key={tag}>#{tag} </span>
+                ))}
+              </div>
+
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
               <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>

@@ -16,6 +16,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 // Checkbox
 const label = { inputProps: { "aria-label": "Funding Checkbox" } };
@@ -27,6 +29,8 @@ const CampaignForm = ({ initialData, isUpdate }) => {
   const [campaignTitle, setCampaignTitle] = useState("");
   const [campaignContent, setCampaignContent] = useState("");
   const [campaignMembers, setCampaignMembers] = useState("");
+  const [campaignCategory, setCampaignCategory] = useState("");
+  const [campaignTags, setCampaignTags] = useState("");
   const [campaignImage, setCampaignImage] = useState("");
   const [campaignStartDate, setCampaignStartDate] = useState("");
   const [campaignEndDate, setCampaignEndDate] = useState("");
@@ -58,6 +62,12 @@ const CampaignForm = ({ initialData, isUpdate }) => {
 
   const handleCampaignContent = (event) => {
     setCampaignContent(event.target.value);
+  };
+  const handleCampaignCategory = (event) => {
+    setCampaignCategory(event.target.value);
+  };
+  const handleCampaignTags = (event) => {
+    setCampaignTags(event.target.value);
   };
 
   const handleCampaignMembers = (event) => {
@@ -107,6 +117,8 @@ const CampaignForm = ({ initialData, isUpdate }) => {
     formData.append("title", campaignTitle);
     formData.append("content", campaignContent);
     formData.append("members", campaignMembers);
+    formData.append("category", campaignCategory);
+    formData.append("tags", campaignTags);
     formData.append("image", campaignImage);
     formData.append("campaign_start_date", campaignStartDate);
     formData.append("campaign_end_date", campaignEndDate);
@@ -217,6 +229,43 @@ const CampaignForm = ({ initialData, isUpdate }) => {
             inputProps={{ min: 0 }}
             value={campaignMembers}
             onChange={handleCampaignMembers}
+          />
+        </div>
+
+        <div className="marginBottom30">
+          <div className="campaignCreateTitle">
+            캠페인 유형<span className="campaignCreateStar">*</span>
+          </div>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">유형</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={campaignCategory}
+              label="유형"
+              onChange={handleCampaignCategory}
+            >
+              <MenuItem value={0}>봉사</MenuItem>
+              <MenuItem value={1}>교육</MenuItem>
+              <MenuItem value={2}>투자</MenuItem>
+              <MenuItem value={3}>이벤트</MenuItem>
+              <MenuItem value={4}>환경운동</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className="marginBottom10">
+          <div className="campaignCreateTitle">캠페인 태그</div>
+          <TextField
+            id="outlined-multiline-static"
+            label="태그"
+            multiline
+            rows={2}
+            sx={{
+              width: "100%",
+            }}
+            value={campaignTags}
+            onChange={handleCampaignTags}
           />
         </div>
 
