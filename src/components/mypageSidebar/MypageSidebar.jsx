@@ -119,7 +119,6 @@ function Sidebar() {
         );
         const result = await response.json();
 
-        console.log(result)
 
         setUserName(result.user.username);
 

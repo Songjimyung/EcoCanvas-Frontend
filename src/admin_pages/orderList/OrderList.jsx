@@ -3,7 +3,6 @@ import './orderList.css'
 import Pagination from '@mui/material/Pagination';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Typography } from '@mui/material';
 import axios from 'axios';
-import { format } from 'date-fns';
 
 export default function AdminOrderList() {
   const [orderData, setOrderData] = useState([])
@@ -16,23 +15,30 @@ export default function AdminOrderList() {
 
   useEffect(() => {
     const fetchProductList = async () => {
+      const token = localStorage.getItem("access");
+
       try {
         let url = `${process.env.REACT_APP_BACKEND_URL}/shop/order/list/`;
         url += `?page=${currentPage}`;
-
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data.results)
         const products = response.data.results.map((order) => {
           const status = order.order_info.length > 0 ? order.order_info[0].status : null;
 
+          console.log(status)
           return {
             id: order.id,
-            product: order.product,
+            product: order.product_name,
             zipcode: order.zip_code,
             address: order.address,
             address_detail: order.address_detail,
             address_message: order.address_message,
             order_quantity: order.order_quantity,
-            order_date: format(new Date(order.order_date), 'yyyy-MM-dd'),
+            order_date: order.order_date,
             order_totalprice: order.order_totalprice,
             status: status,
             receiver_name: order.receiver_name,
@@ -42,10 +48,9 @@ export default function AdminOrderList() {
         setOrderData(products);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-        
 
       } catch (error) {
-        
+        alert(error);
       }
     }
     fetchProductList();
@@ -55,35 +60,32 @@ export default function AdminOrderList() {
 
   const handleAction = (action) => {
     const token = localStorage.getItem('access');
-    let updatedCampaign = { ...selected };
+    let updatedorder = { ...selected };
 
     if (action === 'approve') {
-      updatedCampaign = { ...updatedCampaign, status: '2' };
+      updatedorder = { ...updatedorder, status: '2' };
     } else if (action === 'return') {
-      updatedCampaign = { ...updatedCampaign, status: '0' };
+      updatedorder = { ...updatedorder, status: '1' };
     }
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/campaigns/status/${selected.id}/`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/order/status/${selected.id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(updatedCampaign)
+      body: JSON.stringify(updatedorder)
 
     })
       .then(() => {
-        alert(`캠페인 상태변경(${action === 'approve' ? '승인' : '반려'})이 완료되었습니다.`);
+        alert(`상태변경(${action === 'approve' ? '배송 준비 중' : '주문 취소'})처리가 완료되었습니다.`);
         setSelected(null);
         setOpen(false);
         window.location.reload();
       })
       .catch(error => {
-        
+
       });
   };
-
-
-
 
 
   const handlePageChange = async (event, page) => {
@@ -205,8 +207,8 @@ export default function AdminOrderList() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleAction('approve')} style={{ fontSize: '20px', color: 'blue', margin: 'auto' }}>승인</Button>
-          <Button onClick={() => handleAction('return')} style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>반려</Button>
+          <Button onClick={() => handleAction('approve')} style={{ fontSize: '20px', color: 'blue', margin: 'auto' }}>배송 준비 완료</Button>
+          <Button onClick={() => handleAction('return')} style={{ fontSize: '20px', color: 'red', margin: 'auto' }}>주문 취소</Button>
           <Button onClick={handleClose} style={{ fontSize: '20px', margin: 'auto' }}>닫기</Button>
         </DialogActions>
       </Dialog>
