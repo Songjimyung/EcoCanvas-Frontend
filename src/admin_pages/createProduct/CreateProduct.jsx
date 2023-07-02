@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './createProduct.css'
-import Toggle from '../../admin_conponents/toggle/Category_toggle';
+import CategoryModal from '../../admin_conponents/categoryModal/CategoryCreate';
+import CategoryUpdateDeleteModal from '../../admin_conponents/categoryModal/CategoryUpdate'
 
 export default function CreateProduct() {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ export default function CreateProduct() {
       }
     }).then(response => response.json())
       .then(result => {
-        
+
         setCategoryList(result);
       })
   }, []);
@@ -39,7 +40,7 @@ export default function CreateProduct() {
     }
     const selectedCategory = categoryList.find(category => category.id === parsedCategoryId);
     if (!selectedCategory) {
-      
+
       return;
     }
 
@@ -72,12 +73,12 @@ export default function CreateProduct() {
         }
       })
       .then((result) => {
-        
+
         alert("상품 등록 완료!");
         window.location.reload();
       })
       .catch((error) => {
-        
+
         alert(error.message);
       });
   };
@@ -97,7 +98,8 @@ export default function CreateProduct() {
   return (
     <div className="createProduct">
       <h1>상품 등록</h1>
-      <Toggle />
+      <CategoryModal />
+      <CategoryUpdateDeleteModal />
       <form className="addProductForm" onSubmit={handleFormSubmit}>
         <div className="addProductItem">
           <label>상품 이름</label>
