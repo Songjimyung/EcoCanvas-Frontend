@@ -58,6 +58,10 @@ const Campaign = () => {
     setCurrentPage(1);
     navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${selectedOrder}`);
   };
+  const handleCategory = (event) => {
+    setCurrentPage(1);
+    setCategory(event.target.value);
+  };
 
   // search
   const [keyword, setKeyword] = useState("");
@@ -67,13 +71,14 @@ const Campaign = () => {
   };
 
   const handleSearchButtonClick = () => {
+    setCurrentPage(1);
     axiosCampaignList(currentPage, end, order, category, keyword);
   };
-
 
   const handleKeywordKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+      setCurrentPage(1);
       axiosCampaignList(currentPage, end, order, category, keyword);
     }
   };
@@ -203,7 +208,7 @@ const Campaign = () => {
           id="campaignCategory"
           className="category-dropdown"
           value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          onChange={handleCategory}
         >
           <option value="">카테고리</option>
           <option value={0}>봉사</option>

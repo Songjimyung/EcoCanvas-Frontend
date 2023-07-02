@@ -13,7 +13,7 @@ const steps = [
     label: "캠페인 신청하기",
     description: (
       <>
-        EcoCanvas와 함께하고싶은 캠페인을 신청해주세요. <br />
+        EcoCanvas와 함께하고싶은 환경 캠페인을 신청해주세요. <br />
         캠페인의 목적, 목표, 계획 및 예산 등에 대한 명확하고 자세한 설명이
         포함되어야 합니다. <br />
         펀딩이나 캠페인 활동이 필요하지 않은 경우는 비워주세요. <br />
@@ -27,7 +27,7 @@ const steps = [
     description: (
       <>
         캠페인을 통해 어떤 변화를 이루고자 하는지, 어떤 지표를 사용하여 성과를
-        측정할 것인지 설명해야 합니다. <br />
+        측정할 것인지 설명해주세요. <br />
         ⑴ 기존 환경문제와 차별화된 내용을 다루는가 <br />
         ⑵ 현실성 있는 사업목표를 설정하였는가 <br />
         ⑶ 환경문제 해결에 얼마나 도움이 되는가 <br />
@@ -107,8 +107,11 @@ export default function VerticalLinearStepper() {
       {activeStep === steps.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>
-            캠페인의 모든 과정이 완료되었습니다.
-            <br /> EcoCanvas와 함께 지구를 지켜주셔서 감사해요!
+            이상의 캠페인 진행과정과 유의사항을 잘 숙지해주시길 바랍니다.
+            <br />
+            관련하여 문의사항이 있다면 1:1 상담을 통해 문의 부탁드립니다.
+            <br />
+            EcoCanvas와 함께 지구를 지켜주셔서 감사해요!
           </Typography>
           <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
             다시보기

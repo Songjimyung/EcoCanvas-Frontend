@@ -67,7 +67,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
     setCampaignCategory(event.target.value);
   };
   const handleCampaignTags = (event) => {
-    setCampaignTags(event.target.value);
+    const tags = event.target.value.split(",").map((tag) => tag.trim());
+    console.log(tags);
+    setCampaignTags(tags);
   };
 
   const handleCampaignMembers = (event) => {
@@ -118,7 +120,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
     formData.append("content", campaignContent);
     formData.append("members", campaignMembers);
     formData.append("category", campaignCategory);
-    formData.append("tags", campaignTags);
+    campaignTags.forEach((tag, index) => {
+      formData.append(`tags[${index}]`, tag);
+    });
     formData.append("image", campaignImage);
     formData.append("campaign_start_date", campaignStartDate);
     formData.append("campaign_end_date", campaignEndDate);
@@ -218,7 +222,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
           </div>
           <TextField
             id="outlined-number"
-            label="참가 인원"
+            label="참가 정원"
             type="number"
             InputLabelProps={{
               shrink: true,
@@ -267,6 +271,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
             value={campaignTags}
             onChange={handleCampaignTags}
           />
+        </div>
+        <div className="campaignExplain" style={{ marginBottom: "10px" }}>
+          ※태그는 쉼표(,)로 구분해서 작성 부탁드립니다.
         </div>
 
         <div className="marginBottom30">
