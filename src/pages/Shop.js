@@ -14,7 +14,6 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { CardActionArea, CardActions } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -200,9 +199,6 @@ const Shop = () => {
                 </CardActionArea>
               </Link>
               <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
                 <IconButton
                   aria-label="share"
                   onClick={() => openShareModal(index)}>
