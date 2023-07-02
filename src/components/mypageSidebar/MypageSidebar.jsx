@@ -12,7 +12,7 @@ function Sidebar() {
   const [username, setUserName] = useState();
   const [image, setImage] = useState("");
   const [ModalOpen, setModalOpen] = useState(false);
-
+  const [loginType, setLoginType] = useState(null);
 
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === "development") {
@@ -52,6 +52,9 @@ function Sidebar() {
     if (payload) {
       const payloadObject = JSON.parse(payload);
       setUserId(payloadObject.user_id);
+      if (payloadObject.login_type) {
+        setLoginType(payloadObject.login_type);
+      }
     }
   }, []);
   useEffect(() => {
@@ -200,9 +203,11 @@ function Sidebar() {
                   <button className="details-button" onClick={handleOpenModal} style={{ color: 'white' }}>
                     회원정보 수정
                   </button>
-                  <button className="details-button">
-                    <Link to="/update-pw">비밀번호 변경</Link>
-                  </button>
+                  {!loginType && (
+                    <button className="details-button">
+                      <Link to="/update-pw">비밀번호 변경</Link>
+                    </button>
+                  )}
                 </div>
               );
             })}

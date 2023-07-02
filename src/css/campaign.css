@@ -207,6 +207,22 @@ hr {
     font-size: 0.8rem;
 }
 
+/* Reivew */
+.campaignReviewTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.campaignReivewImage {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.campaignReviewUser {
+    text-align: right;
+}
+
 /* create */
 .campaignCreateBody {
     display: flex;
