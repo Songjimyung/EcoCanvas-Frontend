@@ -34,20 +34,21 @@ import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
 import DeliveryTracking from './pages/mypagelist/myDelivery';
 import { MyOrder } from './pages/mypagelist/myOrder';
-import { MyRefundreceipt } from './pages/mypagelist/myRefundreceipt';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ApplyListCampaign } from './admin_pages/ApplycampaignList/ApplyCampaignList'
-import { MyProfile } from './pages/mypagelist/myprofile'
+import { MyOrderInfo } from './pages/mypagelist/myorderinfo'
 import { UserWithdrawal } from './pages/UserWithdrawal'
 import { ChatList } from './admin_pages/chatList/ChatList';
 import { ChatDetail } from './admin_pages/chatDetail/ChatDetail';
 import { RegisterPayment } from './pages/mypagelist/myPayment';
 import { ReceiptList } from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
-
 import NotificationHistory from './components/NotificationHistory/NotificationHistory'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
+import { Cart } from './pages/Cart'
+import { OrderProductList } from './pages/OrderProductList'
+
 const theme = createTheme({
   typography: {
     fontFamily: "'Pretendard-Regular'"
@@ -111,13 +112,12 @@ function App() {
             <Route path="/product/:productId" element={<ShopDetail />}></Route>
             <Route path="/product/buy/:productId" element={<BuyProduct />}></Route>
             <Route path="/mypage" element={<Mypage />}></Route>
-            <Route path="/mypage/profile" element={<MyProfile />}></Route>
+            <Route path="/mypage/orderinfo" element={<MyOrderInfo />}></Route>
             <Route path="/mypage/profile/withdrawal" element={<UserWithdrawal />}></Route>
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
             <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
-            <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>
@@ -134,6 +134,8 @@ function App() {
             <Route path="/mypage/myschedule" element={<ReceiptList />}></Route>
             <Route path="/chats" element={<ChatDetail />} />
             <Route path="/notification" element={<NotificationHistory />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/order/productlist" element={<OrderProductList />} />
           </Routes>
         </div>
 

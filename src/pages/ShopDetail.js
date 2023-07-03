@@ -24,7 +24,6 @@ const ShopDetail = () => {
   }, [product]);
 
 
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
@@ -57,6 +56,41 @@ const ShopDetail = () => {
       });
   };
 
+  const openAlertModal = () => {
+    const payload = JSON.parse(localStorage.getItem('payload'));
+    if (!payload) {
+      alert("로그인 후 이용해주세요!");
+      return;
+    }
+    const userId = payload.user_id;
+
+
+    const cartItems = JSON.parse(localStorage.getItem(`cartItems_${userId}`)) || [];
+    const isExistProduct = cartItems.find((item) => item.id === product.id);
+
+    if (isExistProduct) {
+      // 이미 장바구니에 있는 상품이면 수량만 증가시킴
+      const updatedCartItems = cartItems.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+
+      localStorage.setItem(`cartItems_${userId}`, JSON.stringify(updatedCartItems));
+    } else {
+      // 장바구니에 상품이 없는 경우
+      cartItems.push({ ...product, quantity: 1 });
+      localStorage.setItem(`cartItems_${userId}`, JSON.stringify(cartItems));
+    }
+
+    alert("장바구니에 상품이 담겼습니다!");
+
+    const questionNavigate = window.confirm("장바구니로 이동하시겠습니까?");
+    if (questionNavigate) {
+      window.location.href = '/cart';
+    }
+  };
 
   const handleStockAlertClose = () => {
     setStockAlertOpen(false);
@@ -98,6 +132,7 @@ const ShopDetail = () => {
   const closeShareModal = () => {
     setShareModalOpen(false);
   };
+
 
   return (
     <div className="productContainer" >
@@ -144,6 +179,7 @@ const ShopDetail = () => {
                     color: 'gray',
                     marginRight: '30px',
                   }}
+                  onClick={openAlertModal}
                 >
                   장바구니 담기
                   <ShoppingCart />

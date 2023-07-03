@@ -3,10 +3,16 @@ import "./mypageSidebar.css";
 import { Link, useLocation } from "react-router-dom";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import profile_default_image from "../../img/profile_default_image.png";
+import { Button, Grid, Typography, TextField } from "@mui/material";
+import Modal from "../../components/modal/Modal"
 
 function Sidebar() {
   const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState();
+  const [username, setUserName] = useState();
+  const [image, setImage] = useState("");
+  const [ModalOpen, setModalOpen] = useState(false);
+  const [loginType, setLoginType] = useState(null);
 
   const getImageUrl = (imagePath) => {
     if (process.env.NODE_ENV === "development") {
@@ -29,6 +35,7 @@ function Sidebar() {
     { name: "리뷰/댓글", path: "/mypage/myreviews" },
   ];
   const menus1 = [
+    { name: "나의 장바구니", path: "/cart" },
     { name: "주문내역", path: "/mypage/myorders" },
     { name: "배송조회", path: "/mypage/mydelivery" },
     { name: "환불/취소 접수", path: "/mypage/myrefund" },
@@ -36,6 +43,7 @@ function Sidebar() {
   const menus2 = [
     { name: "카드정보", path: "/mypage/mypayments" },
     { name: "예약결제확인", path: "/mypage/myschedule" },
+    { name: "배송지 등록", path: "/mypage/orderinfo" },
   ];
 
   // payload에서 user_id 가져와서 GET요청
@@ -44,6 +52,9 @@ function Sidebar() {
     if (payload) {
       const payloadObject = JSON.parse(payload);
       setUserId(payloadObject.user_id);
+      if (payloadObject.login_type) {
+        setLoginType(payloadObject.login_type);
+      }
     }
   }, []);
   useEffect(() => {
@@ -80,13 +91,93 @@ function Sidebar() {
           };
           setUserData([defaultUserInfo]);
         }
-      } catch (error) {}
+      } catch (error) { }
     };
 
     if (userId) {
       fetchUserData();
     }
   }, [userId]);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const result = await response.json();
+
+
+        setUserName(result.user.username);
+
+      } catch (error) {
+
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("access");
+
+    const formData = new FormData();
+    formData.append("image", image);
+    const userData = {
+      username: username
+    };
+
+    formData.append("user", JSON.stringify(userData));
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/users/profile/`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      if (response.ok) {
+        await response.json();
+        alert("저장 완료!")
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        const errorValues = Object.values(data);
+        throw new Error(errorValues.join('\n'));
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+  };
+
+
+
+
 
   return (
     <>
@@ -109,12 +200,14 @@ function Sidebar() {
                 <div key={user.id} className="myprofile-info-box">
                   <p>{user.username}</p>
                   <p>{user.email}</p>
-                  <button className="details-button">
-                    <Link to="/mypage/profile">회원정보 수정</Link>
+                  <button className="details-button" onClick={handleOpenModal} style={{ color: 'white' }}>
+                    회원정보 수정
                   </button>
-                  <button className="details-button">
-                    <Link to="/update-pw">비밀번호 변경</Link>
-                  </button>
+                  {!loginType && (
+                    <button className="details-button">
+                      <Link to="/update-pw">비밀번호 변경</Link>
+                    </button>
+                  )}
                 </div>
               );
             })}
@@ -162,6 +255,49 @@ function Sidebar() {
           </div>
         </div>
       </div>
+      <Modal open={ModalOpen} close={handleModalClose} header="프로필 수정">
+        <form onSubmit={handleFormSubmit} >
+          <Grid container spacing={2} >
+            <Grid item xs={12} style={{ textAlign: "center", width: "30%", margin: "auto" }}>
+              <Typography variant="body1">이름변경</Typography>
+              <TextField
+                name="username"
+                value={username}
+                onChange={(e) =>
+                  setUserName(e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={12} style={{ textAlign: "center", width: "70%", margin: "auto" }}>
+              <Typography variant="body1">프로필 이미지 업로드</Typography>
+              <input
+                type="file"
+                accept="image/jpg,image/png,image/jpeg,image/gif"
+                onChange={handleImageUpload}
+              />
+            </Grid>
+          </Grid>
+          <div className="button-box">
+            <Button
+              type="submit"
+              sx={{
+                width: "150px",
+                backgroundColor: "rgb(129, 178, 20)",
+                fontSize: "20px",
+                color: "white",
+                margin: "0px auto",
+                transition: "0.2s",
+                ":hover": {
+                  backgroundColor: "rgb(32, 106, 93)",
+                },
+              }}
+            >
+              Save
+            </Button>
+            <Link to="/mypage/profile/withdrawal">회원탈퇴를 원하시나요?</Link>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }
