@@ -68,7 +68,6 @@ const CampaignForm = ({ initialData, isUpdate }) => {
   };
   const handleCampaignTags = (event) => {
     const tags = event.target.value.split(",").map((tag) => tag.trim());
-    console.log(tags);
     setCampaignTags(tags);
   };
 

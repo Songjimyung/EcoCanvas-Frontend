@@ -95,7 +95,6 @@ const Campaign = () => {
         url += `&end=${end}`;
       }
       const response = await axios.get(url);
-      console.log(response)
       setCampaignList(response.data.results);
       setCampaignCount(response.data.count);
     } catch (e) {
@@ -119,27 +118,40 @@ const Campaign = () => {
   };
 
   // 좋아요
-  const [isLiked, setIsLiked] = useState(false);
+  const [likedCampaigns, setLikedCampaigns] = useState([]);
 
   // 좋아요 버튼
   const handleLikeButton = (campaignId) => {
     if (token) {
-      setIsLiked(!isLiked);
+      toggleCampaignLike(campaignId);
+    } else {
+      alert("로그인이 필요합니다.");
+    }
+  };
+
+  // 좋아요 토글
+  const toggleCampaignLike = (campaignId) => {
+    const isLiked = likedCampaigns.includes(campaignId);
+    if (isLiked) {
       axiosLike(campaignId);
     } else {
-      alert("로그인이 필요합니다.")
+      axiosLike(campaignId);
     }
   };
 
   // 좋아요 axios
   const axiosLike = async (campaignId) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`, {}, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      setIsLiked(response.data.is_liked);
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/campaigns/${campaignId}/like/`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLikedCampaigns([...likedCampaigns, campaignId]);
     } catch (e) {
       console.error(e);
     }
@@ -308,12 +320,13 @@ const Campaign = () => {
                 <div key={campaign.id}>
                   <IconButton
                     aria-label="add to favorites"
-                    onClick={() => {
-                      handleLikeButton(campaign.id);
-                    }}
+                    onClick={() => handleLikeButton(campaign.id)}
                   >
                     <FavoriteIcon
-                      sx={{ color: isLiked ? 'red' : '', }} />
+                      sx={{
+                        color: likedCampaigns.includes(campaign.id) ? "red" : "",
+                      }}
+                    />
                   </IconButton>
                   <IconButton
                     aria-label="share"

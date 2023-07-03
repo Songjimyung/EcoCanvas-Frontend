@@ -136,7 +136,6 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
-      console.log(response)
     } catch (e) {
       console.error(e);
     }
