@@ -59,6 +59,7 @@ export default function ChatList() {
     setChatModalOpen(true);
   };
   const closeChatModal = () => {
+    window.location.reload();
     setSelectedUserId(null);
     setChatModalOpen(false);
   };
