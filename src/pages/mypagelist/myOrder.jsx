@@ -93,7 +93,7 @@ const MyOrder = () => {
               myorderData.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
-                  <td>{order.product}</td>
+                  <td>{order.product_name}</td>
                   <td>{order.order_totalprice}</td>
                   <td>{order["order_info"][0]?.status || "알 수 없음"}</td>
                   <td>
@@ -132,7 +132,7 @@ const MyOrder = () => {
                 <div>
                   <p>주문 번호: {selectedOrderData.id}</p>
                   <p>수령인: {selectedOrderData.receiver_name}</p>
-                  <p>상품명: {selectedOrderData.product}</p>
+                  <p>상품명: {selectedOrderData.product_name}</p>
                   <p>가격: {selectedOrderData.order_totalprice}원</p>
                   <p>
                     주문상태:{" "}
