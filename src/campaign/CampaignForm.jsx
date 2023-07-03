@@ -119,9 +119,14 @@ const CampaignForm = ({ initialData, isUpdate }) => {
     formData.append("content", campaignContent);
     formData.append("members", campaignMembers);
     formData.append("category", campaignCategory);
-    campaignTags.forEach((tag, index) => {
-      formData.append(`tags[${index}]`, tag);
-    });
+    if (campaignTags.length > 0) {
+      campaignTags.forEach((tag, index) => {
+        formData.append(`tags[${index}]`, tag);
+      });
+    } else {
+      formData.append("tags[0]", "태그없음");
+    }
+
     formData.append("image", campaignImage);
     formData.append("campaign_start_date", campaignStartDate);
     formData.append("campaign_end_date", campaignEndDate);
@@ -272,7 +277,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
           />
         </div>
         <div className="campaignExplain" style={{ marginBottom: "10px" }}>
-          ※태그는 쉼표(,)로 구분해서 작성 부탁드립니다.
+          ※태그는 쉼표(,)로 구분해서 작성해주세요.
         </div>
 
         <div className="marginBottom30">
