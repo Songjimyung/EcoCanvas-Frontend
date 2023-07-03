@@ -80,10 +80,8 @@ const OrderProductList = () => {
         const errorMessage = errorValues.join('\n');
         alert(errorMessage);
       } else {
-        console.log(response);
       }
     } catch (error) {
-      console.log(error);
       alert("결제 오류! 다시 결제해주세요");
     }
 
@@ -148,7 +146,6 @@ const OrderProductList = () => {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
