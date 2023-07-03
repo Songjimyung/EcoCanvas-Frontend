@@ -75,6 +75,10 @@ export default function Topbar() {
     alert("로그아웃 되었습니다.");
   };
 
+  const handleCart = () => {
+    window.location.replace('/cart');
+  }
+
   return (
     <div className="_topbar">
       <div className="_topbarLeft">
@@ -99,6 +103,7 @@ export default function Topbar() {
       </div>
       <div className="_topbarRight">
         <div className="_topbarLogFunction">
+
           {isLoggedIn ? (
             <span>
               <Link onClick={handleLogout} className="_signBtn">
@@ -134,6 +139,11 @@ export default function Topbar() {
               )}
             </div>
           </Link>
+          <span>
+            <Link onClick={handleCart} className="_signBtn" >
+              |장바구니
+            </Link>
+          </span>
         </div>
         <div>
           <Snackbar
