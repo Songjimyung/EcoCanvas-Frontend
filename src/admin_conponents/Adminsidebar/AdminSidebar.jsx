@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./admin_sidebar.css";
 import HouseSharpIcon from "@mui/icons-material/HouseSharp";
-import CurrencyExchangeSharpIcon from "@mui/icons-material/CurrencyExchangeSharp";
 import LeaderboardSharpIcon from "@mui/icons-material/LeaderboardSharp";
 import GroupSharpIcon from "@mui/icons-material/GroupSharp";
 import PermPhoneMsgSharpIcon from "@mui/icons-material/PermPhoneMsgSharp";
@@ -69,18 +68,6 @@ export default function Adminsidebar() {
                 Home
               </li>
             </Link>
-            <Link to="/" className="link">
-              <li className="sidebarListItem">
-                <CurrencyExchangeSharpIcon className="sidebarIcon" />
-                결제 현황
-              </li>
-            </Link>
-            <Link to="/" className="link">
-              <li className="sidebarListItem">
-                <LeaderboardSharpIcon className="sidebarIcon" />
-                수익 현황
-              </li>
-            </Link>
           </ul>
         </div>
         <div className="sidebarMenu">
@@ -90,18 +77,6 @@ export default function Adminsidebar() {
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 캠페인 신청내역
-              </li>
-            </Link>
-            <Link to="/" className="link">
-              <li className="sidebarListItem">
-                <CurrencyExchangeSharpIcon className="sidebarIcon" />
-                캠페인 정산
-              </li>
-            </Link>
-            <Link to="/" className="link">
-              <li className="sidebarListItem">
-                <LeaderboardSharpIcon className="sidebarIcon" />
-                펀딩 내역
               </li>
             </Link>
           </ul>
@@ -131,12 +106,6 @@ export default function Adminsidebar() {
               <li className="sidebarListItem">
                 <HouseSharpIcon className="sidebarIcon" />
                 주문내역
-              </li>
-            </Link>
-            <Link to="/admin-products/:productId" className="link">
-              <li className="sidebarListItem">
-                <CurrencyExchangeSharpIcon className="sidebarIcon" />
-                재고관리
               </li>
             </Link>
             <Link to="/admin-createProduct" className="link">

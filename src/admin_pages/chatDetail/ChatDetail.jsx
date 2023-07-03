@@ -1,36 +1,38 @@
 import React, { useEffect, useState, useRef } from "react";
-import './chatDetail.css'
+import "./chatDetail.css";
 import axios from "axios";
 import Messages from "./messages/messages";
 
 export default function ChatDetail(room) {
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([]);
   const chatMessageInputRef = useRef(null);
   const chatMessageSendRef = useRef(null);
   let chatSocket = useRef(null);
-  let payload = localStorage.getItem('payload');
-  payload = JSON.parse(payload)
-  const userId = payload.user_id
-  const email = payload.email
-  const token = localStorage.getItem('access')
-  const id = room.id
-  const [roomId, setRoomId] = useState('');
+  let payload = localStorage.getItem("payload");
+  payload = JSON.parse(payload);
+  const userId = payload.user_id;
+  const email = payload.email;
+  const token = localStorage.getItem("access");
+  const id = room.id;
+  const [roomId, setRoomId] = useState("");
 
   useEffect(() => {
     async function getRoomId() {
       if (id) {
-        setRoomId(id)
-      }
-      else {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/chat/room/`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        })
-        setRoomId(response.data.id)
+        setRoomId(id);
+      } else {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/chat/room/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setRoomId(response.data.id);
       }
     }
-    getRoomId()
+    getRoomId();
 
     chatMessageInputRef.current.focus();
 
@@ -42,48 +44,56 @@ export default function ChatDetail(room) {
 
     chatMessageSendRef.current.onclick = function () {
       if (chatMessageInputRef.current.value.length === 0) return;
-      chatSocket.current.send(JSON.stringify({
-        "message": chatMessageInputRef.current.value,
-        'user_id': userId,
-        'command': 'new_message'
-      }));
+      chatSocket.current.send(
+        JSON.stringify({
+          message: chatMessageInputRef.current.value,
+          user_id: userId,
+          command: "new_message",
+        })
+      );
       chatMessageInputRef.current.value = "";
     };
-
   }, [id, token, userId]);
 
   useEffect(() => {
     function connect() {
-      chatSocket.current = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`);
+      chatSocket.current = new WebSocket(
+        `${process.env.REACT_APP_WEBSOCK_URL}/chat/${roomId}/?token=${token}`
+      );
 
       chatSocket.current.onopen = async function (e) {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/chat/message/?room=${roomId}`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        })
+        await axios
+          .get(
+            `${process.env.REACT_APP_BACKEND_URL}/chat/message/?room=${roomId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
           .then((response) => {
-          console.log(response['data'].length)
-          for (let i = response['data'].length-1; i >= 0; i--) {
-              setMessages((messages) => [...messages, response['data'][i]])
+     setMessages((messages) => [...messages, response['data'][i]])
+
+            for (let i = response["data"].length - 1; i >= 0; i--) {
+              setMessages((messages) => [...messages, response["data"][i]]);
             }
           })
-          
-        };
+          .catch((error) => {
+            console.error("Connection error", error);
+          });
+      };
 
-        chatSocket.current.onclose = function (e) {
-        };
-        chatSocket.current.onmessage = function (e) {
-          const data = JSON.parse(e.data);
-          if (data['command'] === 'new_message') {
-            setMessages((messages) => [...messages, data['message']])
-          }
-        };
+      chatSocket.current.onclose = function (e) {};
+      chatSocket.current.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        if (data["command"] === "new_message") {
+          setMessages((messages) => [...messages, data["message"]]);
+        }
+      };
 
-        chatSocket.current.onerror = function (err) {
-          chatSocket.current.onclose();
-        };
-      
+      chatSocket.current.onerror = function (err) {
+        chatSocket.current.onclose();
+      };
     }
     if (roomId) {
       connect();
@@ -95,10 +105,22 @@ export default function ChatDetail(room) {
 
   return (
     <div className="chatContainer">
-      <div className='container'>
+      <div className="container">
         <Messages messages={messages} name={email} />
-        <input className="input" type="text" id="chatMessageInput" ref={chatMessageInputRef} placeholder="전송하려는 메시지를 입력하세요." />
-        <button className="sendButton" id="chatMessageSend" ref={chatMessageSendRef}>Send</button>
+        <input
+          className="input"
+          type="text"
+          id="chatMessageInput"
+          ref={chatMessageInputRef}
+          placeholder="전송하려는 메시지를 입력하세요."
+        />
+        <button
+          className="sendButton"
+          id="chatMessageSend"
+          ref={chatMessageSendRef}
+        >
+          Send
+        </button>
       </div>
     </div>
   );

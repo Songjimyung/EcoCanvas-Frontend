@@ -67,13 +67,22 @@ export default function Topbar() {
   }, []);
   // Logout
   const handleLogout = () => {
+    const currentDate = new Date();
+    const expiresDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000);
+    const expires = expiresDate.toUTCString();
+
     localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+    document.cookie =
+      "refresh=; path=/; expires=" + expires + "; Secure; SameSite=Lax";
     localStorage.removeItem("payload");
     setIsLoggedIn(false);
     socket.close();
     alert("로그아웃 되었습니다.");
   };
+
+  const handleCart = () => {
+    window.location.replace('/cart');
+  }
 
   return (
     <div className="_topbar">
@@ -99,6 +108,7 @@ export default function Topbar() {
       </div>
       <div className="_topbarRight">
         <div className="_topbarLogFunction">
+
           {isLoggedIn ? (
             <span>
               <Link onClick={handleLogout} className="_signBtn">
@@ -134,6 +144,11 @@ export default function Topbar() {
               )}
             </div>
           </Link>
+          <span>
+            <Link onClick={handleCart} className="_signBtn" >
+              |장바구니
+            </Link>
+          </span>
         </div>
         <div>
           <Snackbar

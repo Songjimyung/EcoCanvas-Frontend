@@ -24,7 +24,7 @@ const Cart = () => {
     setCartItems(storedCartItems);
   }, [userId]);
 
-  const handleIncrese = (productId) => {
+  const handleIncrease = (productId) => {
     const updatedCartItems = cartItems.map((item) => {
       if (item.id === productId) {
         return { ...item, quantity: item.quantity + 1 };
@@ -75,6 +75,11 @@ const Cart = () => {
   const handlePlaceOrder = () => {
     const checkedItems = cartItems.filter((item) => item.checked);
     localStorage.setItem(`cartItems_${userId}_order`, JSON.stringify(checkedItems));
+
+    if (checkedItems.length === 0) {
+      alert("상품을 선택해주세요!")
+      window.location.reload();
+    }
   };
 
   return (
@@ -83,7 +88,7 @@ const Cart = () => {
       {cartItems.length > 0 ? (
         <Container>
           <TableContainer>
-            <Table bordered={true.toString()}>
+            <Table bordered={true}>
               <TableHead>
                 <TableRow>
                   <TableCell>ID</TableCell>
@@ -105,7 +110,13 @@ const Cart = () => {
                     <TableCell>{product.id}</TableCell>
                     <TableCell>
                       <div className="productListItem">
-                        <img className="productListImg" src={product.img} alt="" />
+                        {product.images.length > 0 && (
+                          <img
+                            className="productListImg"
+                            src={product.images[0].image_file}
+                            alt=""
+                          />
+                        )}
                         {product.product_name}
                       </div>
                     </TableCell>
@@ -114,7 +125,7 @@ const Cart = () => {
                       <div className="quantityControl">
                         {product.quantity}
                         <button onClick={() => handleDecrese(product.id)}>-</button>
-                        <button onClick={() => handleIncrese(product.id)}>+</button>
+                        <button onClick={() => handleIncrease(product.id)}>+</button>
                       </div>
                     </TableCell>
                     <TableCell>

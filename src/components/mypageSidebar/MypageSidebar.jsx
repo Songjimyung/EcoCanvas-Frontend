@@ -35,15 +35,13 @@ function Sidebar() {
     { name: "리뷰/댓글", path: "/mypage/myreviews" },
   ];
   const menus1 = [
-    { name: "나의 장바구니", path: "/cart" },
     { name: "주문내역", path: "/mypage/myorders" },
-    // { name: "배송조회", path: "/mypage/mydelivery" },
-    // { name: "환불/취소 접수", path: "/mypage/myrefund" },
+    { name: "배송지 등록", path: "/mypage/orderinfo" },
+
   ];
   const menus2 = [
     { name: "카드정보", path: "/mypage/mypayments" },
     { name: "예약결제확인", path: "/mypage/myschedule" },
-    { name: "배송지 등록", path: "/mypage/orderinfo" },
   ];
 
   // payload에서 user_id 가져와서 GET요청

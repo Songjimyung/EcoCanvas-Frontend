@@ -84,10 +84,8 @@ const OrderProductList = () => {
         const errorMessage = errorValues.join('\n');
         alert(errorMessage);
       } else {
-        console.log(response);
       }
     } catch (error) {
-      console.log(error);
       alert("결제 오류! 다시 결제해주세요");
     }
 
@@ -248,7 +246,6 @@ const OrderProductList = () => {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
@@ -303,7 +300,10 @@ const OrderProductList = () => {
                     <TableCell>{product.id}</TableCell>
                     <TableCell>
                       <div className="productListItem">
-                        <img className="productListImg" src={product.img} alt="" />
+                        <img className="productListImg"
+                          src={product.images[0].image_file}
+                          alt="장바구니 미리보기"
+                        />
                         {product.product_name}
                       </div>
                     </TableCell>
