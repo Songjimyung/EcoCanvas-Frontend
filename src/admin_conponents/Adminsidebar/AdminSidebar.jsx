@@ -115,13 +115,13 @@ export default function Adminsidebar() {
                 유저목록
               </li>
             </Link>
-            <Link to="/chats" className="link">
+            <a href="/chats" className="link">
               <li className={`sidebarListItem ${changeColor ? "highlighted" : ""}`}
                 onClick={handleSidebarItemClick}>
                 <PermPhoneMsgSharpIcon className="sidebarIcon" />
                 상담
               </li>
-            </Link>
+            </a>
           </ul>
         </div>
         <div className="sidebarMenu">
