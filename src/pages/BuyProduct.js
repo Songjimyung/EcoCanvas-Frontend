@@ -190,7 +190,7 @@ export default function BuyProduct() {
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) {
+      if (window.IMP) { 
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -207,8 +207,8 @@ export default function BuyProduct() {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card',
-            merchant_uid: merchant_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -237,7 +237,6 @@ export default function BuyProduct() {
                 .then((response) => {
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
-                  // navigate('/mypage/myorders');
                 })
                 .catch((error) => {
                   console.error(error);

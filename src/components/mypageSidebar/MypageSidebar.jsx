@@ -36,7 +36,6 @@ function Sidebar() {
   ];
   const menus1 = [
     { name: "주문내역", path: "/mypage/myorders" },
-    { name: "환불/취소 접수", path: "/mypage/myrefund" },
     { name: "배송지 등록", path: "/mypage/orderinfo" },
 
   ];

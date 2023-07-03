@@ -48,6 +48,7 @@ import TokenRefreshComponent from './components/tokenRefresh/TokenRefresh'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 import { Cart } from './pages/Cart'
 import { OrderProductList } from './pages/OrderProductList'
+import {  MyRefundreceipt } from './pages/mypagelist/myRefundReceipt'
 
 const theme = createTheme({
   typography: {
@@ -137,6 +138,7 @@ function App() {
             <Route path="/notification" element={<NotificationHistory />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/productlist" element={<OrderProductList />} />
+            <Route path="/mypage/myorder/:id" element={<MyRefundreceipt/>} />
           </Routes>
         </div>
 

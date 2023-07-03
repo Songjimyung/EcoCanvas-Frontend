@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
+import axios from 'axios';
 
 import {
   Table,
@@ -13,6 +14,7 @@ import {
   Container,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import ProductList from "../admin_pages/productList/ProductList";
 
 
 const OrderProductList = () => {
@@ -61,6 +63,8 @@ const OrderProductList = () => {
     }));
 
     try {
+      await requestPay();
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: 'POST',
         headers: {
@@ -85,6 +89,102 @@ const OrderProductList = () => {
       alert("결제 오류! 다시 결제해주세요");
     }
 
+  };
+  useEffect(() => {
+    const loadScript = async () => {
+      // jQuery 스크립트 로드
+      const jQueryScript = document.createElement('script');
+      jQueryScript.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
+      jQueryScript.async = true;
+      document.body.appendChild(jQueryScript);
+
+      // iamport.payment.js 스크립트 로드
+      const iamportScript = document.createElement('script');
+      iamportScript.src = 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js';
+      iamportScript.async = true;
+      document.body.appendChild(iamportScript);
+    };
+    loadScript();
+  }, []);
+
+  // const navigate = useNavigate();
+  const getEmailFromLocalStorage = () => {
+    const payload = localStorage.getItem('payload');
+    if (payload) {
+      const payload_data = JSON.parse(payload);
+      const email = payload_data.email;
+      const user_id = payload_data.user_id;
+      return { email, user_id };
+    }
+    return { email: null, user_id: null };
+  };
+
+  const { email, user_id } = getEmailFromLocalStorage();
+
+  const requestPay = async () => {
+    return new Promise((resolve, reject) => {
+      // iamport.payment.js 스크립트 로드 완료 후 실행
+      if (window.IMP) { 
+        window.IMP.init('imp25228615');
+
+        const today = new Date();
+        const month = today.getMonth();
+        const date = today.getDate();
+        const hours = today.getHours();
+        const minutes = today.getMinutes();
+        const seconds = today.getSeconds();
+        const milliseconds = today.getMilliseconds();
+        const makeMerchantUid = month + date + hours + minutes + seconds + milliseconds;
+        const merchant_uid = 'Merchant' + makeMerchantUid;
+        const customer_uid = email + makeMerchantUid;
+        window.IMP.request_pay(
+          {
+            pg: 'nice',
+            customer_uid: customer_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
+            name: '다중상품',
+            amount: productPrice,
+            buyer_email: email,
+            buyer_name: UserName,
+            buyer_tel: phonenum,
+            buyer_addr: Address + DetailAddress,
+            buyer_postcode: zipcode,
+          },
+          (response) => {
+            const paid_imp_uid = response.imp_uid;
+            const paid_amount = response.paid_amount;
+
+
+            if (response.success === true) {
+              const token = localStorage.getItem('access');
+              axios
+                .post(
+                  `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
+                  { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount },
+                  {
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                    },
+                  }
+                )
+                .then((response) => {
+                  alert("결제 성공!");
+                  resolve(); // Promise가 성공 상태로 처리됨
+                })
+                .catch((error) => {
+                  console.error(error);
+                  alert(error.message);
+                  reject(); // Promise가 실패 상태로 처리됨
+                });
+            } else {
+              alert(response.error_msg);
+              reject(); // Promise가 실패 상태로 처리됨
+            }
+          }
+        );
+      }
+    });
   };
 
   const handlePhone = (e) => {
