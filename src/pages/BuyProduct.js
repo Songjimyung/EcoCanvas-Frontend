@@ -213,11 +213,10 @@ export default function BuyProduct() {
         const customer_uid = email + makeMerchantUid;
         window.IMP.request_pay(
           {
-            pg: 'inicis',
-            escrow: true,
+            pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card',
-            merchant_uid: merchant_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -227,7 +226,6 @@ export default function BuyProduct() {
             buyer_postcode: formData.zip_code,
           },
           (response) => {
-            // console.log(response)
             const paid_imp_uid = response.imp_uid;
             const paid_amount = response.paid_amount;
 
@@ -245,10 +243,8 @@ export default function BuyProduct() {
                   }
                 )
                 .then((response) => {
-                  // console.log(response.data);
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
-                  // navigate('/mypage/myorders');
                 })
                 .catch((error) => {
                   console.error(error);

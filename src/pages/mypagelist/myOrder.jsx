@@ -4,6 +4,7 @@ import "../../css/mypage.css";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+// import { Link } from "react-router-dom";
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
@@ -53,6 +54,24 @@ const MyOrder = () => {
   const selectedOrderData = myorderData.find(
     (order) => order.id === selectedOrder
   );
+
+  const refundPayment = (selectedOrder) => {
+    const token = localStorage.getItem("access");
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/refund/${selectedOrder}`,
+    {headers: {
+      'Authorization': `Bearer ${token}`
+    }})
+    .then((response) => {
+      alert(response.data.message)
+      closeModal();
+    })
+    .catch((error) =>{
+      console.log(error)
+      alert("결제취소가 실패하였습니다.")
+    }
+      );
+
+  }
 
   return (
     <div className="mypage-block">
@@ -134,11 +153,12 @@ const MyOrder = () => {
                   <p>상세주소: {selectedOrderData.address_detail}</p>
                   <p>배송메세지: {selectedOrderData.address_message}</p>
                   <p>연락처: {selectedOrderData.receiver_number}</p>
+                  <button onClick={() => refundPayment(selectedOrderData.id)}class='DeleteButton' style={{width:'100px'}}>주문취소요청</button>
                 </div>
               </div>
             </div>
           )}
-        </div>
+        </div>  
       </div>
     </div>
   );

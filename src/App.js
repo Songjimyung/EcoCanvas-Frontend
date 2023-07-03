@@ -117,7 +117,7 @@ function App() {
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
             <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
-            <Route path="/mypage/myrefund" element={<MyRefundreceipt />}></Route>
+            <Route path="/mypage/myrefund/:productId" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>

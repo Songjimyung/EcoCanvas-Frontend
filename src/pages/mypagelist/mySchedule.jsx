@@ -85,7 +85,7 @@ function ReceiptList() {
                 <td className='fundingDate'style={{border: '1px solid black'}}>{receipt.campaign_date}</td>
                 <td className='fundingStatus'style={{border: '1px solid black'}}>{Object.values(receipt.status)[0]}</td>
                 <td className='fundingrefund' style={{border: '1px solid black'}}>
-                    {Object.keys(receipt.status)[0] === '0' ? <button onClick={() => cancelSchedule(receipt.id)}>취소</button> :"취소 불가" }
+                    {Object.keys(receipt.status)[0] === '0' ? <button class='DeleteButton'onClick={() => cancelSchedule(receipt.id)}>취소</button> :"취소 불가" }
                 </td>
             </tr>
             ))
