@@ -80,10 +80,8 @@ const OrderProductList = () => {
         const errorMessage = errorValues.join('\n');
         alert(errorMessage);
       } else {
-        console.log(response);
       }
     } catch (error) {
-      console.log(error);
       alert("결제 오류! 다시 결제해주세요");
     }
 

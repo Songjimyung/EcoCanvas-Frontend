@@ -11,7 +11,7 @@ const CallbackGoogle = (props) => {
                 const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/google/callback/`, codeData);
                 const token_req_json = response.data;
                 localStorage.setItem('access', token_req_json['access']);
-                localStorage.setItem("refresh", token_req_json['refresh']);
+                document.cookie = `refresh=${token_req_json['refresh']}; path=/; Secure; SameSite=Lax`;
                 const base64Url = token_req_json['access'].split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {

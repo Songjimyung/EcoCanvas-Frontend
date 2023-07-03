@@ -44,6 +44,7 @@ import { RegisterPayment } from './pages/mypagelist/myPayment';
 import { ReceiptList } from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 import NotificationHistory from './components/NotificationHistory/NotificationHistory'
+import TokenRefreshComponent from './components/tokenRefresh/TokenRefresh'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 import { Cart } from './pages/Cart'
 import { OrderProductList } from './pages/OrderProductList'
@@ -89,6 +90,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div id='wrapper'>
+        <TokenRefreshComponent />
         <KakaoInit />
         <ChatButton />
         {!isAdmin ? <Topbar /> : <AdminTopbar />}

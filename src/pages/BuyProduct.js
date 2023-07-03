@@ -235,7 +235,6 @@ export default function BuyProduct() {
                   }
                 )
                 .then((response) => {
-                  // console.log(response.data);
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
                   // navigate('/mypage/myorders');

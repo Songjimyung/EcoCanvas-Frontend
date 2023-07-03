@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/AuthForm.css'
-
+import kakao_btn_img from '../img/kakao_login_large_wide.png';
+import google_btn_img from '../img/google_login_btn.png'
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [check_code, setCheck_code] = useState('');
+  let [check_code, setCheck_code] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [re_password, setPasswordCheck] = useState('');
@@ -14,7 +15,11 @@ const AuthForm = ({ type }) => {
 
   const handleSignupFormSubmit = async (e) => {
     e.preventDefault();
-    //요청을 보낼 데이터 객체
+
+    if (check_code.length === 0) {
+      check_code = false
+    } else if (check_code.length > 0) {}
+
     const signUpData = {
       email,
       check_code,
@@ -63,7 +68,7 @@ const AuthForm = ({ type }) => {
   };
   const handleLoginFormSubmit = async (e) => {
     e.preventDefault();
-    // 로그인 요청을 보낼 데이터 객체
+
     const loginData = {
       email,
       password,
@@ -71,9 +76,8 @@ const AuthForm = ({ type }) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login/`, loginData);
 
-
       localStorage.setItem("access", response.data.access);
-      localStorage.setItem("refresh", response.data.refresh);
+      document.cookie = `refresh=${response.data.refresh}; path=/; Secure; SameSite=Lax`;
       const base64Url = response.data.access.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
@@ -108,7 +112,9 @@ const AuthForm = ({ type }) => {
     };
 
     return (
-      <button onClick={handleLogin}>카카오 로그인</button>
+      <button onClick={handleLogin} className='kakao-btn'>
+        <img src={ kakao_btn_img } alt="카카오 로그인" className='kakao-btn-img'/>
+      </button>
     );
   };
 
@@ -120,7 +126,10 @@ const AuthForm = ({ type }) => {
     };
 
     return (
-      <button onClick={handleGoogleLogin}>구글 로그인</button>
+      <button onClick={handleGoogleLogin} className='google-btn'>
+        <img src={ google_btn_img } alt='구글 로그인' className='google-btn-img' />
+        <span>Sign in with Google</span>
+      </button>
     );
   };
 
@@ -143,7 +152,7 @@ const AuthForm = ({ type }) => {
           onChange={(e) => setEmail(e.target.value)}
         />
         {type === 'signup' && (
-          <button onClick={handleEmailFormSubmit}>
+          <button onClick={handleEmailFormSubmit} className='default-btn'>
             인증코드 받기
           </button>
         )}
@@ -183,7 +192,7 @@ const AuthForm = ({ type }) => {
             onChange={(e) => setPasswordCheck(e.target.value)}
           />
         )}
-        <button onClick={type === 'signup' ? handleSignupFormSubmit : handleLoginFormSubmit}>
+        <button onClick={type === 'signup' ? handleSignupFormSubmit : handleLoginFormSubmit} className='default-btn'>
           {type === 'signup' ? '가입하기' : '로그인'}
         </button>
         <SocialKakao />

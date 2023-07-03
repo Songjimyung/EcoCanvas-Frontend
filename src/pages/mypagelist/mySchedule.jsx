@@ -28,7 +28,6 @@ function ReceiptList() {
             setTotalPages(totalPages);
          })
          .catch((error) => {
-          console.log(error)
             
          });
         }

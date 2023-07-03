@@ -67,8 +67,13 @@ export default function Topbar() {
   }, []);
   // Logout
   const handleLogout = () => {
+    const currentDate = new Date();
+    const expiresDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000);
+    const expires = expiresDate.toUTCString();
+
     localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+    document.cookie =
+      "refresh=; path=/; expires=" + expires + "; Secure; SameSite=Lax";
     localStorage.removeItem("payload");
     setIsLoggedIn(false);
     socket.close();

@@ -17,27 +17,84 @@
   padding: 13px 15px;
   border-radius: 5px;
   font-size: 1.0rem;
-  width: 25%;
+  width: 380px;
+  height: 50px;
   outline-style: none;
   border: 1.5px solid rgb(32, 106, 93);
 }
 
-.inputList>button {
+.default-btn {
   padding: 13px 15px;
   border-radius: 5px;
   border: none;
   margin-bottom: 10px;
   color: #e7e5e5;
   font-size: 1.0rem;
-  width: 25%;
+  width: 380px;
+  height: 50px;
   background-color: rgb(129, 178, 20);
   transition: 0.2s;
 }
 
-.inputList>button.active,
-.inputList>button:hover {
+.default-btn.activge,
+.default-btn:hover {
   background-color: rgb(32, 106, 93);
   cursor: pointer;
+}
+
+.kakao-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin-bottom: 10px;
+  background-color: #FEE500;
+  border-radius: 5px;
+  width: 380px;
+  height: 50px;
+}
+
+.kakao-btn:hover {
+  cursor: pointer;
+  border: 1.5px solid rgb(32, 106, 93);
+}
+
+.kakao-btn-img {
+  width: 310px;
+  height: 45px;
+}
+
+.google-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin-bottom: 10px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  width: 380px;
+  height: 50px;
+  border: 1px solid #333;
+}
+
+.google-btn>span {
+  font-size: 14px;
+  padding-left: 20px;
+}
+
+.google-btn:hover {
+  cursor: pointer;
+  border: 1.5px solid rgb(32, 106, 93);
+}
+
+.google-btn-img {
+  position: absolute;
+  top: 50%;
+  left: 47px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
 }
 
 .find-pw-btn {
@@ -51,3 +108,4 @@
   color: rgb(32, 106, 93);
   cursor: pointer;
 }
+
