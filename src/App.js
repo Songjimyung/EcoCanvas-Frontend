@@ -32,7 +32,6 @@ import { KakaoRedirect } from './pages/kakaoredirect';
 import { CallbackGoogle } from './pages/GoogleCallback';
 import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
-import DeliveryTracking from './pages/mypagelist/myDelivery';
 import { MyOrder } from './pages/mypagelist/myOrder';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -78,6 +77,7 @@ function App() {
   const location = useLocation();
   const isMypage = location.pathname.startsWith('/mypage');
 
+
   useEffect(() => {
     const payload = localStorage.getItem('payload');
     if (payload) {
@@ -92,10 +92,10 @@ function App() {
         <KakaoInit />
         <ChatButton />
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
-        {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
           {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
-          {/* <AdminSidebar /> */}
+
+
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
@@ -117,7 +117,6 @@ function App() {
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
-            <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>

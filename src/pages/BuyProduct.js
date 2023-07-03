@@ -17,7 +17,7 @@ export default function BuyProduct() {
   const navigate = useNavigate();
   let { productId } = useParams();
   const [Product, setProduct] = useState(null);
-  const [num, setNumber] = useState(0);
+  const [num, setNumber] = useState(1);
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
@@ -218,7 +218,6 @@ export default function BuyProduct() {
             buyer_postcode: zipcode,
           },
           (response) => {
-            // console.log(response)
             const paid_imp_uid = response.imp_uid;
             const paid_amount = response.paid_amount;
 
@@ -268,7 +267,6 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
@@ -325,7 +323,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.img} alt="" />
+            <img className="productListImg" src={params.row.images} alt="" />
             {params.row.product_name}
           </div>
         );

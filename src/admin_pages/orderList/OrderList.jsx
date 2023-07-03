@@ -25,11 +25,9 @@ export default function AdminOrderList() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data.results)
         const products = response.data.results.map((order) => {
           const status = order.order_info.length > 0 ? order.order_info[0].status : null;
 
-          console.log(status)
           return {
             id: order.id,
             product: order.product_name,

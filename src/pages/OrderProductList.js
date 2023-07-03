@@ -148,7 +148,6 @@ const OrderProductList = () => {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
@@ -203,7 +202,10 @@ const OrderProductList = () => {
                     <TableCell>{product.id}</TableCell>
                     <TableCell>
                       <div className="productListItem">
-                        <img className="productListImg" src={product.img} alt="" />
+                        <img className="productListImg"
+                          src={product.images[0].image_file}
+                          alt="장바구니 미리보기"
+                        />
                         {product.product_name}
                       </div>
                     </TableCell>

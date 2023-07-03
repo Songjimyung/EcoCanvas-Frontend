@@ -31,20 +31,20 @@ export default function ProductList() {
         url += `?page=${currentPage}`;
 
         const response = await axios.get(url);
-
         const products = response.data.results.map((product, index) => ({
           index: index,
           id: product.id,
           name: product.product_name,
           price: product.product_price,
           stock: product.product_stock,
-          img: product.product_image,
+          image: product.images && product.images[0]
+            ? product.images[0]["image_file"]
+            : null,
         }));
-
         setProductList(products);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-      } catch (error) {}
+      } catch (error) { }
     };
 
     fetchProductList();
@@ -72,7 +72,7 @@ export default function ProductList() {
                     <div className="productListItem">
                       <img
                         className="productListImg"
-                        src={product.img}
+                        src={product.image}
                         alt=""
                       />
                       {product.name}

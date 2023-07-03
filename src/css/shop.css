@@ -11,11 +11,11 @@
   font-size: 14px;
   margin-right: 10px;
 }
-  
-  .category-dropdown>option {
-    font-size: 14px;
-    color: #555;
-  }
+
+.category-dropdown>option {
+  font-size: 14px;
+  color: #555;
+}
 
 .productCardContainer {
   display: flex;
@@ -26,7 +26,7 @@
 
 .productCard {
   margin-bottom: 5%;
-  width: 45%;
+  width: 30%;
 }
 
 @media (max-width: 800px) {

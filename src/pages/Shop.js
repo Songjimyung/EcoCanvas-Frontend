@@ -183,7 +183,7 @@ const Shop = () => {
                 <CardActionArea>
                   <CardMedia
                     component="img"
-                    height="700"
+                    height="250"
                     image={product.images && product.images.length > 0 ? getImageUrl(product.images[0]['image_file']) : product_default_img}
                     alt="product_image"
                     onError={onErrorImg}
