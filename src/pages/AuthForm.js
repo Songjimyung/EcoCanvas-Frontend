@@ -52,7 +52,6 @@ const AuthForm = ({ type }) => {
       email,
       time_check
     }
-    console.log(emailSendData)
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/signup/email_code/`, emailSendData);
       alert(response.data['message'])

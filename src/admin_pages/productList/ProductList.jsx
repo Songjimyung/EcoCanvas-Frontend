@@ -31,7 +31,6 @@ export default function ProductList() {
         url += `?page=${currentPage}`;
 
         const response = await axios.get(url);
-        console.log(response.data.results)
         const products = response.data.results.map((product, index) => ({
           index: index,
           id: product.id,
