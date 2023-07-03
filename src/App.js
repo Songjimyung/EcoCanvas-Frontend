@@ -48,6 +48,7 @@ import NotificationHistory from './components/NotificationHistory/NotificationHi
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 import { Cart } from './pages/Cart'
 import { OrderProductList } from './pages/OrderProductList'
+import {  MyRefundreceipt } from './pages/mypagelist/myRefundReceipt'
 
 const theme = createTheme({
   typography: {
@@ -118,7 +119,6 @@ function App() {
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
             <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
-            <Route path="/mypage/myrefund/:productId" element={<MyRefundreceipt />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>
@@ -137,6 +137,7 @@ function App() {
             <Route path="/notification" element={<NotificationHistory />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/productlist" element={<OrderProductList />} />
+            <Route path="/mypage/myorder/:id" element={<MyRefundreceipt/>} />
           </Routes>
         </div>
 

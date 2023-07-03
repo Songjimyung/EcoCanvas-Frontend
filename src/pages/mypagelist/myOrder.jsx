@@ -4,7 +4,7 @@ import "../../css/mypage.css";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
@@ -34,7 +34,6 @@ const MyOrder = () => {
     };
     fetchOrderList();
   }, [currentPage]);
-
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
@@ -55,23 +54,21 @@ const MyOrder = () => {
     (order) => order.id === selectedOrder
   );
 
-  const refundPayment = (selectedOrder) => {
-    const token = localStorage.getItem("access");
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/refund/${selectedOrder}`,
-    {headers: {
-      'Authorization': `Bearer ${token}`
-    }})
-    .then((response) => {
-      alert(response.data.message)
-      closeModal();
-    })
-    .catch((error) =>{
-      console.log(error)
-      alert("결제취소가 실패하였습니다.")
-    }
-      );
+  const detailReceipt = (orderId) => {
+    const token = localStorage.getItem('access');
 
-  }
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/detail/${orderId}`,
+    {headers: {
+      'Authorization': `Bearer ${token}`,
+     }})
+     .then((response) => {
+      window.open(response.data, '_blank');
+  })
+  .catch((error) => {
+    console.log(error)
+    alert('결제 영수증이 없습니다.')
+  });
+ };
 
   return (
     <div className="mypage-block">
@@ -86,6 +83,7 @@ const MyOrder = () => {
               <th>가격</th>
               <th>상태</th>
               <th>세부 정보</th>
+              <th>결제 영수증</th>
             </tr>
           </thead>
           <tbody>
@@ -102,6 +100,15 @@ const MyOrder = () => {
                       onClick={() => openModal(order.id)}
                     >
                       세부 정보 보기
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                    className="details-button"
+                    style={{width:'120px'}}
+                    onClick={() => detailReceipt(order.id)}
+                    >
+                      영수증 보기
                     </button>
                   </td>
                 </tr>
@@ -153,7 +160,11 @@ const MyOrder = () => {
                   <p>상세주소: {selectedOrderData.address_detail}</p>
                   <p>배송메세지: {selectedOrderData.address_message}</p>
                   <p>연락처: {selectedOrderData.receiver_number}</p>
-                  <button onClick={() => refundPayment(selectedOrderData.id)}class='DeleteButton' style={{width:'100px'}}>주문취소요청</button>
+                  {selectedOrderData["order_info"]?.[0]?.status === "주문 접수 완료" &&(
+                  <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
+                  <button class='DeleteButton' style={{width:'100px'}}>주문취소요청</button>
+                  </Link>
+                  )}
                 </div>
               </div>
             </div>

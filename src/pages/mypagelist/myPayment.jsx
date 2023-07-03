@@ -152,6 +152,9 @@ function RegisterPayment() {
         <Sidebar/>
         <div className="order-table-container">
           <h1>카드 정보</h1>
+          <div>
+            <h3 style={{marginLeft:'40px'}}>※모든 정보는 암호화되어 보관됩니다.</h3>
+          </div>
         <button onClick={(openPaymentModal)} class= 'PaymentButton' style={{float:'right'}}>카드 등록</button>
         
         <Modal open={PaymentModalOpen} close={closePaymentModal} header="카드 등록하기">
