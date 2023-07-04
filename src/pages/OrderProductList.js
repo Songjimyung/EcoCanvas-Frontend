@@ -14,8 +14,6 @@ import {
   Container,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-import ProductList from "../admin_pages/productList/ProductList";
-
 
 const OrderProductList = () => {
   const [phonenum, setPhoneNum] = useState('');
