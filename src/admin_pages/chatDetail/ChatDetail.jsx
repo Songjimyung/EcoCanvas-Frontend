@@ -72,8 +72,6 @@ export default function ChatDetail(room) {
             }
           )
           .then((response) => {
-     setMessages((messages) => [...messages, response['data'][i]])
-
             for (let i = response["data"].length - 1; i >= 0; i--) {
               setMessages((messages) => [...messages, response["data"][i]]);
             }
