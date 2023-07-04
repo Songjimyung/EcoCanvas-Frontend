@@ -39,8 +39,6 @@ const MyRefundreceipt = () => {
           label: response.data[key],
         }));
         setStatusChoices(filteredChoices);
-        console.log(filteredChoices);
-        console.log(statusChoices);
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +66,6 @@ const MyRefundreceipt = () => {
   };
 
   const handleSendRefund = async () => {
-    console.log(refundstatus);
     if (refundstatus.value === 6) {
     try {
       const token = localStorage.getItem("access");
@@ -76,12 +73,9 @@ const MyRefundreceipt = () => {
         headers: {
           'Authorization': `Bearer ${token}`
         }});
-        console.log(refundstatus);
-        console.log(refundReason);
         setOpenSnackbar(true);
         setOpenDialog(false);
         } catch(error){
-        console.log(error.response.data)
         alert(error.response.data.message)
         }
     }
