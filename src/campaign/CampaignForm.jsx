@@ -160,8 +160,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
         alert("캠페인이 신청되었습니다. 관리자의 승인을 기다려주세요.");
         navigate("/campaign");
       } catch (e) {
-        alert("캠페인 신청에 실패했습니다.");
         console.error(e);
+        const errorMessage = JSON.stringify(e.response.data, null, 2);
+        alert(errorMessage);
       }
     } else {
       try {
@@ -211,7 +212,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
             id="outlined-multiline-static"
             label="내용"
             multiline
-            rows={4}
+            rows={8}
             sx={{
               width: "100%",
             }}
@@ -263,7 +264,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
         </div>
 
         <div className="marginBottom10">
-          <div className="campaignCreateTitle">캠페인 태그</div>
+          <div className="campaignCreateTitle">
+            캠페인 태그<span className="campaignCreateStar">*</span>
+          </div>
           <TextField
             id="outlined-multiline-static"
             label="태그"

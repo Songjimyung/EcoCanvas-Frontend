@@ -136,6 +136,8 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
+      setCampaignStatus(response.data.status);
+      setCampaignAuthorId(response.data.user_id);
     } catch (e) {
       console.error(e);
     }
@@ -190,23 +192,34 @@ const CampaignDetail = () => {
   const [createComment, setCreateComment] = useState('');
 
   const axiosCommentCreate = async (createComment) => {
-    if (token) {
-      try {
-        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`, {
-          'content': createComment,
-        }, {
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    if (campaignStatus === "미승인") {
+      alert("미승인 캠페인에는 댓글 작성이 불가능합니다.");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/`,
+        {
+          content: createComment,
+        },
+        {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-        });
-        setCommentPage(commentPage);
-        axiosCampaignComment(commentPage);
-      } catch (e) {
-        console.error(e);
-        alert("댓글 작성에 실패했습니다.");
-      }
-    } else {
-      alert("로그인이 필요합니다.")
+        }
+      );
+
+      setCommentPage(commentPage);
+      axiosCampaignComment(commentPage);
+    } catch (e) {
+      console.error(e);
+      alert("댓글 작성에 실패했습니다.");
     }
   };
   const handleCreateSubmit = (createComment) => {
@@ -221,9 +234,9 @@ const CampaignDetail = () => {
 
   const openFundModal = () => {
     if (token) {
-      setFundModalOpen(true);
+      campaignStatus !== "미승인" ? setFundModalOpen(true) : alert("미승인 캠페인에는 댓글 작성이 불가능합니다.");
     } else {
-      alert("로그인이 필요합니다.")
+      alert("로그인이 필요합니다.");
     }
   };
   const closeFundModal = () => {
@@ -291,6 +304,10 @@ const CampaignDetail = () => {
   // 좋아요 빨갛게 하는 함수
   const handleLikeButton = () => {
     if (token) {
+      if (campaignStatus === "미승인") {
+        alert("미승인 캠페인에는 좋아요를 할 수 없습니다.");
+        return;
+      }
       setIsLiked(!isLiked);
     } else {
       alert("로그인이 필요합니다.")
@@ -349,6 +366,10 @@ const CampaignDetail = () => {
   // 캠페인 참여 axios
   const axiosParticipate = async () => {
     if (token) {
+      if (campaignStatus === "미승인") {
+        alert("미승인 캠페인에는 참여할 수 없습니다.");
+        return;
+      }
       try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {}, {
           headers: {
@@ -464,6 +485,15 @@ const CampaignDetail = () => {
     const koreanDatetime = `${year}년 ${month}월 ${date}일 ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
     return koreanDatetime;
+  }
+
+  // Campaign Status
+  const [campaignStatus, setCampaignStatus] = useState('');
+  const [campaignAuthorId, setCampaignAuthorId] = useState(null);
+
+  if (campaignStatus === "미승인" && userId !== campaignAuthorId) {
+    alert("캠페인 작성자만 볼 수 있습니다.");
+    navigate("/");
   }
 
   return (
