@@ -12,8 +12,8 @@ const CampaignCreate = () => {
   return (
     <div className='campaignCreateForm'>
       <ImageHeader
-        h1Text="캠페인 신청하기"
-        pText="EcoCanvas Campaigns"
+        h1Text="Campaign"
+        pText="캠페인 신청하기"
         imageUrl={campaign_child}
       />
       <VerticalLinearStepper />

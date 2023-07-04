@@ -115,6 +115,11 @@ export default function BuyProduct() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
+    const receiver_number = e.target.elements.receiver_number.value;
+    if (receiver_number.length !== 13) {
+      alert("휴대전화 번호를 올바르게 입력해주세요.");
+      return;
+    }
 
 
     const orders = [{
@@ -305,10 +310,12 @@ export default function BuyProduct() {
 
       result += value[i];
     }
-
+    // 입력값이 13자일 때만 상태값 업데이트
+    
     phoneRef.current.value = result;
-
     setPhoneNum(e.target.value);
+  
+  
   };
 
 
@@ -388,6 +395,7 @@ export default function BuyProduct() {
                       name="receiver_name"
                       value={UserName}
                       onChange={(e) => setUserName(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -399,6 +407,7 @@ export default function BuyProduct() {
                       ref={phoneRef}
                       onChange={handlePhone}
                       maxLength="13"
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -408,6 +417,7 @@ export default function BuyProduct() {
                       value={Address}
                       onChange={(e) => setAddress(e.target.value)}
                       className="order-address"
+                      required
                     />
                     <Button
                       variant="contained"
@@ -434,6 +444,7 @@ export default function BuyProduct() {
                       name="zip_code"
                       value={zipcode}
                       onChange={(e) => setZipcode(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -442,6 +453,7 @@ export default function BuyProduct() {
                       name="address_detail"
                       value={DetailAddress}
                       onChange={(e) => setDetailAddress(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -451,6 +463,7 @@ export default function BuyProduct() {
                       value={DeliveryMessage}
                       onChange={(e) => setDeliveryMessage(e.target.value)}
                       className="order-address"
+                      required
                     />
                   </div>
                   <div className='check-order'>

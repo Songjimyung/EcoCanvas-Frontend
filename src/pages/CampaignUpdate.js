@@ -28,8 +28,8 @@ const CampaignUpdate = () => {
   return (
     <>
       <ImageHeader
-        h1Text="캠페인 수정하기"
-        pText="EcoCanvas Campaigns"
+        h1Text="Campaign"
+        pText="캠페인 수정하기"
         imageUrl={campaign_child}
       />
       <CampaignForm initialData={existingCampaignData} isUpdate />

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import LocalGroceryStoreRoundedIcon from "@mui/icons-material/LocalGroceryStoreRounded";
 import "./topbar.css";
 import { Link } from "react-router-dom";
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
-
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Topbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,14 +27,14 @@ export default function Topbar() {
     setNotificationMessage(message);
     setOpen(true);
     setNotificationCount((prevCount) => prevCount + 1);
-
   };
   useEffect(() => {
-    const newSocket = new WebSocket(`${process.env.REACT_APP_WEBSOCK_URL}/ws/notification/`); // WebSocket 연결 URL
+    const newSocket = new WebSocket(
+      `${process.env.REACT_APP_WEBSOCK_URL}/ws/notification/`
+    ); // WebSocket 연결 URL
     setSocket(newSocket);
 
     newSocket.onopen = () => {
-
       // notification_group 그룹 구독 요청
       newSocket.send(
         JSON.stringify({
@@ -49,9 +48,7 @@ export default function Topbar() {
       const message = data.message;
       handleSnackbarOpen(message);
     };
-    newSocket.onclose = () => {
-
-    };
+    newSocket.onclose = () => {};
 
     return () => {
       newSocket.close();
@@ -81,8 +78,8 @@ export default function Topbar() {
   };
 
   const handleCart = () => {
-    window.location.replace('/cart');
-  }
+    window.location.replace("/cart");
+  };
 
   return (
     <div className="_topbar">
@@ -100,43 +97,48 @@ export default function Topbar() {
           </h3>
           <h3 className="_topbarTitle">
             <Link to="/shop" className="_topbarTitle">
-              <LocalGroceryStoreRoundedIcon className="_topbarIcon" />
               Shop
+              <StorefrontIcon />
             </Link>
           </h3>
         </div>
       </div>
       <div className="_topbarRight">
         <div className="_topbarLogFunction">
-
-          {isLoggedIn ? (
-            <span>
-              <Link onClick={handleLogout} className="_signBtn">
-                로그아웃
-              </Link>
-            </span>
-          ) : (
-            <span>
-              <Link to="/login" className="_signBtn">
-                로그인
-              </Link>
-            </span>
-          )}
-          <span className="_signBtn">|</span>
-          {isLoggedIn ? (
-            <span>
-              <Link to="/mypage" className="_signBtn">
-                마이페이지
-              </Link>
-            </span>
-          ) : (
-            <span>
-              <Link to="/signup" className="_signBtn">
-                회원가입
-              </Link>
-            </span>
-          )}
-          <Link to="/notification" className="_signBtn" onClick={handleNotificationCount}>
+          <div style={{ marginRight: "30px" }}>
+            {isLoggedIn ? (
+              <span>
+                <Link onClick={handleLogout} className="_signBtn">
+                  로그아웃
+                </Link>
+              </span>
+            ) : (
+              <span>
+                <Link to="/login" className="_signBtn">
+                  로그인
+                </Link>
+              </span>
+            )}
+            <span className="_signBtn">|</span>
+            {isLoggedIn ? (
+              <span>
+                <Link to="/mypage" className="_signBtn">
+                  마이페이지
+                </Link>
+              </span>
+            ) : (
+              <span>
+                <Link to="/signup" className="_signBtn">
+                  회원가입
+                </Link>
+              </span>
+            )}
+          </div>
+          <Link
+            to="/notification"
+            className="_signBtn"
+            onClick={handleNotificationCount}
+          >
             <div className="alinBox">
               <NotificationsNoneIcon className="_topbarIconContainer" />
               {notificationCount > 0 && (
@@ -144,9 +146,10 @@ export default function Topbar() {
               )}
             </div>
           </Link>
+          |
           <span>
-            <Link onClick={handleCart} className="_signBtn" >
-              |장바구니
+            <Link onClick={handleCart} className="_signBtn">
+              <LocalGroceryStoreRoundedIcon className="_topbarIcon" />
             </Link>
           </span>
         </div>

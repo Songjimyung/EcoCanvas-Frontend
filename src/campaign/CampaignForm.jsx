@@ -160,8 +160,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
         alert("캠페인이 신청되었습니다. 관리자의 승인을 기다려주세요.");
         navigate("/campaign");
       } catch (e) {
-        alert("캠페인 신청에 실패했습니다.");
         console.error(e);
+        const errorMessage = JSON.stringify(e.response.data, null, 2);
+        alert(errorMessage);
       }
     } else {
       try {
@@ -211,7 +212,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
             id="outlined-multiline-static"
             label="내용"
             multiline
-            rows={4}
+            rows={8}
             sx={{
               width: "100%",
             }}
@@ -263,7 +264,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
         </div>
 
         <div className="marginBottom10">
-          <div className="campaignCreateTitle">캠페인 태그</div>
+          <div className="campaignCreateTitle">
+            캠페인 태그<span className="campaignCreateStar">*</span>
+          </div>
           <TextField
             id="outlined-multiline-static"
             label="태그"
@@ -280,7 +283,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
           ※태그는 쉼표(,)로 구분해서 작성해주세요.
         </div>
 
-        <div className="marginBottom30">
+        <div className="marginBottom10">
           <div className="campaignCreateTitle">
             캠페인 첨부 이미지<span className="campaignCreateStar">*</span>
           </div>
@@ -310,6 +313,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
               파일 선택
             </Button>
           </label>
+        </div>
+        <div className="campaignExplain" style={{ marginBottom: "10px" }}>
+          ※이미지 파일의 크기는 1MB 이하로 해주세요.
         </div>
 
         <div className="campaignDate">

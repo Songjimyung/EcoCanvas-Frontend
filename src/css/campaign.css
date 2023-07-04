@@ -1,9 +1,9 @@
 .campaignContainer {
-    font-family: var(--font-Pretendard-Regular);
+    font-family: var(--font-SUITE-Regular);
 }
 
 .campaignCreateForm {
-    font-family: var(--font-Pretendard-Regular);
+    font-family: var(--font-SUITE-Regular);
 }
 
 h1 {
@@ -34,7 +34,7 @@ hr {
     margin-bottom: 5%;
     min-width: 350px;
     width: 35%;
-    font-family: var(--font-KCC-Ganpan);
+    font-family: var(--font-SUITE-Regular);
 }
 
 .campaignCardPercent{
@@ -89,7 +89,7 @@ hr {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 75px;
 }
 
 .campaignImageDiv {
@@ -334,6 +334,7 @@ hr {
     top: 6px;
     transform: rotate(-30deg);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-family: var(--font-SUITE-Regular);
 }
 
 /* detail 마감임박 */
@@ -360,6 +361,7 @@ hr {
     top: 15px;
     transform: rotate(-35deg);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-family: var(--font-SUITE-Regular);
 }
 
 .category-dropdown {

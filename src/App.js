@@ -52,7 +52,7 @@ import {  MyRefundreceipt } from './pages/mypagelist/myRefundReceipt'
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Pretendard-Regular'"
+    fontFamily: "'SUITE-Regular'"
   },
   palette: {
     primary: {

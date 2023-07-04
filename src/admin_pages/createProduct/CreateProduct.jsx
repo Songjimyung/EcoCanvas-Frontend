@@ -65,6 +65,9 @@ export default function CreateProduct() {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        }
+        else if (response.status === 413) {
+          throw new Error("이미지 용량이 초과되었습니다.");
         } else {
           return response.json().then((data) => {
             const errorValues = Object.values(data);

@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
+
 const OrderProductList = () => {
   const [phonenum, setPhoneNum] = useState('');
   const phoneRef = useRef('');
@@ -122,7 +123,7 @@ const OrderProductList = () => {
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) { 
+      if (window.IMP) {
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -139,8 +140,8 @@ const OrderProductList = () => {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card', 
-            merchant_uid: merchant_uid, 
+            pay_method: 'card',
+            merchant_uid: merchant_uid,
             name: '다중상품',
             amount: productPrice,
             buyer_email: email,
@@ -331,6 +332,7 @@ const OrderProductList = () => {
                   name="receiver_name"
                   value={UserName}
                   onChange={(e) => setUserName(e.target.value)}
+                  required
                 />
               </div>
               <div className="addOrderItem">
@@ -342,6 +344,7 @@ const OrderProductList = () => {
                   value={phonenum}
                   onChange={handlePhone}
                   maxLength="13"
+                  required
                 />
               </div>
               <div className="addOrderItem">
@@ -352,6 +355,7 @@ const OrderProductList = () => {
                   value={Address}
                   className="order-address"
                   onChange={(e) => setAddress(e.target.value)}
+                  required
                 />
                 <Button
                   variant="contained"
@@ -375,7 +379,7 @@ const OrderProductList = () => {
                   name="zip_code"
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
-
+                  required
                 />
               </div>
               <div className="addOrderItem">
@@ -385,6 +389,7 @@ const OrderProductList = () => {
                   name="address_detail"
                   value={DetailAddress}
                   onChange={(e) => setDetailAddress(e.target.value)}
+                  required
                 />
               </div>
               <div className="addOrderItem">
@@ -395,6 +400,7 @@ const OrderProductList = () => {
                   value={DeliveryMessage}
                   className="order-address"
                   onChange={(e) => setDeliveryMessage(e.target.value)}
+                  required
                 />
               </div>
               <div className="check-order">

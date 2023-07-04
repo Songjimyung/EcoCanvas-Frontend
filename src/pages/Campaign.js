@@ -210,8 +210,8 @@ const Campaign = () => {
   return (
     <div className="campaignContainer">
       <ImageHeader
-        h1Text="캠페인 둘러보기"
-        pText="EcoCanvas Campaigns"
+        h1Text="Campaign"
+        pText="캠페인 둘러보기"
         imageUrl={campaign_family}
       />
 
@@ -307,7 +307,7 @@ const Campaign = () => {
                       {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
                       참여인원 : {campaign.participant_count} / {campaign.members}<br />
                       {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                        <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal)}%</span> 달성</>
+                        <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal) * 100}%</span> 달성</>
                       ) : (
                         <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                       )}

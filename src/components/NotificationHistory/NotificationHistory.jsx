@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Button } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
 import "./notificationhistory.css";
-import Pagination from '@mui/material/Pagination';
-import Grid from '@mui/material/Grid';
-
+import Pagination from "@mui/material/Pagination";
+import Grid from "@mui/material/Grid";
 
 const NotificationHistory = () => {
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-
 
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
@@ -18,7 +16,7 @@ const NotificationHistory = () => {
 
   useEffect(() => {
     const NotifiCationList = async () => {
-      const token = localStorage.getItem('access');
+      const token = localStorage.getItem("access");
 
       try {
         let url = `${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`;
@@ -32,71 +30,65 @@ const NotificationHistory = () => {
         setNotifications(response.data.results);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
-
-      } catch (error) {
-
-      }
+      } catch (error) {}
     };
 
     NotifiCationList();
   }, [currentPage]);
 
   const handleConfirmClick = (notificationId) => {
-    const token = localStorage.getItem('access');
+    const token = localStorage.getItem("access");
 
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
-      data: { notification_id: notificationId },
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    axios
+      .delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
+        data: { notification_id: notificationId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
-
-        alert("알림 삭제 완료")
+        alert("알림 삭제 완료");
         window.location.reload();
       })
-      .catch((error) => {
-
-
-      });
+      .catch((error) => {});
   };
 
   const handleDeleteAllClick = () => {
-    const token = localStorage.getItem('access');
+    const token = localStorage.getItem("access");
 
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    axios
+      .delete(`${process.env.REACT_APP_BACKEND_URL}/alarms/notifications/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
-
         alert("알림 일괄 삭제 완료");
         setNotifications([]);
       })
-      .catch((error) => {
-
-      });
+      .catch((error) => {});
   };
-
-
-
 
   return (
     <div className="notification-cardWrapper">
       <h2 style={{ marginBottom: "20px", textAlign: "center" }}>알림 내역</h2>
-      <div className='deleteBtnWrapper'>
+      <div className="deleteBtnWrapper">
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           className="delete-all-button"
+          sx={{ color: "white" }}
           onClick={handleDeleteAllClick}
         >
           알림 일괄 삭제
         </Button>
       </div>
       {notifications.map((notification) => (
-        <Card key={notification.id} variant="outlined" className="notification-card">
+        <Card
+          key={notification.id}
+          variant="outlined"
+          className="notification-card"
+        >
           <CardContent className="notification-cardContent">
             <Typography variant="body1">{notification.message}</Typography>
             <Button
