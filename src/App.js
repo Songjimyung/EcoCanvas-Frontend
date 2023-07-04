@@ -32,7 +32,6 @@ import { KakaoRedirect } from './pages/kakaoredirect';
 import { CallbackGoogle } from './pages/GoogleCallback';
 import { MyPostCampaign } from './pages/mypagelist/myCampaign'
 import { MyLikes } from './pages/mypagelist/myLikes'
-import DeliveryTracking from './pages/mypagelist/myDelivery';
 import { MyOrder } from './pages/mypagelist/myOrder';
 import { MyReviewComment } from './pages/mypagelist/myReviewcomment';
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -45,9 +44,11 @@ import { RegisterPayment } from './pages/mypagelist/myPayment';
 import { ReceiptList } from './pages/mypagelist/mySchedule';
 import ChatButton from './components/chatbutton/ChatButton';
 import NotificationHistory from './components/NotificationHistory/NotificationHistory'
+import TokenRefreshComponent from './components/tokenRefresh/TokenRefresh'
 // MUI로 만든 컴포넌트 폰트지정, 컬러지정
 import { Cart } from './pages/Cart'
 import { OrderProductList } from './pages/OrderProductList'
+import {  MyRefundreceipt } from './pages/mypagelist/myRefundReceipt'
 
 const theme = createTheme({
   typography: {
@@ -55,7 +56,7 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#3eac3e',
+      main: '#81b214',
     },
     secondary: {
       main: '#11cb5f',
@@ -78,6 +79,7 @@ function App() {
   const location = useLocation();
   const isMypage = location.pathname.startsWith('/mypage');
   const isLogin = localStorage.getItem('access')
+
   useEffect(() => {
     const payload = localStorage.getItem('payload');
     if (payload) {
@@ -89,13 +91,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div id='wrapper'>
+        <TokenRefreshComponent />
         <KakaoInit />
         {isLogin && !isAdmin ? <ChatButton /> : null}
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
-        {/* <AdminTopbar /> */}
         <div className={!isAdmin ? "" : 'adminContainer'}>
           {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
-          {/* <AdminSidebar /> */}
+
+
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
@@ -117,7 +120,6 @@ function App() {
             <Route path="/mypage/mypostcampaign" element={<MyPostCampaign />}></Route>
             <Route path="/mypage/mylikes" element={<MyLikes />}></Route>
             <Route path="/mypage/myorders" element={<MyOrder />}></Route>
-            <Route path="/mypage/mydelivery" element={<DeliveryTracking />}></Route>
             <Route path="/mypage/myreviews" element={<MyReviewComment />}></Route>
             <Route path="/admin-home" element={<AdminHome />}></Route>
             <Route path="/admin-orderlist" element={<AdminOrderList />}></Route>
@@ -136,6 +138,7 @@ function App() {
             <Route path="/notification" element={<NotificationHistory />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/productlist" element={<OrderProductList />} />
+            <Route path="/mypage/myorder/:id" element={<MyRefundreceipt/>} />
           </Routes>
         </div>
 

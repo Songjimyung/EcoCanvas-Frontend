@@ -17,7 +17,7 @@ export default function BuyProduct() {
   const navigate = useNavigate();
   let { productId } = useParams();
   const [Product, setProduct] = useState(null);
-  const [num, setNumber] = useState(0);
+  const [num, setNumber] = useState(1);
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
@@ -190,7 +190,7 @@ export default function BuyProduct() {
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) {
+      if (window.IMP) { 
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -207,8 +207,8 @@ export default function BuyProduct() {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card',
-            merchant_uid: merchant_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -218,7 +218,6 @@ export default function BuyProduct() {
             buyer_postcode: zipcode,
           },
           (response) => {
-            // console.log(response)
             const paid_imp_uid = response.imp_uid;
             const paid_amount = response.paid_amount;
 
@@ -236,10 +235,8 @@ export default function BuyProduct() {
                   }
                 )
                 .then((response) => {
-                  // console.log(response.data);
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
-                  // navigate('/mypage/myorders');
                 })
                 .catch((error) => {
                   console.error(error);
@@ -268,7 +265,6 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
@@ -325,7 +321,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.img} alt="" />
+            <img className="productListImg" src={params.row.images} alt="" />
             {params.row.product_name}
           </div>
         );

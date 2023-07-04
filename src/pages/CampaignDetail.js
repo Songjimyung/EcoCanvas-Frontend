@@ -136,7 +136,6 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/`);
       setCampaign(response.data);
       setLikeCount(response.data.like_count);
-      console.log(response)
     } catch (e) {
       console.error(e);
     }
@@ -238,13 +237,17 @@ const CampaignDetail = () => {
   };
 
   const handleFundSubmit = async () => {
+    if (!selectedCard || !selectedCard.cardId) {
+    alert("카드를 먼저 선택해주세요.");
+    return;
+  }
     const requestData = {
       amount: amount,
       campaign: id,
       selected_card: selectedCard.cardId
     };
     try {
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/`, requestData,
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/payments/schedule/${id}`, requestData,
         {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -478,12 +481,16 @@ const CampaignDetail = () => {
             </div>
             <div className="campaignContentRight">
               <div className="campaignTopSetting">
-                <div className="campaignStatus">{campaign.status}</div>
+                <div className="campaignCategoryBadge">
+                  <span>카테고리 {`>`} </span>{campaign.category}
+                </div>
                 {userId === campaign.user_id ?
                   <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
                   : <div></div>
                 }
               </div>
+              <hr style={{ marginBottom: "10px" }} />
+              <div className="campaignStatus">{campaign.status}</div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
                   <React.Fragment key={index}>
@@ -492,6 +499,13 @@ const CampaignDetail = () => {
                   </React.Fragment>
                 ))}
               </div>
+
+              <div className="campaignTags">
+                {campaign.tags.map(tag => (
+                  <span key={tag}>#{tag} </span>
+                ))}
+              </div>
+
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
               <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>
@@ -514,17 +528,17 @@ const CampaignDetail = () => {
                     onClick={openFundModal}
                   >펀딩 참여하기
                   </Button>
-                  <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
-                    <SelectCard setSelectedCard={setSelectedCard} />
-                    {selectedCard && (
-                      <div>
-                        <h2>선택한 카드:</h2>
-                        <p>{selectedCard.cardNumber}</p>
-                      </div>
-                    )}
+                  <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">                    
                     {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
                     <div className="modalMent">카드를 선택하고 펀딩 금액을 입력해주세요.</div>
-                    <FormControl sx={{ width: '100%', }}>
+                    <SelectCard setSelectedCard={setSelectedCard} />
+                    {(selectedCard &&
+                      <div style={{display:'flex', marginBottom:'30px'}}>
+                        <span >선택한 카드:</span>
+                        <span >{selectedCard.cardNumber}</span>
+                      </div>
+                    )}                    
+                    <FormControl sx={{ width: '100%', marginTop: '10px' }}>
                       <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
                       <OutlinedInput
                         id="outlined-adornment-amount"
@@ -532,10 +546,11 @@ const CampaignDetail = () => {
                         label="금액"
                         inputProps={{ min: 0 }}
                         // useState앞에 값 (100000000)지우고 넣어주세요
-                        value={amount.toLocaleString()}
+                        value={amount.toLocaleString()} 
                         onChange={handleAmountSubmit}
                       />
                     </FormControl>
+                   
                     <Button
                       variant="contained"
                       color="primary"

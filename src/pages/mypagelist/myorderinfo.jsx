@@ -74,7 +74,6 @@ export default function MyOrderInfo() {
         );
         const result = await response.json();
 
-        console.log(result)
         const user_info = {
           address: result.address,
           zipcode: result.zip_code,

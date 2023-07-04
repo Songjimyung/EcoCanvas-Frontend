@@ -1,0 +1,55 @@
+
+.PaymentButton {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 80px;
+    margin-left: auto;
+    height: 30px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  
+  .DeleteButton {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 80px;
+    margin : auto;
+    height: 30px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+
+  .CardNumberInput {
+    width:100px;
+  } 
+  
+  .ExpiryInput {
+    width:120px;
+  }
+  .ExpiryMonthInput{
+
+    width:100px;
+  }
+
+  .BirthInput{
+    width:140px;
+  }
+  
+  .PwdInput{
+    width:120px;
+    margin-left:17px;
+  }

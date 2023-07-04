@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Modal from "../components/modal/Modal"
+import '../css/payment.css';
 
 function SelectCard({ setSelectedCard }) {
     const [cardNumber1, setCardNumber1] = useState('');
@@ -63,7 +64,7 @@ function SelectCard({ setSelectedCard }) {
 
     const data = {
       card_number: cardNumber,
-      expiry_at: expiry,
+      expiry: expiry,
       birth: birth,
       pwd_2digit: pwd2Digit,
     };
@@ -80,8 +81,12 @@ function SelectCard({ setSelectedCard }) {
         closePaymentModal();
       })
       .catch((error) => {
-        
-        alert(error.response.data);
+        console.log(error.response.data)
+        if (error.response.status === 400) { 
+          alert(Object.values(error.response.data)[0][0]);
+          } else  {
+          alert('카드 등록에 실패하였습니다. 카드 정보를 다시 확인해주세요.')
+          }
       });
   };
   const handleDelete = (id) => {
@@ -105,13 +110,65 @@ function SelectCard({ setSelectedCard }) {
       });
   };
 
+  const cardNumber2Ref = useRef(null);
+  const cardNumber3Ref = useRef(null);
+  const cardNumber4Ref = useRef(null);
+  const expiryYearRef = useRef(null);
+  const expiryMonthRef = useRef(null);
+  const birthRef = useRef(null);
+  const pwdRef = useRef(null);
+
+  const handleCardNumber1Change = (event) => {
+    setCardNumber1(event.target.value);
+    if (event.target.value.length === 4) {
+      cardNumber2Ref.current.focus();
+    }
+  };
+  const handleCardNumber2Change = (event) => {
+    setCardNumber2(event.target.value);
+    if (event.target.value.length === 4) {
+      cardNumber3Ref.current.focus();
+    }
+  };
+  const handleCardNumber3Change = (event) => {
+    setCardNumber3(event.target.value);
+    if (event.target.value.length === 4) {
+      cardNumber4Ref.current.focus();
+    }
+  };
+  const handleCardNumber4Change = (event) => {
+    setCardNumber4(event.target.value);
+    if (event.target.value.length === 4) {
+      expiryYearRef.current.focus();
+    }
+  };
+  const handleExpiryYearChange = (event) => {
+    setExpiryYear(event.target.value);
+    if (event.target.value.length === 4) {
+      expiryMonthRef.current.focus();
+    }
+  };
+  const handleExpiryMonthChange = (event) => {
+    setExpiryMonth(event.target.value);
+    if (event.target.value.length === 2) {
+      birthRef.current.focus();
+    }
+  };
+  const handleBirthChange = (event) => {
+    setBirth(event.target.value);
+    if (event.target.value.length === 6) {
+      pwdRef.current.focus();
+    } 
+
+  };
+
 
   return (
     <div>
-     <button onClick={openSelectCardModal}>카드선택</button>
+     <button class ="PaymentButton" onClick={openSelectCardModal}>카드선택</button>
       <Modal open={SelectCardModalOpen} close={closeSelectCardModal} header="결제카드 선택">
         <div>
-        <button className= "paymentsaddbutton" onClick={(openPaymentModal)} style={{float:'right'}}>카드 등록</button>
+        <button className= "PaymentButton" onClick={(openPaymentModal)} style={{float:'right'}}>카드 등록</button>
         
         <Modal open={PaymentModalOpen} close={closePaymentModal} header="카드 등록하기">
         <form onSubmit={handleSubmit}>
@@ -119,61 +176,80 @@ function SelectCard({ setSelectedCard }) {
               type="text"
               maxLength="4"
               placeholder="카드 번호 (0000)"
+              class="CardNumberInput" 
               value={cardNumber1}
-              onChange={(event) => setCardNumber1(event.target.value)}
+              onChange={handleCardNumber1Change}
             />
             {' - '}
             <input
               type="text"
               maxLength="4"
               placeholder="0000"
+              class="CardNumberInput"
               value={cardNumber2}
-              onChange={(event) => setCardNumber2(event.target.value)}
+              onChange={handleCardNumber2Change}
+              ref={cardNumber2Ref}
             />
             {' - '}
             <input
               type="text"
               maxLength="4"
               placeholder="0000"
+              class="CardNumberInput"
               value={cardNumber3}
-              onChange={(event) => setCardNumber3(event.target.value)}
+              onChange={handleCardNumber3Change}
+              ref={cardNumber3Ref}
             />
             {' - '}
             <input
               type="text"
               maxLength="4"
               placeholder="0000"
+              class="CardNumberInput"
               value={cardNumber4}
-              onChange={(event) => setCardNumber4(event.target.value)}
+              onChange={handleCardNumber4Change}
+              ref={cardNumber4Ref}
             />
             <div>
               <input
                 type="text"
+                maxLength="4"
                 placeholder="유효년도 (YYYY)"
+                class="ExpiryInput"
                 value={expiryYear}
-                onChange={(event) => setExpiryYear(event.target.value)}
+                onChange={handleExpiryYearChange}
+                ref={expiryYearRef}
               />
               {' - '}
               <input
                 type="text"
+                maxLength="2"
                 placeholder="유효월 (MM)"
+                class = "ExpiryMonthInput"
                 value={expiryMonth}
-                onChange={(event) => setExpiryMonth(event.target.value)}
+                onChange={handleExpiryMonthChange}
+                ref={expiryMonthRef}
               />
               </div>
               <input
                 type="text"
+                maxLength="6"
                 placeholder="생년월일 (YYMMDD)"
                 value={birth}
-                onChange={(event) => setBirth(event.target.value)}
+                class = "BirthInput"
+                onChange={handleBirthChange}
+                ref={birthRef}
               />
               <input
                 type="text"
+                maxLength="2"
                 placeholder="비밀번호 앞 2자리"
                 value={pwd2Digit}
+                class = "PwdInput"
                 onChange={(event) => setPwd2Digit(event.target.value)}
+                ref={pwdRef}
               />
-            <button type="submit">카드 등록</button>
+            <button class ="PaymentButton" type="submit">카드 등록</button>
           </form>
         </Modal>
         </div>
@@ -193,15 +269,15 @@ function SelectCard({ setSelectedCard }) {
                 <span>{payment.card_number}</span>
               </td>
               <td className='cardSelected' style={{ border: '1px solid black' }}>
-                <button onClick={() => handleCardSelect(payment.id, payment.card_number)}>선택</button>
+                <button className='DeleteButton' style={{height:'10px', width:'60px'}} onClick={() => handleCardSelect(payment.id, payment.card_number)}>선택</button>
                 </td>
                 <td className='cardDelete' style={{ border: '1px solid black' }}>
-                <button onClick={() => handleDelete(payment.id)}>삭제</button>
+                <button className='DeleteButton' style={{height:'10px', width:'60px'}} onClick={() => handleDelete(payment.id)}>삭제</button>
                 </td>
             </tr>
           ))
          ) : (
-          <h2>등록된 카드가 없습니다. 카드를 먼저 등록해주세요</h2>
+          <h3>등록된 카드가 없습니다. 카드를 먼저 등록해주세요</h3>
          )}
        </tbody>
       </table>
