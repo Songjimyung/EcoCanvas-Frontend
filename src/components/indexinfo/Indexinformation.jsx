@@ -1,22 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./indexinformation.css";
 import fornature from "../../img/fornature.jpg";
 import imnottrash from "../../img/imnottrash.jpg";
 import campaign_index from "../../img/campaign_index.jpg";
+import { Button } from "@mui/material";
 
 export default function Indexinformation() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const handleClick = (page) => {
+    navigate(`/${page}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <>
       <div className="index-container">
         <div className="index-wrap">
           <div className="index-text">
-            <p className="index-h2">
-              EcoCanvas와 함께 친환경 실천을 함께하세요.
-            </p>
+            <p className="index-h2">EcoCanvas와 환경을 지켜주세요.</p>
             <p className="index-content">
               당신의 목소리로 환경을 변화시켜보세요. EcoCanvas에서는 직접 환경
-              캠페인을 만들고 사회를 독려할 수 있습니다. 캠페인을 통해 사회를
-              변화시키고, 환경 문제에 대한 인식을 높여주세요.
+              캠페인을 주최해 사회에 대한 환경보호를 독려할 수 있습니다.{" "}
+              <span id="earthday" onClick={() => handleClick("campaign")}>
+                지구의 날
+              </span>
+              을 통해 사회를 변화시키고, 환경 문제에 대한 인식을 높여주세요.
             </p>
           </div>
           <div className="index-image">
@@ -47,6 +60,19 @@ export default function Indexinformation() {
               있는 소비를 할 수 있도록 힘씁니다. <br />
               지구를 사랑하는 마음으로 지속 가능한 제품을 선택해 보세요.
             </p>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                height: "50px",
+                fontSize: "1.3rem",
+                color: "white",
+                marginTop: "30px",
+              }}
+              onClick={() => handleClick("shop")}
+            >
+              전체제품 보기
+            </Button>
           </div>
           <div className="index-image">
             <img src={imnottrash} alt="shop" />
