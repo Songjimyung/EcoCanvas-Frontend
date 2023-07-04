@@ -140,7 +140,7 @@ const Shop = () => {
   return (
     <div>
       <ImageHeader
-        h1Text="EcoCanvas Shop"
+        h1Text="Shop"
         pText="지속 가능한 소비, 그 이상의 가치"
         imageUrl={zerowaste}
       />

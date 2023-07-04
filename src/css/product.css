@@ -19,6 +19,7 @@
   padding: 5px;
   font-size: 14px;
   margin-right: 10px;
+  font-family: var(--font-SUITE-Regular);
 }
 
 .category-dropdown>option {

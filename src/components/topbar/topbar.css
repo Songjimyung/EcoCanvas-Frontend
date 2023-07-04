@@ -42,6 +42,7 @@
 ._topbarLogo {
   color: rgb(129, 178, 20);
   font-size: 2.0rem;
+  font-weight: 900;
 }
 
 ._topbarMenu {

@@ -283,7 +283,7 @@ const CampaignForm = ({ initialData, isUpdate }) => {
           ※태그는 쉼표(,)로 구분해서 작성해주세요.
         </div>
 
-        <div className="marginBottom30">
+        <div className="marginBottom10">
           <div className="campaignCreateTitle">
             캠페인 첨부 이미지<span className="campaignCreateStar">*</span>
           </div>
@@ -313,6 +313,9 @@ const CampaignForm = ({ initialData, isUpdate }) => {
               파일 선택
             </Button>
           </label>
+        </div>
+        <div className="campaignExplain" style={{ marginBottom: "10px" }}>
+          ※이미지 파일의 크기는 1MB 이하로 해주세요.
         </div>
 
         <div className="campaignDate">

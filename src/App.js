@@ -51,7 +51,7 @@ import { OrderProductList } from './pages/OrderProductList'
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Pretendard-Regular'"
+    fontFamily: "'SUITE-Regular'"
   },
   palette: {
     primary: {
