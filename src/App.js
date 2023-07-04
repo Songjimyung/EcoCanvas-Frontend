@@ -78,7 +78,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const isMypage = location.pathname.startsWith('/mypage');
-
+  const isLogin = localStorage.getItem('access')
 
   useEffect(() => {
     const payload = localStorage.getItem('payload');
@@ -93,7 +93,7 @@ function App() {
       <div id='wrapper'>
         <TokenRefreshComponent />
         <KakaoInit />
-        <ChatButton />
+        {isLogin && !isAdmin ? <ChatButton /> : null}
         {!isAdmin ? <Topbar /> : <AdminTopbar />}
         <div className={!isAdmin ? "" : 'adminContainer'}>
           {!isAdmin ? null : (isMypage ? null : <AdminSidebar />)}
