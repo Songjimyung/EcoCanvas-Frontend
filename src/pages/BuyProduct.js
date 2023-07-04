@@ -17,7 +17,7 @@ export default function BuyProduct() {
   const navigate = useNavigate();
   let { productId } = useParams();
   const [Product, setProduct] = useState(null);
-  const [num, setNumber] = useState(0);
+  const [num, setNumber] = useState(1);
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
@@ -115,6 +115,11 @@ export default function BuyProduct() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
+    const receiver_number = e.target.elements.receiver_number.value;
+    if (receiver_number.length !== 13) {
+      alert("휴대전화 번호를 올바르게 입력해주세요.");
+      return;
+    }
 
 
     const orders = [{
@@ -190,7 +195,7 @@ export default function BuyProduct() {
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) {
+      if (window.IMP) { 
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -207,8 +212,8 @@ export default function BuyProduct() {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card',
-            merchant_uid: merchant_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -218,7 +223,6 @@ export default function BuyProduct() {
             buyer_postcode: zipcode,
           },
           (response) => {
-            // console.log(response)
             const paid_imp_uid = response.imp_uid;
             const paid_amount = response.paid_amount;
 
@@ -236,10 +240,8 @@ export default function BuyProduct() {
                   }
                 )
                 .then((response) => {
-                  // console.log(response.data);
                   alert("결제 성공!");
                   resolve(); // Promise가 성공 상태로 처리됨
-                  // navigate('/mypage/myorders');
                 })
                 .catch((error) => {
                   console.error(error);
@@ -268,7 +270,6 @@ export default function BuyProduct() {
             }
           });
           const result = await response.json();
-          console.log(result)
           setDeliveryMessage(result.delivery_message)
           setPhoneNum(result.receiver_number);
           setAddress(result.address);
@@ -309,10 +310,12 @@ export default function BuyProduct() {
 
       result += value[i];
     }
-
+    // 입력값이 13자일 때만 상태값 업데이트
+    
     phoneRef.current.value = result;
-
     setPhoneNum(e.target.value);
+  
+  
   };
 
 
@@ -325,7 +328,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.img} alt="" />
+            <img className="productListImg" src={params.row.images} alt="" />
             {params.row.product_name}
           </div>
         );
@@ -392,6 +395,7 @@ export default function BuyProduct() {
                       name="receiver_name"
                       value={UserName}
                       onChange={(e) => setUserName(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -403,6 +407,7 @@ export default function BuyProduct() {
                       ref={phoneRef}
                       onChange={handlePhone}
                       maxLength="13"
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -412,6 +417,7 @@ export default function BuyProduct() {
                       value={Address}
                       onChange={(e) => setAddress(e.target.value)}
                       className="order-address"
+                      required
                     />
                     <Button
                       variant="contained"
@@ -438,6 +444,7 @@ export default function BuyProduct() {
                       name="zip_code"
                       value={zipcode}
                       onChange={(e) => setZipcode(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -446,6 +453,7 @@ export default function BuyProduct() {
                       name="address_detail"
                       value={DetailAddress}
                       onChange={(e) => setDetailAddress(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="addOrderItem">
@@ -455,6 +463,7 @@ export default function BuyProduct() {
                       value={DeliveryMessage}
                       onChange={(e) => setDeliveryMessage(e.target.value)}
                       className="order-address"
+                      required
                     />
                   </div>
                   <div className='check-order'>
