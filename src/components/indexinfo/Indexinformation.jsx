@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./indexinformation.css";
 import fornature from "../../img/fornature.jpg";
 import imnottrash from "../../img/imnottrash.jpg";
@@ -49,7 +49,7 @@ export default function Indexinformation() {
             </p>
           </div>
           <div className="index-image">
-            <img src={imnottrash} alt="shop-image" />
+            <img src={imnottrash} alt="shop" />
           </div>
         </div>
       </div>

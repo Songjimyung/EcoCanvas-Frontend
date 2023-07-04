@@ -71,6 +71,7 @@
   align-items: center;
 }
 
+
 ._topIconBadge {
   position: absolute;
 
@@ -97,8 +98,6 @@
 ._topbarIconContainer:hover {
   color: rgb(251, 100, 30);
   text-decoration: none;
-  width: 30px;
-  height: 30px;
 }
 
 .alinBox {
@@ -109,13 +108,16 @@
 ._topbarIconContainer:hover {
   color: rgb(251, 100, 30);
   text-decoration: none;
-  width: 30px;
-  height: 30px;
 }
 
 .alinBox {
   display: flex;
 }
+
+._topbarIcon:hover {
+  color: rgb(32, 106, 93);
+}
+
 
 @media (max-width: 900px) {
   ._topbar {
