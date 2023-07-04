@@ -84,7 +84,7 @@ const Cart = () => {
 
   return (
     <div>
-      <h1>장바구니</h1>
+      <h1 style={{ margin: "20px auto" }}>장바구니</h1>
       {cartItems.length > 0 ? (
         <Container>
           <TableContainer>
@@ -124,8 +124,8 @@ const Cart = () => {
                     <TableCell>
                       <div className="quantityControl">
                         {product.quantity}
-                        <button onClick={() => handleDecrese(product.id)}>-</button>
-                        <button onClick={() => handleIncrease(product.id)}>+</button>
+                        <button style={{ marginLeft: "10px", width: "20px" }} onClick={() => handleDecrese(product.id)}>-</button>
+                        <button style={{ marginLeft: "10px", width: "20px" }} onClick={() => handleIncrease(product.id)}>+</button>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -140,17 +140,19 @@ const Cart = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Button variant="contained" color="info" onClick={handleDelete}>
-            삭제하기
-          </Button>
-          <Link to={`/order/productlist`}>
-            <Button variant="contained" color="info" onClick={handlePlaceOrder}>
-              주문하기
+          <div style={{ marginTop: "30px", float: "right" }}>
+            <Button variant="contained" color="primary" sx={{ color: "white", marginRight: "20px" }} onClick={handleDelete}>
+              삭제하기
             </Button>
-          </Link>
+            <Link to={`/order/productlist`}>
+              <Button variant="contained" color="primary" sx={{ color: "white" }} onClick={handlePlaceOrder}>
+                주문하기
+              </Button>
+            </Link>
+          </div>
         </Container>
       ) : (
-        <p>장바구니에 상품이 없습니다.</p>
+        <h2 style={{ marginTop: "200px" }}>장바구니에 상품이 없습니다.</h2>
       )}
     </div>
   );

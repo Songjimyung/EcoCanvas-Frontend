@@ -210,8 +210,8 @@ const Campaign = () => {
   return (
     <div className="campaignContainer">
       <ImageHeader
-        h1Text="캠페인 둘러보기"
-        pText="EcoCanvas Campaigns"
+        h1Text="Campaign"
+        pText="캠페인 둘러보기"
         imageUrl={campaign_family}
       />
 

@@ -14,10 +14,10 @@ const CallbackKakao = ({ code }) => {
 
         const { data, status } = response;
         if (status === 200) {
-          
+
           const token_req_json = data;
           localStorage.setItem('access', token_req_json['jwt_token']['access']);
-          localStorage.setItem("refresh", token_req_json['jwt_token']['refresh']);
+          document.cookie = `refresh=${token_req_json['jwt_token']['refresh']}; path=/; Secure; SameSite=Lax`;
           const base64Url = token_req_json['jwt_token']['access'].split('.')[1];
           const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
           const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
@@ -30,10 +30,10 @@ const CallbackKakao = ({ code }) => {
           alert("카카오 회원가입 성공!");
           window.location.replace("/");
         } else {
-          
+
         }
       } catch (error) {
-        
+
       }
     };
 

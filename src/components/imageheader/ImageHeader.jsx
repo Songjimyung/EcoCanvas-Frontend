@@ -17,8 +17,10 @@ function ImageHeader({ h1Text, pText, imageUrl }) {
 
   return (
     <div className="header-bg" style={headerStyle}>
-      <h1>{h1Text}</h1>
-      <p style={{ fontWeight: "300", marginTop: "10px" }}>{pText}</p>
+      <div className="headerTitle">{h1Text}</div>
+      <p style={{ fontWeight: "300", marginTop: "10px", fontSize: "1.2rem" }}>
+        {pText}
+      </p>
     </div>
   );
 }
