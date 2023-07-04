@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "../../components/mypageSidebar/MypageSidebar";
 import "../../css/mypage.css";
 import { Button, Grid, Typography, TextField } from "@mui/material";
+import DaumPostcode from "react-daum-postcode";
+import { Modal } from "antd";
 
-export default function MyProfile() {
+export default function MyOrderInfo() {
   const [userData, setUserData] = useState({
     address: "",
     zipcode: "",
@@ -12,7 +13,51 @@ export default function MyProfile() {
     contact: "",
     deliveryMessage: "",
   });
-  const [image, setImage] = useState("");
+  const [phonenum, setPhoneNum] = useState('');
+  const phoneRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
+  const [Address, setAddress] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+  const [zipcode, setZipcode] = useState('');
+
+  const onToggleModal = () => {
+    setIsOpen((prev) => !prev);
+  };
+  const handleComplete = (data) => {
+
+    setAddress(data.address);
+    setZipcode(data.zonecode);
+    setIsComplete(true);
+    onToggleModal();
+  };
+
+
+  const handlePhone = (e) => {
+    const value = e.target.value.replace(/\D+/g, "");
+    const numberLength = 11;
+
+    let result = "";
+
+    for (let i = 0; i < value.length && i < numberLength; i++) {
+      switch (i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    e.target.value = result;
+
+    setPhoneNum(result);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,7 +73,6 @@ export default function MyProfile() {
           }
         );
         const result = await response.json();
-        
 
         const user_info = {
           address: result.address,
@@ -38,8 +82,10 @@ export default function MyProfile() {
           deliveryMessage: result.delivery_message,
         };
         setUserData(user_info);
+        setPhoneNum(result.receiver_number);
+
       } catch (error) {
-        
+
       }
     };
 
@@ -49,23 +95,13 @@ export default function MyProfile() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access");
-    if (
-      !userData.address ||
-      !userData.zipcode ||
-      !userData.detailAddress ||
-      !userData.contact ||
-      !userData.deliveryMessage
-    ) {
-      alert("모든 필드를 입력해주세요.");
-      return;
-    }
+
     const formData = new FormData();
-    formData.append("image", image);
-    formData.append("address", userData.address);
-    formData.append("zip_code", userData.zipcode);
+    formData.append("address", isComplete ? Address : userData.address);
+    formData.append("zip_code", isComplete ? zipcode : userData.zipcode);
     formData.append("detail_address", userData.detailAddress);
     formData.append("delivery_message", userData.deliveryMessage);
-    formData.append("receiver_number", userData.contact);
+    formData.append("receiver_number", phonenum);
 
     try {
       const response = await fetch(
@@ -78,25 +114,20 @@ export default function MyProfile() {
           body: formData,
         }
       );
-      const result = await response.json();
-
-      if (result.errors) {
-        
-        alert(result.errors.user[0]);
-      } else {
-        
-        alert("등록 완료!");
+      if (response.ok) {
+        await response.json();
+        alert("저장 완료!")
         window.location.reload();
+      } else {
+        const data = await response.json();
+        const errorValues = Object.values(data);
+        throw new Error(errorValues.join('\n'));
       }
     } catch (error) {
-      
+      alert(error);
     }
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
-  };
 
   return (
     <div className="mypage-block">
@@ -112,12 +143,30 @@ export default function MyProfile() {
               <Typography variant="body1">배송지 주소</Typography>
               <TextField
                 name="address"
-                value={userData.address}
+                value={isComplete ? Address : userData.address}
                 onChange={(e) =>
                   setUserData({ ...userData, address: e.target.value })
                 }
                 fullWidth
               />
+              <Button
+                variant="contained"
+                color="primary"
+                className="addProductButton"
+                onClick={onToggleModal}
+                sx={{ color: "white" }}
+              >
+                주소 검색
+              </Button>
+              {isOpen && (
+                <Modal
+                  visible={true}
+                  onOk={onToggleModal}
+                  onCancel={onToggleModal} // isOpen이 false가 되고 화면이 리렌더되면서 모달 사라짐
+                >
+                  <DaumPostcode onComplete={handleComplete} />
+                </Modal>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">상세주소</Typography>
@@ -133,11 +182,12 @@ export default function MyProfile() {
             <Grid item xs={12}>
               <Typography variant="body1">연락처</Typography>
               <TextField
+                type="tel"
                 name="contact"
-                value={userData.contact}
-                onChange={(e) =>
-                  setUserData({ ...userData, contact: e.target.value })
-                }
+                ref={phoneRef}
+                value={phonenum}
+                onChange={handlePhone}
+                maxLength="13"
                 fullWidth
               />
             </Grid>
@@ -145,7 +195,7 @@ export default function MyProfile() {
               <Typography variant="body1">우편번호</Typography>
               <TextField
                 name="zipcode"
-                value={userData.zipcode}
+                value={isComplete ? zipcode : userData.zipcode}
                 onChange={(e) =>
                   setUserData({ ...userData, zipcode: e.target.value })
                 }
@@ -161,14 +211,6 @@ export default function MyProfile() {
                   setUserData({ ...userData, deliveryMessage: e.target.value })
                 }
                 fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">프로필 이미지 업로드</Typography>
-              <input
-                type="file"
-                accept="image/jpg,image/png,image/jpeg,image/gif"
-                onChange={handleImageUpload}
               />
             </Grid>
           </Grid>
@@ -189,7 +231,6 @@ export default function MyProfile() {
             >
               Save
             </Button>
-            <Link to="/mypage/profile/withdrawal">회원탈퇴를 원하시나요?</Link>
           </div>
         </form>
       </div>
@@ -197,4 +238,4 @@ export default function MyProfile() {
   );
 }
 
-export { MyProfile };
+export { MyOrderInfo };

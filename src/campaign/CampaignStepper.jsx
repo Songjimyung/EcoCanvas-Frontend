@@ -11,24 +11,44 @@ import Typography from "@mui/material/Typography";
 const steps = [
   {
     label: "캠페인 신청하기",
-    description: `An ad group contains one or more ads which target a shared set of keywords.
-      펀딩이나 캠페인 활동이 없어도 되며, 없는 경우는 비워두라는 등의 자세한 설명..`,
+    description: (
+      <>
+        EcoCanvas와 함께하고싶은 환경 캠페인을 신청해주세요. <br />
+        캠페인의 목적, 목표, 계획 및 예산 등에 대한 명확하고 자세한 설명이
+        포함되어야 합니다. <br />
+        펀딩이나 캠페인 활동이 필요하지 않은 경우는 비워주세요. <br />
+        태그에는 어떤 환경문제를 다루는 캠페인인지 작성해주세요. <br />
+        별(*)이 달린 항목은 필수로 작성 부탁드립니다.
+      </>
+    ),
   },
   {
-    label: "캠페인 승인받기",
-    description: `For each ad campaign that you create, you can control how much
-      you're willing to spend on clicks and conversions, which networks
-      and geographical locations you want your ads to show on, and more.
-      펀딩이 있는 캠페인은 EcoCanvas의 승인을 받은 이후 이루어집니다.. 
-      승인 첨부파일은 어떤걸 넣어주세요 등등...`,
+    label: "선정 기준 예시",
+    description: (
+      <>
+        캠페인을 통해 어떤 변화를 이루고자 하는지, 어떤 지표를 사용하여 성과를
+        측정할 것인지 설명해주세요. <br />
+        ⑴ 기존 환경문제와 차별화된 내용을 다루는가 <br />
+        ⑵ 현실성 있는 사업목표를 설정하였는가 <br />
+        ⑶ 환경문제 해결에 얼마나 도움이 되는가 <br />
+        ⑷ 홍보 및 취재에 적극적 협조가 가능한가 <br />
+        ⑸ 타 크라우드 펀딩과 중복 문제는 없는가 <br />
+      </>
+    ),
   },
   {
-    label: "캠페인 진행하기",
-    description: `Try out different ad text to see what brings in the most customers,
-      and learn how to enhance your ads using features like ad extensions.
-      If you run into any problems with your ads, find out how to tell if
-      they're running and how to resolve approval issues.
-      펀딩 과정이라던가 캠페인 활동이 없어도 된다는 등의 자세한 설명...`,
+    label: "펀딩금액 지원 방식",
+    description: (
+      <>
+        ⑴ 펀딩목표액 100% 미달성 시<br />
+        - 펀딩된 금액에 맞춰 사업계획서 수정하여 진행. <br />
+        또는 펀딩된 금액에 선정단체의 자체 예산을 추가하여 사업 진행 <br />
+        - 사업 포기 시 펀딩된 금액은 지급하지 아니함
+        <br />
+        ⑵ 펀딩목표액 100% 초과 달성시 <br />- 펀딩된 금액에 맞춰 사업계획서
+        수정하여 진행
+      </>
+    ),
   },
 ];
 
@@ -87,8 +107,11 @@ export default function VerticalLinearStepper() {
       {activeStep === steps.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>
-            캠페인의 모든 과정이 완료되었습니다.
-            <br /> EcoCanvas와 함께 지구를 지켜주셔서 감사해요!
+            이상의 캠페인 진행과정과 유의사항을 잘 숙지해주시길 바랍니다.
+            <br />
+            관련하여 문의사항이 있다면 1:1 상담을 통해 문의 부탁드립니다.
+            <br />
+            EcoCanvas와 함께 지구를 지켜주셔서 감사해요!
           </Typography>
           <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
             다시보기

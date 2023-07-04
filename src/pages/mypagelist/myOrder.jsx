@@ -4,6 +4,7 @@ import "../../css/mypage.css";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
@@ -33,7 +34,6 @@ const MyOrder = () => {
     };
     fetchOrderList();
   }, [currentPage]);
-
   const handlePageChange = async (event, page) => {
     setCurrentPage(page);
   };
@@ -54,6 +54,22 @@ const MyOrder = () => {
     (order) => order.id === selectedOrder
   );
 
+  const detailReceipt = (orderId) => {
+    const token = localStorage.getItem('access');
+
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/detail/${orderId}`,
+    {headers: {
+      'Authorization': `Bearer ${token}`,
+     }})
+     .then((response) => {
+      window.open(response.data, '_blank');
+  })
+  .catch((error) => {
+    console.log(error)
+    alert('결제 영수증이 없습니다.')
+  });
+ };
+
   return (
     <div className="mypage-block">
       <Sidebar />
@@ -67,6 +83,7 @@ const MyOrder = () => {
               <th>가격</th>
               <th>상태</th>
               <th>세부 정보</th>
+              <th>결제 영수증</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +91,7 @@ const MyOrder = () => {
               myorderData.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
-                  <td>{order.product}</td>
+                  <td>{order.product_name}</td>
                   <td>{order.order_totalprice}</td>
                   <td>{order["order_info"][0]?.status || "알 수 없음"}</td>
                   <td>
@@ -83,6 +100,15 @@ const MyOrder = () => {
                       onClick={() => openModal(order.id)}
                     >
                       세부 정보 보기
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                    className="details-button"
+                    style={{width:'120px'}}
+                    onClick={() => detailReceipt(order.id)}
+                    >
+                      영수증 보기
                     </button>
                   </td>
                 </tr>
@@ -113,7 +139,7 @@ const MyOrder = () => {
                 <div>
                   <p>주문 번호: {selectedOrderData.id}</p>
                   <p>수령인: {selectedOrderData.receiver_name}</p>
-                  <p>상품명: {selectedOrderData.product}</p>
+                  <p>상품명: {selectedOrderData.product_name}</p>
                   <p>가격: {selectedOrderData.order_totalprice}원</p>
                   <p>
                     주문상태:{" "}
@@ -134,11 +160,16 @@ const MyOrder = () => {
                   <p>상세주소: {selectedOrderData.address_detail}</p>
                   <p>배송메세지: {selectedOrderData.address_message}</p>
                   <p>연락처: {selectedOrderData.receiver_number}</p>
+                  {selectedOrderData["order_info"]?.[0]?.status === "주문 접수 완료" &&(
+                  <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
+                  <button class='DeleteButton' style={{width:'100px'}}>주문취소요청</button>
+                  </Link>
+                  )}
                 </div>
               </div>
             </div>
           )}
-        </div>
+        </div>  
       </div>
     </div>
   );
