@@ -47,7 +47,7 @@ const MyRefundreceipt = () => {
     };
   
     fetchStatusChoices();
-  }, [id, statusChoices]);
+  }, [id]);
  
   
 
