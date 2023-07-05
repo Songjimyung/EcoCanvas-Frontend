@@ -18,7 +18,6 @@ const MyOrder = () => {
       try {
         let url = `${process.env.REACT_APP_BACKEND_URL}/shop/mypage/order/`;
         url += `?page=${currentPage}`;
-
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,8 +37,8 @@ const MyOrder = () => {
     setCurrentPage(page);
   };
 
-  const openModal = (orderId) => {
-    setSelectedOrder(orderId);
+  const openModal = (order) => {
+    setSelectedOrder(order);
     const modal = document.getElementById("orderModal");
     modal.style.display = "block";
   };
@@ -51,24 +50,26 @@ const MyOrder = () => {
   };
 
   const selectedOrderData = myorderData.find(
-    (order) => order.id === selectedOrder
+    (order) => order.id === selectedOrder?.id
   );
 
   const detailReceipt = (orderId) => {
     const token = localStorage.getItem('access');
 
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/payments/receipt/detail/${orderId}`,
-    {headers: {
-      'Authorization': `Bearer ${token}`,
-     }})
-     .then((response) => {
-      window.open(response.data, '_blank');
-  })
-  .catch((error) => {
-    console.log(error)
-    alert('결제 영수증이 없습니다.')
-  });
- };
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      })
+      .then((response) => {
+        window.open(response.data, '_blank');
+      })
+      .catch((error) => {
+        console.log(error)
+        alert('결제 영수증이 없습니다.')
+      });
+  };
 
   return (
     <div className="mypage-block">
@@ -97,16 +98,16 @@ const MyOrder = () => {
                   <td>
                     <button
                       className="details-button"
-                      onClick={() => openModal(order.id)}
+                      onClick={() => openModal(order)}
                     >
                       세부 정보 보기
                     </button>
                   </td>
                   <td>
                     <button
-                    className="details-button"
-                    style={{width:'120px'}}
-                    onClick={() => detailReceipt(order.id)}
+                      className="details-button"
+                      style={{ width: '120px' }}
+                      onClick={() => detailReceipt(order.id)}
                     >
                       영수증 보기
                     </button>
@@ -139,8 +140,13 @@ const MyOrder = () => {
                 <div>
                   <p>주문 번호: {selectedOrderData.id}</p>
                   <p>수령인: {selectedOrderData.receiver_name}</p>
-                  <p>상품명: {selectedOrderData.product_name}</p>
-                  <p>가격: {selectedOrderData.order_totalprice}원</p>
+                  <p style={{ fontWeight: "bold" }}>상품 / 수량</p>
+                  {selectedOrderData["order_info"]?.map((info, index) => (
+                    <div key={index}>
+                      <p>{info.product} / <span> {info.product_count}</span></p>
+                    </div>
+                  ))}
+                  <p>총 가격: {selectedOrderData.order_totalprice}원</p>
                   <p>
                     주문상태:{" "}
                     <span style={{ color: "blue" }}>
@@ -154,22 +160,22 @@ const MyOrder = () => {
               <div className="shipping-details">
                 <h2>배송 정보</h2>
                 <div>
-                  <p>주문수량: {selectedOrderData.order_quantity}</p>
                   <p>우편번호: {selectedOrderData.zip_code}</p>
                   <p>주소: {selectedOrderData.address}</p>
                   <p>상세주소: {selectedOrderData.address_detail}</p>
                   <p>배송메세지: {selectedOrderData.address_message}</p>
                   <p>연락처: {selectedOrderData.receiver_number}</p>
-                  {selectedOrderData["order_info"]?.[0]?.status === "주문 접수 완료" &&(
-                  <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
-                  <button class='DeleteButton' style={{width:'100px'}}>주문취소요청</button>
-                  </Link>
+
+                  {selectedOrderData["order_info"]?.[0]?.status === "주문 접수 완료" && (
+                    <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
+                      <button className="DeleteButton" style={{ width: '100px' }}>주문취소요청</button>
+                    </Link>
                   )}
                 </div>
               </div>
             </div>
           )}
-        </div>  
+        </div>
       </div>
     </div>
   );
