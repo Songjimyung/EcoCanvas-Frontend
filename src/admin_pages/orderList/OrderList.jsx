@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Typography, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
-export default function AdminOrderList() { 
+export default function AdminOrderList() {
   const [orderData, setOrderData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -48,6 +48,7 @@ export default function AdminOrderList() {
             status: status,
             receiver_name: order.receiver_name,
             receiver_number: order.receiver_number,
+            order_info: order.order_info
           };
         });
         setOrderData(products);
@@ -84,9 +85,9 @@ export default function AdminOrderList() {
 
     })
       .then(() => {
-        if (sendRefundRequest){
+        if (sendRefundRequest) {
           return fetch(`${process.env.REACT_APP_BACKEND_URL}/payments/refund/${selected.id}`, {
-            method : 'POST',
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -155,16 +156,14 @@ export default function AdminOrderList() {
             <tr className="widgetLgTr">
               <th className="widgetLgTh">주문번호</th>
               <th className="widgetLgTh">주문자</th>
-              <th className="widgetLgTh">상품</th>
               <th className="widgetLgTh">날짜</th>
-              <th className="widgetLgTh">수량</th>
               <th className="widgetLgTh">상태</th>
               <th className="widgetLgTh">상세보기</th>
             </tr>
           </thead>
           <tbody>
 
-            {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ?(
+            {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
               orderData.map((order) => (
                 <tr className="widgetLgTr" key={order.id}>
                   <td className="widgetLgName">
@@ -174,13 +173,7 @@ export default function AdminOrderList() {
                     <span>{order.receiver_name}</span>
                   </td>
                   <td className="widgetLgDate">
-                    {order.product}
-                  </td>
-                  <td className="widgetLgDate">
                     {order.order_date}
-                  </td>
-                  <td className="widgetLgDate">
-                    {order.order_quantity}
                   </td>
                   <td className="widgetLgDate">
                     {order.status}
@@ -190,9 +183,9 @@ export default function AdminOrderList() {
                   </td>
                 </tr>
               ))
-              ) : (
-                orderData.length === 0 ? (
-                  <h2>주문이 없습니다.</h2>
+            ) : (
+              orderData.length === 0 ? (
+                <h2>주문이 없습니다.</h2>
               ) : (
                 orderData
                   .filter((order) => order.status === selectedStatus)
@@ -243,7 +236,13 @@ export default function AdminOrderList() {
                 <Typography variant="body1">주문 번호: {selected.id}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">상품명: {selected.product}</Typography>
+                상품 / 수량
+
+                {selected.order_info?.map((info, index) => (
+                  <Typography variant="body1" key={index}>
+                    <p>{info.product} / <span> {info.product_count}</span></p>
+                  </Typography>
+                ))}
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">주문일: {selected.order_date}</Typography>
@@ -255,10 +254,7 @@ export default function AdminOrderList() {
                 <Typography variant="body1">주소: {selected.address_detail}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">주문수량: {selected.order_quantity}</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body1">주문금액: {selected.order_totalprice}</Typography>
+                <Typography variant="body1">총 주문금액: {selected.order_totalprice}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">수령인: {selected.receiver_name}</Typography>
