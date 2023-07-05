@@ -161,7 +161,6 @@ const Shop = () => {
                 <option value="hits">조회순</option>
                 <option value="highprice">가격높은순</option>
                 <option value="lowprice">가격낮은순</option>
-                <option value="purchases">구매순</option>
               </select>
               <input
                 type="text"

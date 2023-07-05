@@ -11,6 +11,7 @@ export default function AdminOrderList() {
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [myInfoData, setMyInfoData] = useState([]);
 
 
 
@@ -32,26 +33,9 @@ export default function AdminOrderList() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const products = response.data.results.map((order) => {
-          const status = order.order_info.length > 0 ? order.order_info[0].status : null;
 
-          return {
-            id: order.id,
-            product: order.product_name,
-            zipcode: order.zip_code,
-            address: order.address,
-            address_detail: order.address_detail,
-            address_message: order.address_message,
-            order_quantity: order.order_quantity,
-            order_date: order.order_date,
-            order_totalprice: order.order_totalprice,
-            status: status,
-            receiver_name: order.receiver_name,
-            receiver_number: order.receiver_number,
-            order_info: order.order_info
-          };
-        });
-        setOrderData(products);
+        setMyInfoData(response.data.results[0]);
+        setOrderData(response.data.results[0]['order_info']);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
 
@@ -155,6 +139,7 @@ export default function AdminOrderList() {
           <thead>
             <tr className="widgetLgTr">
               <th className="widgetLgTh">주문번호</th>
+              <th className="widgetLgTh">수량</th>
               <th className="widgetLgTh">주문자</th>
               <th className="widgetLgTh">날짜</th>
               <th className="widgetLgTh">상태</th>
@@ -170,10 +155,13 @@ export default function AdminOrderList() {
                     <span>{order.id}</span>
                   </td>
                   <td className="widgetLgDate">
-                    <span>{order.receiver_name}</span>
+                    <span>{order.product_count}</span>
                   </td>
                   <td className="widgetLgDate">
-                    {order.order_date}
+                    <span>{myInfoData.receiver_name}</span>
+                  </td>
+                  <td className="widgetLgDate">
+                    {myInfoData.order_date}
                   </td>
                   <td className="widgetLgDate">
                     {order.status}
@@ -236,31 +224,27 @@ export default function AdminOrderList() {
                 <Typography variant="body1">주문 번호: {selected.id}</Typography>
               </Grid>
               <Grid item xs={12}>
-                상품 / 수량
-
-                {selected.order_info?.map((info, index) => (
-                  <Typography variant="body1" key={index}>
-                    <p>{info.product} / <span> {info.product_count}</span></p>
-                  </Typography>
-                ))}
+                <Typography variant="body1">
+                  상품명 : {selected.product}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">주문일: {selected.order_date}</Typography>
+                <Typography variant="body1">주문일: {myInfoData.order_date}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">우편번호: {selected.zipcode}</Typography>
+                <Typography variant="body1">우편번호: {myInfoData.zip_code}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">주소: {selected.address_detail}</Typography>
+                <Typography variant="body1">주소: {myInfoData.address_detail}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">총 주문금액: {selected.order_totalprice}</Typography>
+                <Typography variant="body1">총 주문금액: {myInfoData.order_totalprice}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">수령인: {selected.receiver_name}</Typography>
+                <Typography variant="body1">수령인: {myInfoData.receiver_name}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">연락처: {selected.receiver_number}</Typography>
+                <Typography variant="body1">연락처: {myInfoData.receiver_number}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">주문 현황: {selected.status}</Typography>
