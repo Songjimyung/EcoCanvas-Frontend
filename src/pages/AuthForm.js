@@ -63,6 +63,9 @@ const AuthForm = ({ type }) => {
     } catch (error) {
       if (error.response.data['email']) {
         alert(error.response.data['email'])
+      } else if (error.response.data['withdrawal_true']) {
+        alert(error.response.data['withdrawal_true'])
+        navigate("/login");
       }
     }
   };
@@ -98,8 +101,12 @@ const AuthForm = ({ type }) => {
         window.location.replace("/")
       }
     } catch (error) {
-      alert("이메일과 비밀번호를 확인해주세요.")
-
+      if (error.response.data['withdrawal_true']) {
+        alert(error.response.data['withdrawal_true'])
+        window.location.reload()
+      } else {
+        alert("이메일과 비밀번호를 확인해주세요.")
+      }
     }
   };
   const SocialKakao = () => {
