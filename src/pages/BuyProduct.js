@@ -328,7 +328,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.images} alt="" />
+            <img className="productListImg" src={params.row.images[0].image_file} alt="" />
             {params.row.product_name}
           </div>
         );

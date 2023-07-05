@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "@mui/material/Pagination";
-import Sidebar from "../../components/mypageSidebar/MypageSidebar";
-import "../../css/mypage.css";
-import { Link } from "react-router-dom";
-import campaign_default_image from "../../img/campaign_default_image.jpg";
+import Pagination from '@mui/material/Pagination';
+import Sidebar from "../../components/mypageSidebar/MypageSidebar"
+import '../../css/mypage.css'
+import { Link } from 'react-router-dom';
+import campaign_default_image from '../../img/campaign_default_image.jpg';
+import { format } from 'date-fns';
+
 
 const MyPostCampaign = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,9 +29,9 @@ const MyPostCampaign = () => {
           id: campaign.id,
           title: campaign.title,
           content: campaign.content,
-          campaign_end_date: campaign.campaign_end_date,
-          activity_start_date: campaign.activity_start_date,
-          activity_end_date: campaign.activity_end_date,
+          campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
+          activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
+          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd'),
           image: campaign.image,
           status: campaign.status,
         }));

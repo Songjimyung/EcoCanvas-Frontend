@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const MyOrder = () => {
   const [myorderData, setMyOrderData] = useState([]);
+  const [myInfoData, setMyInfoData] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -23,12 +24,12 @@ const MyOrder = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setMyOrderData(response.data.results);
+        setMyOrderData(response.data.results[0]['order_info']);
+        setMyInfoData(response.data.results[0]);
         const totalPages = Math.ceil(response.data.count / 6);
         setTotalPages(totalPages);
 
       } catch (error) {
-
       }
     };
     fetchOrderList();
@@ -92,9 +93,9 @@ const MyOrder = () => {
               myorderData.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
-                  <td>{order.product_name}</td>
-                  <td>{order.order_totalprice}</td>
-                  <td>{order["order_info"][0]?.status || "알 수 없음"}</td>
+                  <td>{order.product}</td>
+                  <td>{order.product_count}</td>
+                  <td>{order.status || "알 수 없음"}</td>
                   <td>
                     <button
                       className="details-button"
@@ -139,34 +140,29 @@ const MyOrder = () => {
                 <h2>주문 정보</h2>
                 <div>
                   <p>주문 번호: {selectedOrderData.id}</p>
-                  <p>수령인: {selectedOrderData.receiver_name}</p>
-                  <p style={{ fontWeight: "bold" }}>상품 / 수량</p>
-                  {selectedOrderData["order_info"]?.map((info, index) => (
-                    <div key={index}>
-                      <p>{info.product} / <span> {info.product_count}</span></p>
-                    </div>
-                  ))}
-                  <p>총 가격: {selectedOrderData.order_totalprice}원</p>
+                  <p>수령인: {myInfoData.receiver_name}</p>
+                  <p>상품명 : {selectedOrderData.product}</p>
+                  <p>주문수량: {selectedOrderData.product_count}개</p>
                   <p>
                     주문상태:{" "}
                     <span style={{ color: "blue" }}>
-                      {selectedOrderData["order_info"]?.[0]?.status ||
+                      {myInfoData.order_info?.[0]?.status ||
                         "알 수 없음"}
                     </span>
                   </p>
-                  <p>주문일: {selectedOrderData.order_date}</p>
+                  <p>주문일: {myInfoData.order_date}</p>
                 </div>
               </div>
               <div className="shipping-details">
                 <h2>배송 정보</h2>
                 <div>
-                  <p>우편번호: {selectedOrderData.zip_code}</p>
-                  <p>주소: {selectedOrderData.address}</p>
-                  <p>상세주소: {selectedOrderData.address_detail}</p>
-                  <p>배송메세지: {selectedOrderData.address_message}</p>
-                  <p>연락처: {selectedOrderData.receiver_number}</p>
+                  <p>우편번호: {myInfoData.zip_code}</p>
+                  <p>주소: {myInfoData.address}</p>
+                  <p>상세주소: {myInfoData.address_detail}</p>
+                  <p>배송메세지: {myInfoData.address_message}</p>
+                  <p>연락처: {myInfoData.receiver_number}</p>
 
-                  {selectedOrderData["order_info"]?.[0]?.status === "주문 접수 완료" && (
+                  {selectedOrderData.order_info?.[0]?.status === "주문 접수 완료" && (
                     <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
                       <button className="DeleteButton" style={{ width: '100px' }}>주문취소요청</button>
                     </Link>

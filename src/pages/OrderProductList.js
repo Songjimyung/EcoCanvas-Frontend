@@ -48,19 +48,18 @@ const OrderProductList = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access');
-    const orders = cartItems.map((product) => ({
+    const order = {
       zip_code: isComplete ? zipcode : e.target.elements.zip_code.value,
       address: isComplete ? Address : e.target.elements.address.value,
       address_detail: isComplete ? DetailAddress : e.target.elements.address_detail.value,
       address_message: isComplete ? DeliveryMessage : e.target.elements.address_message.value,
       receiver_name: isComplete ? UserName : e.target.elements.receiver_name.value,
       receiver_number: isComplete ? phonenum : e.target.elements.receiver_number.value,
+    };
+    const product = cartItems.map((product) => ({
       order_quantity: product.quantity,
-      order_totalprice: product.product_price * product.quantity,
       product: product.id,
-      user: userId,
     }));
-
     try {
       await requestPay();
 
@@ -70,7 +69,7 @@ const OrderProductList = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ orders })
+        body: JSON.stringify({ order, product })
       });
 
       if (response.status === 201) {
