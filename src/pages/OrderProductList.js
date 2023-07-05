@@ -280,7 +280,7 @@ const OrderProductList = () => {
 
   return (
     <div>
-      <h1>ORDER</h1>
+      <h1 style={{ margin: "50px auto" }}>ORDER</h1>
       {cartItems.length > 0 ? (
         <Container>
           <TableContainer>
