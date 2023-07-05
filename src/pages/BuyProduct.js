@@ -366,7 +366,7 @@ export default function BuyProduct() {
       {Product ? (
         <>
           <div className="productList">
-            <h1>주문 목록</h1>
+            <h1 style={{ margin: "50px auto" }}>주문 목록</h1>
             <DataGrid
               initialState={{
                 pagination: { paginationModel: { pageSize: 5 } }
@@ -382,7 +382,7 @@ export default function BuyProduct() {
           </div>
           <div className='product-detail'>
             <div className='product-detail-info'>
-              <h1>ORDER</h1>
+              <h1 style={{ margin: "30px auto" }}>ORDER</h1>
               <div className="createOrder">
                 <div className="addOrderItem">
                   <label>기존 배송지 사용</label>
