@@ -120,7 +120,6 @@ export default function BuyProduct() {
 
     try {
       const payment = await requestPay();
-      console.log(payment)
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: "POST",
         headers: {
