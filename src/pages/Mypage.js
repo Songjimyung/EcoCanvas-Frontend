@@ -5,6 +5,7 @@ import '../css/mypage.css'
 import { isAfter } from 'date-fns';
 import { Link } from 'react-router-dom';
 import campaign_default_image from '../img/campaign_default_image.jpg';
+import { format } from 'date-fns';
 
 const Mypage = () => {
   // 비로그인 시 주소창 접근 제한
@@ -42,9 +43,9 @@ const Mypage = () => {
           id: campaign.id,
           title: campaign.title,
           content: campaign.content,
-          campaign_end_date: campaign.campaign_end_date,
-          activity_start_date: campaign.activity_start_date,
-          activity_end_date: campaign.activity_end_date,
+          campaign_end_date: format(new Date(campaign.campaign_end_date), 'yyyy-MM-dd'),
+          activity_start_date: format(new Date(campaign.activity_start_date), 'yyyy-MM-dd'),
+          activity_end_date: format(new Date(campaign.activity_end_date), 'yyyy-MM-dd'),
           image: campaign.image,
           status: campaign.status
         }));
@@ -132,9 +133,9 @@ const Mypage = () => {
                   <h3>{card.title}</h3>
                 </Link>
                 <p>캠페인 현황: <span style={{ color: 'blue' }}>{card.status}</span></p>
-                <p>캠페인 마감일: {card.campaign_end_date}</p>
-                <p>활동 시작일: {card.activity_start_date}</p>
-                <p>활동 마감일: {card.activity_end_date}</p>
+                <p>캠페인 마감일: {card.campaign_end_date.slice(0, 10)}</p>
+                <p>활동 시작일: {card.activity_start_date ? card.activity_start_date.slice(0, 10) : card.activity_start_date}</p>
+                <p>활동 마감일: {card.activity_end_date ? card.activity_end_date.slice(0, 10) : card.activity_end_date}</p>
                 {isAfter(today, new Date(card.activity_end_date)) && card.status === 4 && (
                   <button onClick={() => openModal(card.id)}>리뷰 작성</button> // 활동종료일이 현재보다 지났고, 활동이 정상 종료 되었다면 버튼 표시
                 )}

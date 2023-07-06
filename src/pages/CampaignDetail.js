@@ -9,18 +9,19 @@ import EditMenu from "../components/editmenu/EditMenu";
 import Share from "../components/share/Share";
 import Modal from "../components/modal/Modal"
 import PaiginationComponent from "../components/pagination/Pagination";
+import ColorToggleButton from "../campaign/Orderby";
 
 // MUI
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Button from '@mui/material/Button';
-import ShareIcon from '@mui/icons-material/Share';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Button from "@mui/material/Button";
+import ShareIcon from "@mui/icons-material/Share";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
 
 
 // Mui Tab
@@ -57,7 +58,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
 
@@ -92,9 +93,9 @@ const InfoAnnounceMap = ({ text }) => {
 const CampaignDetail = () => {
   // Detail GET
   const { id } = useParams();
-  const [campaign, setCampaign] = useState('');
-  const [campaignReviews, setCampaignReview] = useState('');
-  const [campaignComments, setCampaignComment] = useState('');
+  const [campaign, setCampaign] = useState("");
+  const [campaignReviews, setCampaignReview] = useState("");
+  const [campaignComments, setCampaignComment] = useState("");
 
   // 댓글 Pagination
   const [commentPage, setCommentPage] = useState(1);
@@ -114,13 +115,13 @@ const CampaignDetail = () => {
   };
 
   // token
-  const token = localStorage.getItem('access');
-  const payload = localStorage.getItem('payload');
+  const token = localStorage.getItem("access");
+  const payload = localStorage.getItem("payload");
   const [userId, setUserId] = useState(null);
   useEffect(() => {
     if (payload) {
       const payloadObject = JSON.parse(payload);
-      setUserId(payloadObject['user_id']);
+      setUserId(payloadObject["user_id"]);
     }
   }, [payload]);
 
@@ -177,7 +178,7 @@ const CampaignDetail = () => {
 
   // 이미지처리
   const getImageUrl = (imagePath) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       return `${process.env.REACT_APP_BACKEND_URL}${imagePath}`;
     }
     return `${imagePath}`;
@@ -189,7 +190,7 @@ const CampaignDetail = () => {
 
   // 댓글 POST
   // eslint-disable-next-line
-  const [createComment, setCreateComment] = useState('');
+  const [createComment, setCreateComment] = useState("");
 
   const axiosCommentCreate = async (createComment) => {
     if (!token) {
@@ -245,15 +246,15 @@ const CampaignDetail = () => {
 
   const handleAmountSubmit = (event) => {
     const value = event.target.value;
-    const numericValue = Number(value.replace(/[^0-9.-]+/g, ''));
+    const numericValue = Number(value.replace(/[^0-9.-]+/g, ""));
     setAmount(numericValue);
   };
 
   const handleFundSubmit = async () => {
     if (!selectedCard || !selectedCard.cardId) {
-    alert("카드를 먼저 선택해주세요.");
-    return;
-  }
+      alert("카드를 먼저 선택해주세요.");
+      return;
+    }
     const requestData = {
       amount: amount,
       campaign: id,
@@ -319,19 +320,21 @@ const CampaignDetail = () => {
   };
   // 좋아요 누른상태인지 상태확인 get함수
   useEffect(() => {
-    const axiosCampaignLikeStatus = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-        setIsLiked(response.data.is_liked);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    axiosCampaignLikeStatus();
+    if (token) {
+      const axiosCampaignLikeStatus = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/like/`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+          setIsLiked(response.data.is_liked);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      axiosCampaignLikeStatus();
+    }
   }, [id, token]);
 
   // 좋아요 axios
@@ -352,19 +355,21 @@ const CampaignDetail = () => {
   const [isParticipated, setIsParticipated] = useState(false);
 
   useEffect(() => {
-    const axiosParticipateStatus = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-        setIsParticipated(response.data.is_participated);
-      } catch (e) {
-        console.error(e)
-      }
-    };
-    axiosParticipateStatus();
+    if (token) {
+      const axiosParticipateStatus = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/${id}/participation/`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+          setIsParticipated(response.data.is_participated);
+        } catch (e) {
+          console.error(e)
+        }
+      };
+      axiosParticipateStatus();
+    }
   }, [id, token]);
 
   // 캠페인 참여 axios
@@ -395,7 +400,7 @@ const CampaignDetail = () => {
   // 마감임박 Boolean
   const isAboutToClose = (endDate) => {
     const today = new Date().getDate();
-    const endFormatting = endDate.replace(/년|월|일/g, '-');
+    const endFormatting = endDate.replace(/년|월|일/g, "-");
     const end = new Date(endFormatting).getDate();
 
     const differenceInDays = end - today
@@ -437,7 +442,7 @@ const CampaignDetail = () => {
     };
   }
   // eslint-disable-next-line
-  const [updateComment, setUpdateComment] = useState('');
+  const [updateComment, setUpdateComment] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [commentId, setCommentId] = useState(null);
 
@@ -450,7 +455,7 @@ const CampaignDetail = () => {
     if (token) {
       try {
         await axios.put(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/detail/${commentId}/`, {
-          'content': updateComment,
+          "content": updateComment,
         }, {
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -478,6 +483,16 @@ const CampaignDetail = () => {
     }
   }
   // 시간 변환
+  function convertDate(datetimeString) {
+    const datetime = new Date(datetimeString);
+    const year = datetime.getFullYear();
+    const month = datetime.getMonth() + 1;
+    const date = datetime.getDate();
+
+    const resultDatetime = `${year}년 ${month}월 ${date}일`;
+
+    return resultDatetime;
+  }
   function convertDateTime(datetimeString) {
     const datetime = new Date(datetimeString);
     const year = datetime.getFullYear();
@@ -486,13 +501,13 @@ const CampaignDetail = () => {
     const hour = datetime.getHours();
     const minutes = datetime.getMinutes();
 
-    const koreanDatetime = `${year}년 ${month}월 ${date}일 ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const resultDatetime = `${year}년 ${month}월 ${date}일 ${hour.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 
-    return koreanDatetime;
+    return resultDatetime;
   }
 
   // Campaign Status
-  const [campaignStatus, setCampaignStatus] = useState('');
+  const [campaignStatus, setCampaignStatus] = useState("");
   const [campaignAuthorId, setCampaignAuthorId] = useState(null);
 
   if (campaignStatus === "미승인" && userId !== campaignAuthorId) {
@@ -512,7 +527,21 @@ const CampaignDetail = () => {
             <div className="campaignContentRight">
               <div className="campaignTopSetting">
                 <div className="campaignCategoryBadge">
-                  <span>카테고리 {`>`} </span>{campaign.category}
+                  <div className="flex-wrapper">
+                    <span>카테고리 {`>`} {campaign.category}</span>
+                    <div
+                      className="campaignStatus"
+                      style={{
+                        backgroundColor: campaign.status.includes("실패")
+                          ? "rgb(236, 82, 82)"
+                          : campaign.status.includes("종료")
+                            ? "rgb(32, 106, 93)"
+                            : "#81b214"
+                      }}
+                    >
+                      {campaign.status}
+                    </div>
+                  </div>
                 </div>
                 {userId === campaign.user_id ?
                   <EditMenu options={campaignOptions} onOptionClick={handleCampaignEdit} />
@@ -520,7 +549,6 @@ const CampaignDetail = () => {
                 }
               </div>
               <hr style={{ marginBottom: "10px" }} />
-              <div className="campaignStatus">{campaign.status}</div>
               <div className="campaignContent">
                 {campaign.content.split("\n").map((line, index) => (
                   <React.Fragment key={index}>
@@ -539,55 +567,55 @@ const CampaignDetail = () => {
               <hr style={{ marginBottom: "10px" }} />
               <div className="campaignContentBottom">주최 : {campaign.user}</div>
               <div className="campaignContentBottom">참여 인원 : {campaign.participant_count} / {campaign.members}</div>
-              <div className="campaignContentBottom">캠페인 신청 시작일 : {convertDateTime(campaign.campaign_start_date)}</div>
-              <div className="campaignContentBottom">캠페인 신청 마감일 : {convertDateTime(campaign.campaign_end_date)}</div>
+              <div className="campaignContentBottom">캠페인 신청 시작일 : {convertDate(campaign.campaign_start_date)}</div>
+              <div className="campaignContentBottom">캠페인 신청 마감일 : {convertDate(campaign.campaign_end_date)}</div>
               {campaign.activity_start_date && campaign.activity_end_date ? (
-                <div className="campaignContentBottom">활동 예정일 : {convertDateTime(campaign.activity_start_date)} ~ {convertDateTime(campaign.activity_end_date)}</div>
+                <div className="campaignContentBottom">활동 예정일 : {" "}
+                  {convertDate(campaign.activity_start_date)} ~ {convertDate(campaign.activity_end_date)}
+                </div>
               ) : (
                 <div className="campaignContentBottom">활동이 없는 캠페인입니다.</div>
               )}
               {campaign.fundings && campaign.fundings.goal !== 0 ? (
                 <div className="campaignFund">
                   <div className="campaignFundPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal) * 100)}% 달성</div>
-                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원)</span>
+                  <span className="campaignFundcurrent"> ({campaign.fundings.amount.toLocaleString()}원 / {campaign.fundings.goal.toLocaleString()}원)</span>
                   <Button
                     variant="contained"
                     color="primary"
-                    sx={{ color: 'white', marginLeft: '25px', }}
+                    sx={{ color: "white", marginLeft: "25px", }}
                     disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                     onClick={openFundModal}
                   >펀딩 참여하기
                   </Button>
-                  <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">                    
-                    {/* Modal.js <main> {props.children} </main>에 내용이 입력된다. 리액트 함수형 모달 */}
+                  <Modal open={fundModalOpen} close={closeFundModal} header="펀딩 감사합니다!">
                     <div className="modalMent">카드를 선택하고 펀딩 금액을 입력해주세요.</div>
                     <SelectCard setSelectedCard={setSelectedCard} />
                     {(selectedCard &&
-                      <div style={{display:'flex', marginBottom:'30px'}}>
+                      <div style={{ display: "flex", marginBottom: "30px" }}>
                         <span >선택한 카드:</span>
                         <span >{selectedCard.cardNumber}</span>
                       </div>
-                    )}                    
-                    <FormControl sx={{ width: '100%', marginTop: '10px' }}>
+                    )}
+                    <FormControl sx={{ width: "100%", marginTop: "10px" }}>
                       <InputLabel htmlFor="outlined-adornment-amount">금액</InputLabel>
                       <OutlinedInput
                         id="outlined-adornment-amount"
                         startAdornment={<InputAdornment position="start">￦</InputAdornment>}
                         label="금액"
                         inputProps={{ min: 0 }}
-                        // useState앞에 값 (100000000)지우고 넣어주세요
-                        value={amount.toLocaleString()} 
+                        value={amount.toLocaleString()}
                         onChange={handleAmountSubmit}
                       />
                     </FormControl>
-                   
+
                     <Button
                       variant="contained"
                       color="primary"
                       sx={{
-                        color: 'white',
-                        marginTop: '20px',
-                        marginLeft: '385px',
+                        color: "white",
+                        marginTop: "20px",
+                        marginLeft: "385px",
                       }}
                       onClick={handleFundSubmit}
                     >
@@ -600,14 +628,14 @@ const CampaignDetail = () => {
               )}
               <div className="campaignContentBtn">
                 <Button
-                  variant={isLiked ? 'contained' : 'outlined'}
-                  color={isLiked ? 'danger' : 'gray'}
+                  variant={isLiked ? "contained" : "outlined"}
+                  color={isLiked ? "danger" : "gray"}
                   sx={{
-                    width: '75px',
-                    height: '50px',
-                    fontSize: '1.3rem',
-                    color: isLiked ? 'white' : 'red',
-                    marginRight: '30px',
+                    width: "75px",
+                    height: "50px",
+                    fontSize: "1.3rem",
+                    color: isLiked ? "white" : "red",
+                    marginRight: "30px",
                   }}
                   disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={() => {
@@ -621,10 +649,10 @@ const CampaignDetail = () => {
                   variant="outlined"
                   color="gray"
                   sx={{
-                    height: '50px',
-                    fontSize: '1.2rem',
-                    color: 'gray',
-                    marginRight: '30px',
+                    height: "50px",
+                    fontSize: "1.2rem",
+                    color: "gray",
+                    marginRight: "30px",
                   }}
                   disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={openShareModal}
@@ -638,10 +666,10 @@ const CampaignDetail = () => {
                   variant="contained"
                   color="primary"
                   sx={{
-                    width: '250px',
-                    height: '50px',
-                    fontSize: '1.3rem',
-                    color: 'white',
+                    width: "250px",
+                    height: "50px",
+                    fontSize: "1.3rem",
+                    color: "white",
                   }}
                   disabled={campaign.status.includes("종료") || campaign.status.includes("실패")}
                   onClick={axiosParticipate}
@@ -659,7 +687,7 @@ const CampaignDetail = () => {
       )
       }
       <div className="campaignBottom">
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -667,8 +695,8 @@ const CampaignDetail = () => {
             indicatorColor="primary"
             centered
             sx={{
-              '& .MuiTab-root': {
-                fontSize: '1.5rem'
+              "& .MuiTab-root": {
+                fontSize: "1.5rem"
               },
             }}
           >
@@ -677,6 +705,7 @@ const CampaignDetail = () => {
             <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
           </Tabs>
           <TabPanel value={value} index={0}>
+            <ColorToggleButton />
             {campaignComments.length > 0 ? (
               campaignComments.map((campaignComment) => (
                 <div className="campaignCommentDiv" key={campaignComment.id}>
@@ -712,6 +741,7 @@ const CampaignDetail = () => {
             <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
           </TabPanel >
           <TabPanel value={value} index={1}>
+            <ColorToggleButton />
             {campaignReviews.length > 0 ? (
               campaignReviews.map((campaignReview, index) => (
                 <div

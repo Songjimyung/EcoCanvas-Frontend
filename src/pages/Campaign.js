@@ -38,25 +38,27 @@ const Campaign = () => {
   const handlePageChange = (event, page) => {
     const pageNumber = parseInt(page);
     setCurrentPage(pageNumber);
-    navigate(`?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}`);
+    const queryString = `?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`;
+    navigate(queryString, { replace: true });
   };
 
   // Filter and Order with Querystring
   const [end, setEnd] = useState(null);
   const [order, setOrder] = useState("recent");
   const [category, setCategory] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const handleEndQuery = (event) => {
     const selectedEnd = event.target.value;
     setEnd(selectedEnd);
     setCurrentPage(1);
-    navigate(`?page=${currentPage}${selectedEnd ? `&end=${selectedEnd}` : ''}&order=${order}`);
+    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`);
   };
   const handleOrderQuery = (event) => {
     const selectedOrder = event.target.value;
     setOrder(selectedOrder);
     setCurrentPage(1);
-    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${selectedOrder}`);
+    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`);
   };
   const handleCategory = (event) => {
     setCurrentPage(1);
@@ -64,22 +66,20 @@ const Campaign = () => {
   };
 
   // search
-  const [keyword, setKeyword] = useState("");
-
   const handleKeywordChange = (event) => {
     setKeyword(event.target.value);
   };
 
   const handleSearchButtonClick = () => {
     setCurrentPage(1);
-    axiosCampaignList(currentPage, end, order, category, keyword);
+    axiosCampaignList(1, end, order, category, keyword);
   };
 
   const handleKeywordKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       setCurrentPage(1);
-      axiosCampaignList(currentPage, end, order, category, keyword);
+      axiosCampaignList(1, end, order, category, keyword);
     }
   };
 
@@ -102,7 +102,8 @@ const Campaign = () => {
     }
   };
   useEffect(() => {
-    axiosCampaignList(currentPage, end, order, category);
+    axiosCampaignList(currentPage, end, order, category, keyword);
+    // eslint-disable-next-line
   }, [currentPage, end, order, category]);
 
   // 이미지처리
@@ -123,19 +124,9 @@ const Campaign = () => {
   // 좋아요 버튼
   const handleLikeButton = (campaignId) => {
     if (token) {
-      toggleCampaignLike(campaignId);
+      axiosLike(campaignId);
     } else {
       alert("로그인이 필요합니다.");
-    }
-  };
-
-  // 좋아요 토글
-  const toggleCampaignLike = (campaignId) => {
-    const isLiked = likedCampaigns.includes(campaignId);
-    if (isLiked) {
-      axiosLike(campaignId);
-    } else {
-      axiosLike(campaignId);
     }
   };
 
@@ -151,7 +142,12 @@ const Campaign = () => {
           },
         }
       );
-      setLikedCampaigns([...likedCampaigns, campaignId]);
+      const isLiked = likedCampaigns.includes(campaignId);
+      if (isLiked) {
+        setLikedCampaigns(likedCampaigns.filter((id) => id !== campaignId));
+      } else {
+        setLikedCampaigns([...likedCampaigns, campaignId]);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -222,7 +218,7 @@ const Campaign = () => {
           value={category}
           onChange={handleCategory}
         >
-          <option value="">카테고리</option>
+          <option value="">전체 보기</option>
           <option value={0}>봉사</option>
           <option value={1}>교육</option>
           <option value={2}>투자</option>
@@ -252,7 +248,7 @@ const Campaign = () => {
                 onChange={handleOrderQuery}
               >
                 <option value="recent">최신순</option>
-                <option value="closing">마감임박순</option>
+                <option value="closing">마감일순</option>
                 <option value="popular">인기순</option>
                 <option value="like">좋아요순</option>
                 <option value="amount">모금금액순</option>
@@ -307,7 +303,7 @@ const Campaign = () => {
                       {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
                       참여인원 : {campaign.participant_count} / {campaign.members}<br />
                       {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                        <><span className="campaignCardPercent">{Math.floor(campaign.fundings.amount / campaign.fundings.goal) * 100}%</span> 달성</>
+                        <><span className="campaignCardPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal) * 100)}%</span> 달성</>
                       ) : (
                         <div>펀딩을 진행하지 않는 캠페인입니다.</div>
                       )}
@@ -324,7 +320,7 @@ const Campaign = () => {
                   >
                     <FavoriteIcon
                       sx={{
-                        color: likedCampaigns.includes(campaign.id) ? "red" : "",
+                        color: likedCampaigns.includes(campaign.id) ? "rgb(236, 82, 82)" : "",
                       }}
                     />
                   </IconButton>

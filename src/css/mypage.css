@@ -47,7 +47,7 @@ tbody>h2 {
   width: 80%;
   border-collapse: collapse;
   margin: auto;
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(219, 234, 224)
 }
 
 .order-table-container th,
@@ -62,12 +62,12 @@ tbody>h2 {
 }
 
 .order-table-container tr:nth-child(even) {
-  background-color: #edf0fd;
+  background-color: #f9faf9;
 }
 
 .order-table-container .details-button {
   padding: 5px 10px;
-  background-color: #96a9f6;
+  background-color: #4aad38;
   border: none;
   color: white;
   cursor: pointer;
@@ -193,7 +193,7 @@ tbody>h2 {
   margin-top: 5px;
 }
 
-.button-box > a{
+.button-box>a {
   margin-top: 7px;
   font-size: 0.8rem;
 }
