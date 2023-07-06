@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
-import axios from 'axios';
 
 import {
   Table,
@@ -114,10 +113,9 @@ const OrderProductList = () => {
     if (payload) {
       const payload_data = JSON.parse(payload);
       const email = payload_data.email;
-      const user_id = payload_data.user_id;
-      return { email, user_id };
+      return { email };
     }
-    return { email: null, user_id: null };
+    return { email: null};
   };
 
   const { email } = getEmailFromLocalStorage();
@@ -158,13 +156,6 @@ const OrderProductList = () => {
 
 
             if (response.success === true) {
-              // const token = localStorage.getItem('access');
-              // console.log(response)
-              // const product = cartItems.map((product) => ({
-              //   order_price: product.product_price,
-              //   order_quantity: product.quantity,
-              //   product: product.id,
-              // }));
               const payment = { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount }
               resolve(payment);
             } else {

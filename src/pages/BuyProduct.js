@@ -195,7 +195,7 @@ export default function BuyProduct() {
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) {
+      if (window.IMP) { 
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -212,8 +212,8 @@ export default function BuyProduct() {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card',
-            merchant_uid: merchant_uid,
+            pay_method: 'card', 
+            merchant_uid: merchant_uid, 
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -311,11 +311,11 @@ export default function BuyProduct() {
       result += value[i];
     }
     // 입력값이 13자일 때만 상태값 업데이트
-
+    
     phoneRef.current.value = result;
     setPhoneNum(e.target.value);
-
-
+  
+  
   };
 
 
@@ -328,7 +328,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.images[0].image_file} alt="" />
+            <img className="productListImg" src={params.row.images} alt="" />
             {params.row.product_name}
           </div>
         );
@@ -366,7 +366,7 @@ export default function BuyProduct() {
       {Product ? (
         <>
           <div className="productList">
-            <h1 style={{ margin: "50px auto" }}>주문 목록</h1>
+            <h1>주문 목록</h1>
             <DataGrid
               initialState={{
                 pagination: { paginationModel: { pageSize: 5 } }
@@ -382,7 +382,7 @@ export default function BuyProduct() {
           </div>
           <div className='product-detail'>
             <div className='product-detail-info'>
-              <h1 style={{ margin: "30px auto" }}>ORDER</h1>
+              <h1>ORDER</h1>
               <div className="createOrder">
                 <div className="addOrderItem">
                   <label>기존 배송지 사용</label>
