@@ -57,24 +57,27 @@ const OrderProductList = () => {
       receiver_number: isComplete ? phonenum : e.target.elements.receiver_number.value,
     };
     const product = cartItems.map((product) => ({
+      order_price : product.product_price,
       order_quantity: product.quantity,
       product: product.id,
     }));
     try {
-      await requestPay();
-
+      
+      const payment = await requestPay();
+      console.log(payment)
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ order, product })
+        body: JSON.stringify({ order, product, payment})
       });
 
       if (response.status === 201) {
         await response.json();
         localStorage.removeItem(`cartItems_${userId}_order`);
+        alert("결제에 성공하였습니다.")
         navigate('/mypage/myorders');
       } else if (response.status === 400) {
         const data = await response.json();
@@ -117,7 +120,7 @@ const OrderProductList = () => {
     return { email: null, user_id: null };
   };
 
-  const { email, user_id } = getEmailFromLocalStorage();
+  const { email } = getEmailFromLocalStorage();
 
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
@@ -155,35 +158,51 @@ const OrderProductList = () => {
 
 
             if (response.success === true) {
-              const token = localStorage.getItem('access');
-              axios
-                .post(
-                  `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
-                  { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount },
-                  {
-                    headers: {
-                      'Authorization': `Bearer ${token}`,
-                    },
-                  }
-                )
-                .then((response) => {
-                  alert("결제 성공!");
-                  resolve(); // Promise가 성공 상태로 처리됨
-                })
-                .catch((error) => {
-                  console.error(error);
-                  alert(error.message);
-                  reject(); // Promise가 실패 상태로 처리됨
-                });
+              // const token = localStorage.getItem('access');
+              // console.log(response)
+              // const product = cartItems.map((product) => ({
+              //   order_price: product.product_price,
+              //   order_quantity: product.quantity,
+              //   product: product.id,
+              // }));
+              const payment = { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount }
+              resolve(payment);
             } else {
               alert(response.error_msg);
-              reject(); // Promise가 실패 상태로 처리됨
+              reject();
             }
-          }
-        );
-      }
-    });
-  };
+          });
+      }});
+      };
+
+              // axios
+              //   .post(
+              //     `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
+              //     { payment, product },
+              //     {
+              //       headers: {
+              //         'Authorization': `Bearer ${token}`,
+              //       },
+              //     }
+              //   )
+  //               .then((response) => {
+  //                 alert("결제 성공!");
+  //                 resolve(); // Promise가 성공 상태로 처리됨
+  //               })
+  //               .catch((error) => {
+  //                 console.error(error);
+  //                 alert(error.message);
+  //                 reject(); // Promise가 실패 상태로 처리됨
+  //               });
+  //           } else {
+  //             alert(response.error_msg);
+  //             reject(); // Promise가 실패 상태로 처리됨
+  //           }
+  //         }
+  //       );
+  //     }
+  //   });
+  // };
 
   const handlePhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");

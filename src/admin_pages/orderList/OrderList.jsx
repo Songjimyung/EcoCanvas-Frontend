@@ -119,7 +119,7 @@ export default function AdminOrderList() {
     { value: "주문취소 요청", label: "주문취소 요청" }
   ];
 
-
+console.log(orderData)
   return (
     <div className="admin_home">
       <div className="widgetLg">
@@ -148,7 +148,7 @@ export default function AdminOrderList() {
           </thead>
           <tbody>
 
-            {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
+            {orderData && orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
               orderData.map((order) => (
                 <tr className="widgetLgTr" key={order.id}>
                   <td className="widgetLgName">

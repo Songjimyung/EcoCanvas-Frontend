@@ -24,6 +24,7 @@ const MyOrder = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data)
         setMyOrderData(response.data.results[0]['order_info']);
         setMyInfoData(response.data.results[0]);
         const totalPages = Math.ceil(response.data.count / 6);
@@ -162,7 +163,7 @@ const MyOrder = () => {
                   <p>배송메세지: {myInfoData.address_message}</p>
                   <p>연락처: {myInfoData.receiver_number}</p>
 
-                  {selectedOrderData.order_info?.[0]?.status === "주문 접수 완료" && (
+                  {myInfoData.order_info?.[0]?.status === "주문 접수 완료" && (
                     <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
                       <button className="DeleteButton" style={{ width: '100px' }}>주문취소요청</button>
                     </Link>
