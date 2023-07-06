@@ -63,7 +63,6 @@ const OrderProductList = () => {
     try {
       
       const payment = await requestPay();
-      console.log(payment)
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: 'POST',
         headers: {
@@ -165,35 +164,6 @@ const OrderProductList = () => {
           });
       }});
       };
-
-              // axios
-              //   .post(
-              //     `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
-              //     { payment, product },
-              //     {
-              //       headers: {
-              //         'Authorization': `Bearer ${token}`,
-              //       },
-              //     }
-              //   )
-  //               .then((response) => {
-  //                 alert("결제 성공!");
-  //                 resolve(); // Promise가 성공 상태로 처리됨
-  //               })
-  //               .catch((error) => {
-  //                 console.error(error);
-  //                 alert(error.message);
-  //                 reject(); // Promise가 실패 상태로 처리됨
-  //               });
-  //           } else {
-  //             alert(response.error_msg);
-  //             reject(); // Promise가 실패 상태로 처리됨
-  //           }
-  //         }
-  //       );
-  //     }
-  //   });
-  // };
 
   const handlePhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");
