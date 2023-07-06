@@ -22,6 +22,11 @@ hr {
     margin-top: 20px;
 }
 
+.flex-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 /* list card */
 .campaignCardContainer {
     display: flex;
@@ -68,6 +73,8 @@ hr {
     }
     .campaignCardContainer {
         margin: auto;
+        justify-content: center;
+        align-items: center;
     }
 
     .category-dropdown {
@@ -109,6 +116,7 @@ hr {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 40px;
 }
 
 .campaignCategoryBadge {
@@ -117,18 +125,17 @@ hr {
 }
 
 .campaignStatus {
-    display: inline-block;
     color: white;
-    background-color: #81b214;
-    font-size: 1rem;
     padding: 5px;
+    margin-top: 2px;
+    font-size: 1rem;
     border-radius: 13px;
-    margin-bottom: 10px;
+    width: max-content;
 }
 
 .campaignContent {
     margin-bottom: 10px;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     min-height: 20%;
 }
 

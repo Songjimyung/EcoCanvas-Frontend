@@ -71,7 +71,7 @@ const NotificationHistory = () => {
 
   return (
     <div className="notification-cardWrapper">
-      <h2 style={{ marginBottom: "20px", textAlign: "center" }}>알림 내역</h2>
+      <h1 style={{ marginBottom: "20px", textAlign: "center" }}>알림 내역</h1>
       <div className="deleteBtnWrapper">
         <Button
           variant="contained"

@@ -181,17 +181,15 @@ function Sidebar() {
     <>
       <div className="mypage-sidebar-wrap1">
         <div className="mypage-wrap-top-left">
-          <Link to="/mypage/profile">
-            <div className="myprofile-img-box">
-              {userData.map((user) => (
-                <img
-                  src={getImageUrl(user.image)}
-                  onError={onErrorImg}
-                  alt="profile_image"
-                />
-              ))}
-            </div>
-          </Link>
+          <div className="myprofile-img-box">
+            {userData.map((user) => (
+              <img
+                src={getImageUrl(user.image)}
+                onError={onErrorImg}
+                alt="profile_image"
+              />
+            ))}
+          </div>
           <div>
             {userData.map((user) => {
               return (
