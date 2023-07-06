@@ -12,6 +12,7 @@ export default function AdminOrderList() {
   const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [myInfoData, setMyInfoData] = useState([]);
+  const [item, setItem] = useState([]);
 
 
 
@@ -33,10 +34,9 @@ export default function AdminOrderList() {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        setMyInfoData(response.data.results[0]);
-        setOrderData(response.data.results[0]['order_info']);
-        const totalPages = Math.ceil(response.data.count / 6);
+        setOrderData(response.data.results.map(item => item['order_info']))
+        setMyInfoData(response.data.results);
+        const totalPages = Math.ceil(response.data.count / 3);
         setTotalPages(totalPages);
 
       } catch (error) {
@@ -99,11 +99,13 @@ export default function AdminOrderList() {
 
 
 
-  const handleOpen = (orderId) => {
-    const selectedOrder = orderData.find(order => order.id === orderId);
-    setSelected(selectedOrder);
+  const handleOpen = (order) => {
+    setSelected(order);
     setOpen(true);
-
+    const matchingItem = myInfoData.find((item) => item.id === order.order);
+    if (matchingItem) {
+      setItem(matchingItem);
+    };
   };
 
   const handleClose = () => {
@@ -140,8 +142,7 @@ export default function AdminOrderList() {
             <tr className="widgetLgTr">
               <th className="widgetLgTh">주문번호</th>
               <th className="widgetLgTh">수량</th>
-              <th className="widgetLgTh">주문자</th>
-              <th className="widgetLgTh">날짜</th>
+              <th className="widgetLgTh">상품</th>
               <th className="widgetLgTh">상태</th>
               <th className="widgetLgTh">상세보기</th>
             </tr>
@@ -149,27 +150,27 @@ export default function AdminOrderList() {
           <tbody>
 
             {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
-              orderData.map((order) => (
-                <tr className="widgetLgTr" key={order.id}>
-                  <td className="widgetLgName">
-                    <span>{order.id}</span>
-                  </td>
-                  <td className="widgetLgDate">
-                    <span>{order.product_count}</span>
-                  </td>
-                  <td className="widgetLgDate">
-                    <span>{myInfoData.receiver_name}</span>
-                  </td>
-                  <td className="widgetLgDate">
-                    {myInfoData.order_date}
-                  </td>
-                  <td className="widgetLgDate">
-                    {order.status}
-                  </td>
-                  <td className="widgetLgStatus">
-                    <button className="details-button" onClick={() => handleOpen(order.id)}>세부 정보 보기</button>
-                  </td>
-                </tr>
+              orderData.map((orderArray, index) => (
+                orderArray.reverse().map((order, innerIndex) => (
+                  <tr className="widgetLgTr" key={order.id}>
+                    <td className="widgetLgName">
+                      <span>{order.id}</span>
+                    </td>
+                    <td className="widgetLgDate">
+                      <span>{order.product_count}</span>
+                    </td>
+
+                    <td className="widgetLgDate">
+                      {order.product}
+                    </td>
+                    <td className="widgetLgDate">
+                      {order.status}
+                    </td>
+                    <td className="widgetLgStatus">
+                      <button className="details-button" onClick={() => handleOpen(order)}>세부 정보 보기</button>
+                    </td>
+                  </tr>
+                ))
               ))
             ) : (
               orderData.length === 0 ? (
@@ -198,7 +199,7 @@ export default function AdminOrderList() {
                         {order.status}
                       </td>
                       <td className="widgetLgStatus">
-                        <button className="details-button" onClick={() => handleOpen(order.id)}>세부 정보 보기</button>
+                        <button className="details-button" onClick={() => handleOpen(order)}>세부 정보 보기</button>
                       </td>
                     </tr>
                   ))
@@ -229,22 +230,22 @@ export default function AdminOrderList() {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">주문일: {myInfoData.order_date}</Typography>
+                <Typography variant="body1">주문일: {item.order_date}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">우편번호: {myInfoData.zip_code}</Typography>
+                <Typography variant="body1">우편번호: {item.zip_code}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">주소: {myInfoData.address_detail}</Typography>
+                <Typography variant="body1">주소: {item.address_detail}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">총 주문금액: {myInfoData.order_totalprice}</Typography>
+                <Typography variant="body1">총 주문금액: {item.order_totalprice}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">수령인: {myInfoData.receiver_name}</Typography>
+                <Typography variant="body1">수령인: {item.receiver_name}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">연락처: {myInfoData.receiver_number}</Typography>
+                <Typography variant="body1">연락처: {item.receiver_number}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">주문 현황: {selected.status}</Typography>
