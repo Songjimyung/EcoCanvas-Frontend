@@ -92,9 +92,9 @@ const MyOrder = () => {
           <tbody>
             {myorderData.length > 0 ? (
               myorderData.map((orderArray, index) => (
-                orderArray.reverse().map((order, innerIndex) => (
+                orderArray.map((order, innerIndex) => (
                   <tr key={`${index}-${innerIndex}`}>
-                    <td>{order.id}</td>
+                    <td>{order.order}</td>
                     <td>{order.product}</td>
                     <td>{order.product_count}</td>
                     <td>{order.status || "알 수 없음"}</td>
@@ -142,7 +142,7 @@ const MyOrder = () => {
               <div className="order-details">
                 <h2>주문 정보</h2>
                 <div>
-                  <p>주문 번호: {selectedOrderData.id}</p>
+                  <p>상세 주문 번호: {selectedOrderData.id}</p>
                   <p>수령인: {item.receiver_name}</p>
                   <p>상품명 : {selectedOrderData.product}</p>
                   <p>주문수량: {selectedOrderData.product_count}개</p>
@@ -165,7 +165,7 @@ const MyOrder = () => {
                   <p>배송메세지: {item.address_message}</p>
                   <p>연락처: {item.receiver_number}</p>
 
-                  {selectedOrderData.order_info?.[0]?.status === "주문 접수 완료" && (
+                  {item.order_info?.[0]?.status === "주문 접수 완료" && (
                     <Link to={`/mypage/myorder/${selectedOrderData.id}`}>
                       <button className="DeleteButton" style={{ width: '100px' }}>주문취소요청</button>
                     </Link>

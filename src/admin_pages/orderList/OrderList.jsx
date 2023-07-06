@@ -120,8 +120,7 @@ export default function AdminOrderList() {
     { value: "all", label: "전체" },
     { value: "주문취소 요청", label: "주문취소 요청" }
   ];
-
-
+  
   return (
     <div className="admin_home">
       <div className="widgetLg">
@@ -148,13 +147,12 @@ export default function AdminOrderList() {
             </tr>
           </thead>
           <tbody>
-
             {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
               orderData.map((orderArray, index) => (
-                orderArray.reverse().map((order, innerIndex) => (
+                orderArray.map((order, innerIndex) => (
                   <tr className="widgetLgTr" key={order.id}>
                     <td className="widgetLgName">
-                      <span>{order.id}</span>
+                      <span>{order.order}</span>
                     </td>
                     <td className="widgetLgDate">
                       <span>{order.product_count}</span>
@@ -176,9 +174,11 @@ export default function AdminOrderList() {
               orderData.length === 0 ? (
                 <h2>주문이 없습니다.</h2>
               ) : (
-                orderData
-                  .filter((order) => order.status === selectedStatus)
-                  .map((order) => (
+                orderData.map((orderArray)=> 
+                orderArray
+                .filter((order) => order.status === selectedStatus)
+                .map((order) =>
+                    (
                     <tr className="widgetLgTr" key={order.id}>
                       <td className="widgetLgName">
                         <span>{order.id}</span>
@@ -203,8 +203,8 @@ export default function AdminOrderList() {
                       </td>
                     </tr>
                   ))
-              )
-            )}
+                )
+            ))}
           </tbody>
         </table>
       </div>
@@ -222,7 +222,7 @@ export default function AdminOrderList() {
           {selected && (
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body1">주문 번호: {selected.id}</Typography>
+                <Typography variant="body1">상세 주문 번호: {selected.id}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">

@@ -5,8 +5,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
 import { Button } from '@mui/material'
-import jwtDecode from 'jwt-decode';
-import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +19,6 @@ export default function BuyProduct() {
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
-  const [userId, setUserId] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [loadProfileAddress, setLoadProfileAddress] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -80,22 +77,6 @@ export default function BuyProduct() {
     // num 값이 변경될 때마다 productPrice 업데이트
     setProductPrice(Product ? Product.product_price * num : 0);
   }, [Product, num]);
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const token = localStorage.getItem('access');
-        if (token) {
-          const payload = jwtDecode(token);
-          const userId = payload.user_id;
-
-          setUserId(userId);
-        }
-      } catch (error) {
-
-      }
-    };
-    fetchUserId();
-  }, [productId]);
 
 
   const handleProfile = (e) => {
@@ -128,26 +109,25 @@ export default function BuyProduct() {
       address: isComplete ? Address : e.target.elements.address.value,
       address_detail: e.target.elements.address_detail.value,
       address_message: e.target.elements.address_message.value,
-      // order_totalprice: productPrice,
     };
 
     const product = [{
+      order_price : productPrice,
       order_quantity: num,
       product: parseInt(productId),
     }];
 
 
     try {
-      await requestPay();
-
-
+      const payment = await requestPay();
+      console.log(payment)
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ order, product }),
+        body: JSON.stringify({ order, product, payment }),
       });
 
       if (response.ok) {
@@ -186,13 +166,12 @@ export default function BuyProduct() {
     if (payload) {
       const payload_data = JSON.parse(payload);
       const email = payload_data.email;
-      const user_id = payload_data.user_id;
-      return { email, user_id };
+      return { email};
     }
-    return { email: null, user_id: null };
+    return { email: null};
   };
 
-  const { email, user_id } = getEmailFromLocalStorage();
+  const { email } = getEmailFromLocalStorage();
 
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
@@ -230,35 +209,16 @@ export default function BuyProduct() {
 
 
             if (response.success === true) {
-              const token = localStorage.getItem('access');
-              axios
-                .post(
-                  `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
-                  { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount },
-                  {
-                    headers: {
-                      'Authorization': `Bearer ${token}`,
-                    },
-                  }
-                )
-                .then((response) => {
-                  alert("결제 성공!");
-                  resolve(); // Promise가 성공 상태로 처리됨
-                })
-                .catch((error) => {
-                  console.error(error);
-                  alert(error.message);
-                  reject(); // Promise가 실패 상태로 처리됨
-                });
+              const payment = { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount }
+              alert("결제 완료! 감사합니다.")
+              resolve(payment);
             } else {
               alert(response.error_msg);
-              reject(); // Promise가 실패 상태로 처리됨
+              reject();
             }
-          }
-        );
-      }
-    });
-  };
+          });
+      }});
+      };
 
   useEffect(() => {
     const fetchProfileAddress = async () => {
