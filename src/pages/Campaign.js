@@ -38,25 +38,27 @@ const Campaign = () => {
   const handlePageChange = (event, page) => {
     const pageNumber = parseInt(page);
     setCurrentPage(pageNumber);
-    navigate(`?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}`);
+    const queryString = `?page=${pageNumber}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`;
+    navigate(queryString, { replace: true });
   };
 
   // Filter and Order with Querystring
   const [end, setEnd] = useState(null);
   const [order, setOrder] = useState("recent");
   const [category, setCategory] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const handleEndQuery = (event) => {
     const selectedEnd = event.target.value;
     setEnd(selectedEnd);
     setCurrentPage(1);
-    navigate(`?page=${currentPage}${selectedEnd ? `&end=${selectedEnd}` : ''}&order=${order}`);
+    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`);
   };
   const handleOrderQuery = (event) => {
     const selectedOrder = event.target.value;
     setOrder(selectedOrder);
     setCurrentPage(1);
-    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${selectedOrder}`);
+    navigate(`?page=${currentPage}${end ? `&end=${end}` : ''}&order=${order}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ''}`);
   };
   const handleCategory = (event) => {
     setCurrentPage(1);
@@ -64,22 +66,20 @@ const Campaign = () => {
   };
 
   // search
-  const [keyword, setKeyword] = useState("");
-
   const handleKeywordChange = (event) => {
     setKeyword(event.target.value);
   };
 
   const handleSearchButtonClick = () => {
     setCurrentPage(1);
-    axiosCampaignList(currentPage, end, order, category, keyword);
+    axiosCampaignList(1, end, order, category, keyword);
   };
 
   const handleKeywordKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       setCurrentPage(1);
-      axiosCampaignList(currentPage, end, order, category, keyword);
+      axiosCampaignList(1, end, order, category, keyword);
     }
   };
 
@@ -102,7 +102,8 @@ const Campaign = () => {
     }
   };
   useEffect(() => {
-    axiosCampaignList(currentPage, end, order, category);
+    axiosCampaignList(currentPage, end, order, category, keyword);
+    // eslint-disable-next-line
   }, [currentPage, end, order, category]);
 
   // 이미지처리

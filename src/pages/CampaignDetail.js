@@ -9,6 +9,7 @@ import EditMenu from "../components/editmenu/EditMenu";
 import Share from "../components/share/Share";
 import Modal from "../components/modal/Modal"
 import PaiginationComponent from "../components/pagination/Pagination";
+import ColorToggleButton from "../campaign/Orderby";
 
 // MUI
 import PropTypes from "prop-types";
@@ -704,6 +705,7 @@ const CampaignDetail = () => {
             <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
           </Tabs>
           <TabPanel value={value} index={0}>
+            <ColorToggleButton />
             {campaignComments.length > 0 ? (
               campaignComments.map((campaignComment) => (
                 <div className="campaignCommentDiv" key={campaignComment.id}>
@@ -739,6 +741,7 @@ const CampaignDetail = () => {
             <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
           </TabPanel >
           <TabPanel value={value} index={1}>
+            <ColorToggleButton />
             {campaignReviews.length > 0 ? (
               campaignReviews.map((campaignReview, index) => (
                 <div
