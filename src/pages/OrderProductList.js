@@ -76,7 +76,6 @@ const OrderProductList = () => {
       if (response.status === 201) {
         await response.json();
         localStorage.removeItem(`cartItems_${userId}_order`);
-        alert("결제에 성공하였습니다.")
         navigate('/mypage/myorders');
       } else if (response.status === 400) {
         const data = await response.json();
@@ -157,6 +156,7 @@ const OrderProductList = () => {
 
             if (response.success === true) {
               const payment = { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount }
+              alert("결제 완료! 감사합니다.")
               resolve(payment);
             } else {
               alert(response.error_msg);

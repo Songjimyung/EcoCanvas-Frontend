@@ -5,8 +5,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import DaumPostcode from "react-daum-postcode";
 import { Modal } from "antd";
 import { Button } from '@mui/material'
-import jwtDecode from 'jwt-decode';
-import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +19,6 @@ export default function BuyProduct() {
   const [Address, setAddress] = useState('');
   const [productPrice, setProductPrice] = useState(0); // 상품 가격 추가
   const [isOpen, setIsOpen] = useState(false);
-  const [userId, setUserId] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [loadProfileAddress, setLoadProfileAddress] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -80,22 +77,6 @@ export default function BuyProduct() {
     // num 값이 변경될 때마다 productPrice 업데이트
     setProductPrice(Product ? Product.product_price * num : 0);
   }, [Product, num]);
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-        const token = localStorage.getItem('access');
-        if (token) {
-          const payload = jwtDecode(token);
-          const userId = payload.user_id;
-
-          setUserId(userId);
-        }
-      } catch (error) {
-
-      }
-    };
-    fetchUserId();
-  }, [productId]);
 
 
   const handleProfile = (e) => {
@@ -121,31 +102,32 @@ export default function BuyProduct() {
       return;
     }
 
-
-    const orders = [{
+    const order = {
       receiver_name: e.target.elements.receiver_name.value,
       receiver_number: e.target.elements.receiver_number.value,
       zip_code: isComplete ? zipcode : e.target.elements.zip_code.value,
       address: isComplete ? Address : e.target.elements.address.value,
       address_detail: e.target.elements.address_detail.value,
       address_message: e.target.elements.address_message.value,
+    };
+
+    const product = [{
+      order_price : productPrice,
       order_quantity: num,
-      order_totalprice: productPrice,
-      user: userId,
       product: parseInt(productId),
     }];
 
+
     try {
-      await requestPay();
-
-
+      const payment = await requestPay();
+      console.log(payment)
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/shop/products/order/`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ orders }),
+        body: JSON.stringify({ order, product, payment }),
       });
 
       if (response.ok) {
@@ -184,18 +166,17 @@ export default function BuyProduct() {
     if (payload) {
       const payload_data = JSON.parse(payload);
       const email = payload_data.email;
-      const user_id = payload_data.user_id;
-      return { email, user_id };
+      return { email};
     }
-    return { email: null, user_id: null };
+    return { email: null};
   };
 
-  const { email, user_id } = getEmailFromLocalStorage();
+  const { email } = getEmailFromLocalStorage();
 
   const requestPay = async () => {
     return new Promise((resolve, reject) => {
       // iamport.payment.js 스크립트 로드 완료 후 실행
-      if (window.IMP) { 
+      if (window.IMP) {
         window.IMP.init('imp25228615');
 
         const today = new Date();
@@ -212,8 +193,8 @@ export default function BuyProduct() {
           {
             pg: 'nice',
             customer_uid: customer_uid,
-            pay_method: 'card', 
-            merchant_uid: merchant_uid, 
+            pay_method: 'card',
+            merchant_uid: merchant_uid,
             name: Product.product_name,
             amount: productPrice,
             buyer_email: email,
@@ -228,35 +209,16 @@ export default function BuyProduct() {
 
 
             if (response.success === true) {
-              const token = localStorage.getItem('access');
-              axios
-                .post(
-                  `${process.env.REACT_APP_BACKEND_URL}/payments/receipt/${user_id}`,
-                  { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount },
-                  {
-                    headers: {
-                      'Authorization': `Bearer ${token}`,
-                    },
-                  }
-                )
-                .then((response) => {
-                  alert("결제 성공!");
-                  resolve(); // Promise가 성공 상태로 처리됨
-                })
-                .catch((error) => {
-                  console.error(error);
-                  alert(error.message);
-                  reject(); // Promise가 실패 상태로 처리됨
-                });
+              const payment = { merchant_uid: merchant_uid, imp_uid: paid_imp_uid, amount: paid_amount }
+              alert("결제 완료! 감사합니다.")
+              resolve(payment);
             } else {
               alert(response.error_msg);
-              reject(); // Promise가 실패 상태로 처리됨
+              reject();
             }
-          }
-        );
-      }
-    });
-  };
+          });
+      }});
+      };
 
   useEffect(() => {
     const fetchProfileAddress = async () => {
@@ -311,11 +273,11 @@ export default function BuyProduct() {
       result += value[i];
     }
     // 입력값이 13자일 때만 상태값 업데이트
-    
+
     phoneRef.current.value = result;
     setPhoneNum(e.target.value);
-  
-  
+
+
   };
 
 
@@ -328,7 +290,7 @@ export default function BuyProduct() {
       renderCell: (params) => {
         return (
           <div className="productListItem">
-            <img className="productListImg" src={params.row.images} alt="" />
+            <img className="productListImg" src={params.row.images[0].image_file} alt="" />
             {params.row.product_name}
           </div>
         );
@@ -366,7 +328,7 @@ export default function BuyProduct() {
       {Product ? (
         <>
           <div className="productList">
-            <h1>주문 목록</h1>
+            <h1 style={{ margin: "50px auto" }}>주문 목록</h1>
             <DataGrid
               initialState={{
                 pagination: { paginationModel: { pageSize: 5 } }
@@ -382,7 +344,7 @@ export default function BuyProduct() {
           </div>
           <div className='product-detail'>
             <div className='product-detail-info'>
-              <h1>ORDER</h1>
+              <h1 style={{ margin: "30px auto" }}>ORDER</h1>
               <div className="createOrder">
                 <div className="addOrderItem">
                   <label>기존 배송지 사용</label>

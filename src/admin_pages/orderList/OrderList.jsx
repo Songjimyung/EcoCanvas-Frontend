@@ -149,10 +149,10 @@ export default function AdminOrderList() {
           <tbody>
             {orderData.length > 0 && (selectedStatus === "all" || selectedStatus === null) ? (
               orderData.map((orderArray, index) => (
-                orderArray.reverse().map((order, innerIndex) => (
+                orderArray.map((order, innerIndex) => (
                   <tr className="widgetLgTr" key={order.id}>
                     <td className="widgetLgName">
-                      <span>{order.id}</span>
+                      <span>{order.order}</span>
                     </td>
                     <td className="widgetLgDate">
                       <span>{order.product_count}</span>
@@ -222,7 +222,7 @@ export default function AdminOrderList() {
           {selected && (
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="body1">주문 번호: {selected.id}</Typography>
+                <Typography variant="body1">상세 주문 번호: {selected.id}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1">
