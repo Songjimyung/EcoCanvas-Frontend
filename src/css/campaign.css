@@ -251,6 +251,17 @@ hr {
     margin-bottom: 20px;
 }
 
+.campaignCommentFlex {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+}
+
+.campaignCommentImage {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
 .campaignCommentUser {
     font-weight: 700;
     font-size: 1.1rem;

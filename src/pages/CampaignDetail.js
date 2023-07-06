@@ -10,6 +10,7 @@ import Share from "../components/share/Share";
 import Modal from "../components/modal/Modal"
 import PaiginationComponent from "../components/pagination/Pagination";
 import ColorToggleButton from "../campaign/Orderby";
+import profile_default_image from "../img/profile_default_image.png"
 
 // MUI
 import PropTypes from "prop-types";
@@ -148,19 +149,27 @@ const CampaignDetail = () => {
     // eslint-disable-next-line
   }, [id]);
 
+  // 댓글 정렬
+  const [order, setOrder] = useState("recent");
+  const handleOrderQuery = (newAlignment) => {
+    setOrder(newAlignment);
+  };
   // 캠페인 댓글 GET
-  const axiosCampaignComment = useCallback(async (page) => {
+  const axiosCampaignComment = async (page, order) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/?page=${page}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/?page=${page}&order=${order}`);
       setCampaignComment(response.data.results);
       setCommentCount(response.data.count);
+      console.log(response)
+      console.log(order)
     } catch (e) {
       console.error(e);
     }
-  }, [id]);
+  }
   useEffect(() => {
-    axiosCampaignComment(commentPage);
-  }, [commentPage, axiosCampaignComment]);
+    axiosCampaignComment(commentPage, order);
+    // eslint-disable-next-line
+  }, [commentPage, order]);
 
   // 캠페인 후기 GET
   const axiosCampaignReview = useCallback(async (page) => {
@@ -186,6 +195,9 @@ const CampaignDetail = () => {
 
   const onErrorImg = (e) => {
     e.target.src = campaign_default_image
+  }
+  const onErrorProfileImg = (e) => {
+    e.target.src = profile_default_image
   }
 
   // 댓글 POST
@@ -705,17 +717,20 @@ const CampaignDetail = () => {
             <Tab label="캠페인 정보 제공 고시" {...a11yProps(2)} />
           </Tabs>
           <TabPanel value={value} index={0}>
-            <ColorToggleButton />
+            <ColorToggleButton onChange={handleOrderQuery} value={order} />
             {campaignComments.length > 0 ? (
               campaignComments.map((campaignComment) => (
                 <div className="campaignCommentDiv" key={campaignComment.id}>
-                  <div className="campaignCommentUser">
-                    {campaignComment.user}
-                    {userId === campaignComment.user_id ?
-                      <EditMenu
-                        options={commentOptions}
-                        onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
-                      /> : <div style={{ height: "40px" }}></div>}
+                  <div className="campaignCommentFlex">
+                    <img className="campaignCommentImage" src={getImageUrl(campaignComment.user_image)} alt="profile" onError={onErrorProfileImg} />
+                    <div className="campaignCommentUser">
+                      <span style={{ marginTop: "5px" }}>{campaignComment.user}</span>
+                      {userId === campaignComment.user_id ?
+                        <EditMenu
+                          options={commentOptions}
+                          onOptionClick={(optionId) => handleCommentEdit(optionId, campaignComment.id)}
+                        /> : <div style={{ height: "40px" }}></div>}
+                    </div>
                   </div>
                   {isEditing && commentId === campaignComment.id ? (
                     <CommentForm comment={campaignComment.content} onSubmit={(updateComment) => handleUpdateSubmit(campaignComment.id, updateComment)} />
@@ -741,7 +756,6 @@ const CampaignDetail = () => {
             <CommentForm onSubmit={(createComment) => handleCreateSubmit(createComment)} />
           </TabPanel >
           <TabPanel value={value} index={1}>
-            <ColorToggleButton />
             {campaignReviews.length > 0 ? (
               campaignReviews.map((campaignReview, index) => (
                 <div
