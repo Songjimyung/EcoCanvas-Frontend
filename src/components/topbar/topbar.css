@@ -8,7 +8,16 @@
 
 ._topbar {
   width: 100%;
-  height: 100%;
+  height: 105px;
+  display: flex;
+  flex-flow: column;
+  background-color: rgb(235, 235, 235);
+  z-index: 999;
+}
+
+._topbar-normalMenu {
+  width: 100%;
+  height: 105px;
   background-color: rgb(235, 235, 235);
   top: 0;
   z-index: 999;
@@ -33,7 +42,7 @@
   width: 350px;
 }
 
-._topbarLogFunction {
+._topbarRight-functionBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -71,7 +80,6 @@
   align-items: center;
 }
 
-
 ._topIconBadge {
   position: absolute;
 
@@ -104,89 +112,65 @@
   display: flex;
 }
 
-._topbarIconContainer.active,
-._topbarIconContainer:hover {
-  color: rgb(251, 100, 30);
-  text-decoration: none;
-}
-
-.alinBox {
-  display: flex;
-}
-
 ._topbarIcon:hover {
   color: rgb(32, 106, 93);
 }
 
-
-@media (max-width: 900px) {
-  ._topbar {
-    padding: 15px;
-  }
-
-  ._topbarLeft {
-    width: auto;
-  }
-
-  ._topbarRight {
-    width: auto;
-  }
-
-  ._topbarLogFunction {
-    margin-right: 10px;
-  }
-
-  ._topbarLogo {
-    font-size: 1.5rem;
-  }
-
-  ._topbarMenu {
-    margin-left: 10px;
-    width: 170px;
-  }
-
-  ._topbarTitle {
-    font-size: 1.2rem;
-  }
-
-  ._signBtn {
-    font-size: 1.2rem;
-  }
+._topbarNotiShopFunction {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-@media (max-width: 540px) {
-  ._topbar {
-    padding: 15px;
-  }
-
-  ._topbarLeft {
-    width: auto;
-  }
-
-  ._topbarRight {
-    width: auto;
-  }
-
-  ._topbarLogFunction {
-    margin-right: 10px;
-  }
-
-  ._topbarLogo {
-    font-size: 1.2rem;
-  }
-
-  ._topbarTitle {
-    font-size: 1.0rem;
-  }
-
-  ._signBtn {
-    font-size: 1.0rem;
-  }
+._topbarNotiShopFunction > span {
+  font-size: 1.5rem;
 }
 
-@media (max-width: 480px) {
-  ._topbar {
-    padding: 15px;
+.slideMenu-btn {
+  display: none;
+  border: none;
+  background-color: rgb(235, 235, 235);
+  width: 40px;
+  height: 40px;
+}
+
+.slideMenu-btn > img {
+  width: 40px;
+  height: 40px;
+}
+
+._topbar-slideMenu{
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+  position: absolute;
+  top: -280px;
+  right: 0px;
+  width: 270px;
+  z-index: 900;
+  background-color: rgb(235, 235, 235);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 6px 3px;
+}
+
+._topbar-slideMenu--visible {
+  display: block;
+  opacity: 1;
+  top: 105px;
+  right: 0px;
+}
+
+._topbar-slideMenu-flex {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 950px) {
+  ._topbar-normalMenu {
+    padding: 0px 100px;
   }
 
   ._topbarLeft {
@@ -202,19 +186,136 @@
   }
 
   ._topbarLogFunction {
-    margin-right: 10px;
-  }
-
-  ._topbarLogo {
-    font-size: 1.2rem;
     display: none;
   }
 
-  ._topbarTitle {
-    font-size: 1.0rem;
+  ._topbarLogo {
+    font-size: 1.8rem;
+    width: 150px;
+  }
+
+  ._topbar-slideMenu-flex>a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    padding: 10px 0px;
+    color: #333;
+    font-size: 1.5rem;
+    border-top: 1px solid rgb(190, 190, 190);
+  }
+
+  ._topbar-slideMenu-flex>a:hover {
+    cursor: pointer;
+    background-color: rgba(129, 178, 20, 0.1);
+  }
+
+  ._topbarMenu {
+    display: none;
   }
 
   ._signBtn {
-    font-size: 1.0rem;
+    font-size: 2.0rem;
+  }
+
+  ._topbarNotiShopFunction {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100px;
+    height: 100%;
+    margin-right: 30px;
+  }
+
+  ._topbarNotiShopFunction>span {
+    font-size: 2.0rem;
+  }
+
+  ._topbarNotiShopFunction a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ._topbarNotiShopFunction svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .slideMenu-btn {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  ._topbar-normalMenu {
+    padding: 0px 30px;
+  }
+
+  ._topbarLeft {
+    width: auto;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ._topbarRight {
+    width: auto;
+  }
+
+  ._topbarLogFunction {
+    display: none;
+  }
+
+  ._topbarLogo {
+    font-size: 1.5rem;
+    width: 150px;
+  }
+
+  ._topbar-slideMenu {
+    width: 100%;
+  }
+
+  ._topbarMenu {
+    display: none;
+  }
+
+  ._signBtn {
+    font-size: 1.5rem;
+  }
+
+  ._topbarNotiShopFunction {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 70px;
+    height: 100%;
+    margin-right: 10px;
+  }
+
+  ._topbarNotiShopFunction>span {
+    font-size: 1.5rem;
+  }
+
+  ._topbarNotiShopFunction a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ._topbarNotiShopFunction svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .slideMenu-btn {
+    display: block;
+  }
+
+  .slideMenu-btn>img {
+    width: 30px;
+    height: 30px;
   }
 }
