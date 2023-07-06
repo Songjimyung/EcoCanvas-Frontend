@@ -121,19 +121,21 @@ export default function BuyProduct() {
       return;
     }
 
-
-    const orders = [{
+    const order = {
       receiver_name: e.target.elements.receiver_name.value,
       receiver_number: e.target.elements.receiver_number.value,
       zip_code: isComplete ? zipcode : e.target.elements.zip_code.value,
       address: isComplete ? Address : e.target.elements.address.value,
       address_detail: e.target.elements.address_detail.value,
       address_message: e.target.elements.address_message.value,
+      // order_totalprice: productPrice,
+    };
+
+    const product = [{
       order_quantity: num,
-      order_totalprice: productPrice,
-      user: userId,
       product: parseInt(productId),
     }];
+
 
     try {
       await requestPay();
@@ -145,7 +147,7 @@ export default function BuyProduct() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ orders }),
+        body: JSON.stringify({ order, product }),
       });
 
       if (response.ok) {
