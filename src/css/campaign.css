@@ -110,6 +110,9 @@ hr {
 
 .campaignContentRight {
     width: 85%;
+    @media (max-width: 800px) {
+        margin: auto;
+    }
 }
 
 .campaignTopSetting {

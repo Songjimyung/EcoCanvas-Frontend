@@ -35,13 +35,13 @@ const CampaignUpdate = () => {
   };
   useEffect(() => {
     axiosCampaignDetail();
+    if (campaignAuthorId !== userId) {
+      alert("작성자 본인만 수정할 수 있습니다.")
+      navigate(`/campaign/${id}`)
+    }
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, campaignAuthorId]);
 
-  if (campaignAuthorId !== userId) {
-    alert("작성자 본인만 수정할 수 있습니다.")
-    navigate("/campaign")
-  }
 
   return (
     <>
