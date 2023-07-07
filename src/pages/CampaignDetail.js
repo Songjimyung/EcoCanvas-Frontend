@@ -160,8 +160,6 @@ const CampaignDetail = () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/campaigns/comment/${id}/?page=${page}&order=${order}`);
       setCampaignComment(response.data.results);
       setCommentCount(response.data.count);
-      console.log(response)
-      console.log(order)
     } catch (e) {
       console.error(e);
     }
@@ -203,7 +201,6 @@ const CampaignDetail = () => {
   // 댓글 POST
   // eslint-disable-next-line
   const [createComment, setCreateComment] = useState("");
-
   const axiosCommentCreate = async (createComment) => {
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -227,9 +224,8 @@ const CampaignDetail = () => {
           },
         }
       );
-
       setCommentPage(commentPage);
-      axiosCampaignComment(commentPage);
+      axiosCampaignComment(commentPage, order);
     } catch (e) {
       console.error(e);
       alert("댓글 작성에 실패했습니다.");
