@@ -14,14 +14,18 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 const Share = (props) => {
   const { id, type } = props;
 
-  const generateUrl = (id) => {
-    return `${process.env.REACT_APP_FRONTEND_URL}/${type}/${id}`;
+  const generateUrl = (id, type) => {
+    return `${type}/${id}`;
   };
 
-  function handleKakaoButton(id) {
+  function handleKakaoButton(id, type) {
     if (window.Kakao && window.Kakao.Link) {
-      window.Kakao.Link.sendScrap({
-        requestUrl: generateUrl(id),
+      window.Kakao.Share.sendScrap({
+        requestUrl: `${process.env.REACT_APP_FRONTEND_URL}`,
+        templateId: 95803,
+        templateArgs: {
+          url: generateUrl(id, type),
+        },
       });
     }
   }
@@ -55,7 +59,7 @@ const Share = (props) => {
             padding: "0",
             backgroundColor: "transparent",
           }}
-          onClick={() => handleKakaoButton(id)}
+          onClick={() => handleKakaoButton(id, type)}
         >
           <img
             src={sharekakao}

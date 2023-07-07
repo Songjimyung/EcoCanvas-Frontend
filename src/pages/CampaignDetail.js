@@ -151,8 +151,8 @@ const CampaignDetail = () => {
 
   // 댓글 정렬
   const [order, setOrder] = useState("recent");
-  const handleOrderQuery = (newAlignment) => {
-    setOrder(newAlignment);
+  const handleOrderQuery = (newOrder) => {
+    setOrder(newOrder);
   };
   // 캠페인 댓글 GET
   const axiosCampaignComment = async (page, order) => {
