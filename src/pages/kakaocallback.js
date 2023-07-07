@@ -33,7 +33,10 @@ const CallbackKakao = ({ code }) => {
 
         }
       } catch (error) {
-
+        if (error.response.data['err_msg']) {
+          alert(error.response.data['err_msg'])
+        }
+        window.location.replace("/")
       }
     };
 
