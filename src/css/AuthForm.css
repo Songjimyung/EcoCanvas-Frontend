@@ -109,3 +109,43 @@
   cursor: pointer;
 }
 
+@media (max-width: 600px) {
+  .inputList {
+    font-size: 1.4rem;
+    color: rgb(129, 178, 20);
+  }
+
+  .inputList>input {
+    width: 310px;
+  }
+
+  .default-btn {
+    padding: 13px 15px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    color: #e7e5e5;
+    font-size: 1.0rem;
+    width: 310px;
+    height: 50px;
+    background-color: rgb(129, 178, 20);
+    transition: 0.2s;
+  }
+
+  .kakao-btn {
+    width: 310px;
+  }
+
+  .google-btn {
+    width: 310px;
+  }
+
+  .google-btn-img {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+  }
+}
