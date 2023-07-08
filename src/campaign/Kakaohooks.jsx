@@ -86,16 +86,4 @@ function KakaoInit() {
   return null;
 }
 
-const generateCampaignUrl = (campaignId) => {
-  return `${process.env.REACT_APP_FRONTEND_URL}/campaign/${campaignId}`;
-};
-
-function handleKakaoButton(campaignId) {
-  if (window.Kakao && window.Kakao.Link) {
-    window.Kakao.Link.sendScrap({
-      requestUrl: generateCampaignUrl(campaignId),
-    });
-  }
-}
-
-export { KakaoInit, handleKakaoButton };
+export { KakaoInit };

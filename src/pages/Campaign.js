@@ -300,12 +300,18 @@ const Campaign = () => {
                       color="text.secondary"
                       component={'span'}
                     >
-                      {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
-                      참여인원 : {campaign.participant_count} / {campaign.members}<br />
-                      {campaign.fundings && campaign.fundings.goal !== 0 ? (
-                        <><span className="campaignCardPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal) * 100)}%</span> 달성</>
+                      {campaign.status >= 2 ? (
+                        <div>종료된 캠페인입니다.</div>
                       ) : (
-                        <div>펀딩을 진행하지 않는 캠페인입니다.</div>
+                        <>
+                          {convertDateTime(campaign.campaign_start_date)} ~ {convertDateTime(campaign.campaign_end_date)} <br />
+                          참여인원 : {campaign.participant_count} / {campaign.members}<br />
+                          {campaign.fundings && campaign.fundings.goal !== 0 ? (
+                            <><span className="campaignCardPercent">{Math.floor((campaign.fundings.amount / campaign.fundings.goal) * 100)}%</span> 달성</>
+                          ) : (
+                            <div>펀딩을 진행하지 않는 캠페인입니다.</div>
+                          )}
+                        </>
                       )}
                     </Typography>
                   </CardContent>
