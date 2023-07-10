@@ -1,10 +1,9 @@
 <div align=center>
-  <img width="300" alt="image" src="https://github.com/nueeng/EcoCanvas-Backend/assets/127704498/30303c20-4f89-492a-82e6-075ad82a9c51">
+  <img width="300" alt="image" src="https://github.com/Songjimyung/EcoCanvas-Frontend/assets/127704498/d74f0f14-5c44-4937-8b84-dceddbf02d05">
 </div>
 
 ## 목차
 
-- [목차](#목차)
 - [기획배경](#기획배경)
 - [개발기간](#개발기간)
 - [주요 자료](#주요-자료)
